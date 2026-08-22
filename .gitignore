@@ -36,6 +36,5 @@ lerna-debug.log*
 prisma/dev.db
 prisma/dev.db-journal
 
-# Internal Prompts & Notes
-*build prompt*
+
 
