@@ -1,0 +1,115 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  phone     String     @unique
+  name      String
+  password  String
+  address   String?
+  role      String     @default("customer") // customer or admin
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  orders    Order[]
+  payments  Payment[]
+
+  @@map("users")
+}
+
+model Order {
+  id                    String     @id @default(cuid())
+  userId                String
+  user                  User       @relation(fields: [userId], references: [id])
+  
+  skinType              String     // oily, dry, combination, sensitive
+  mainConcern           String?    // acne, dryness, sensitivity, general
+  allergies             String?    // JSON array or comma-separated
+  excludedIngredients   String?    // JSON array or comma-separated
+  texturePreference     String?    // soft, hard, exfoliating
+  
+  recipeId              String?
+  recipe                Recipe?    @relation(fields: [recipeId], references: [id])
+  
+  deliveryAddress       String
+  deliveryCity          String
+  deliveryPostalCode    String
+  deliveryPhone         String
+  
+  price                 Float      // in rupees
+  orderStatus           String     @default("pending") // pending, confirmed, in-production, shipped, delivered
+  trackingNumber        String?
+  deliveryDate          DateTime?
+  
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+
+  payments              Payment[]
+
+  @@map("orders")
+}
+
+model Recipe {
+  id                    String     @id @default(cuid())
+  name                  String
+  description           String?
+  skinType              String     // oily, dry, combination, sensitive
+  addressesConcern      String?    // acne, dryness, sensitivity
+  
+  ingredients           String     // JSON array of ingredient IDs: ["haldi", "aloe_vera", "chandan"]
+  allergenRisk          Boolean    @default(false)
+  isPremium             Boolean    @default(false)
+  isActive              Boolean    @default(true)
+  
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+
+  orders                Order[]
+
+  @@map("recipes")
+}
+
+model Ingredient {
+  id                    String     @id @default(cuid())
+  name                  String     @unique // aloe_vera, haldi, chandan, kesar
+  displayName           String     // Aloe Vera, Haldi (Turmeric)
+  description           String?
+  allergenRisk          Boolean    @default(false)
+  isActive              Boolean    @default(true)
+  
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+
+  @@map("ingredients")
+}
+
+model Payment {
+  id                    String     @id @default(cuid())
+  orderId               String
+  order                 Order      @relation(fields: [orderId], references: [id])
+  
+  userId                String
+  user                  User       @relation(fields: [userId], references: [id])
+  
+  amount                Float      // in rupees
+  paymentMethod         String     @default("razorpay") // razorpay, upi, card
+  
+  razorpayPaymentId     String?    @unique
+  razorpayOrderId       String?    @unique
+  
+  status                String     @default("pending") // pending, success, failed
+  
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+
+  @@map("payments")
+}
