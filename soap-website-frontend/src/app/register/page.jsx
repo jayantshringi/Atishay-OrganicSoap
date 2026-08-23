@@ -65,26 +65,28 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md bg-white rounded-2xl p-8 shadow-xl border border-amber-900/10">
+      <div className="w-full max-w-md bg-white rounded-extra p-8 sm:p-10 shadow-large border border-primary/15">
         <div className="text-center mb-8">
-          <span className="text-4xl">🧼</span>
-          <h1 className="text-3xl font-poppins font-bold text-primary mt-2">
+          <span className="text-4xl p-2 bg-primary/10 rounded-2xl inline-block">🌿</span>
+          <h1 className="text-3xl font-poppins font-bold text-charcoal mt-3">
             Create Account
           </h1>
-          <p className="text-sm text-text-muted mt-1">
-            Join SoapCo to get custom soap formulations tailored to your skin
+          <p className="text-sm text-charcoal-light font-inter mt-1">
+            Join SoapCo for tailored organic skincare crafted for your skin
           </p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-6">
+          <div className="bg-status-error/10 border border-status-error/30 text-status-error px-4 py-3 rounded-large text-sm mb-6 font-inter">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase text-primary mb-1">Full Name</label>
+            <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+              Full Name
+            </label>
             <input
               type="text"
               name="name"
@@ -92,12 +94,14 @@ export default function RegisterPage() {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+              className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase text-primary mb-1">Email Address</label>
+            <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+              Email Address
+            </label>
             <input
               type="email"
               name="email"
@@ -105,12 +109,14 @@ export default function RegisterPage() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+              className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase text-primary mb-1">Phone Number (10 digits)</label>
+            <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+              Phone Number (10 digits)
+            </label>
             <input
               type="tel"
               name="phone"
@@ -118,12 +124,14 @@ export default function RegisterPage() {
               value={formData.phone}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+              className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase text-primary mb-1">Password</label>
+            <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+              Password
+            </label>
             <input
               type="password"
               name="password"
@@ -131,12 +139,14 @@ export default function RegisterPage() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+              className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase text-primary mb-1">Confirm Password</label>
+            <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+              Confirm Password
+            </label>
             <input
               type="password"
               name="confirmPassword"
@@ -144,22 +154,22 @@ export default function RegisterPage() {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+              className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-accent text-white py-3.5 rounded-xl font-poppins font-bold text-base hover:bg-accent-hover transition-all shadow-md disabled:opacity-50 mt-2"
+            className="w-full bg-primary text-cream py-3.5 rounded-large font-poppins font-bold text-base hover:bg-primary-dark transition-all shadow-medium hover:shadow-large disabled:opacity-50 mt-2"
           >
             {loading ? 'Creating Account...' : 'Create Account & Start Quiz'}
           </button>
         </form>
 
-        <p className="text-center text-sm text-text-muted mt-6">
+        <p className="text-center text-sm text-charcoal-light font-inter mt-6">
           Already have an account?{' '}
-          <Link href="/login" className="text-accent font-bold hover:underline">
+          <Link href="/login" className="text-primary font-bold hover:underline">
             Login
           </Link>
         </p>

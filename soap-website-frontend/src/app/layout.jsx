@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
       <head>
         <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
       </head>
-      <body className="font-opensans bg-neutral text-text min-h-screen flex flex-col justify-between antialiased">
+      <body className="font-inter bg-cream text-charcoal min-h-screen flex flex-col justify-between antialiased selection:bg-primary/20 selection:text-primary">
         <Header />
         <main className="flex-grow">
           {children}

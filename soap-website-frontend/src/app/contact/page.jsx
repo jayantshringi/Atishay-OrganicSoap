@@ -37,26 +37,30 @@ export default function ContactPage() {
   return (
     <div className="max-w-3xl mx-auto my-12 px-4 space-y-8">
       <div className="text-center space-y-3">
-        <span className="text-xs font-poppins font-bold uppercase tracking-wider text-accent">Get In Touch</span>
-        <h1 className="text-4xl font-poppins font-bold text-primary">
-          Contact SoapCo Team
+        <span className="text-xs font-poppins font-bold uppercase tracking-wider text-secondary">
+          Personal Support
+        </span>
+        <h1 className="text-3xl sm:text-4xl font-poppins font-bold text-charcoal">
+          Contact the SoapCo Skincare Team
         </h1>
-        <p className="text-base text-text-muted max-w-md mx-auto">
-          Have a question about your order, ingredients, or skin concerns? Send us a message below.
+        <p className="text-base text-charcoal-light font-inter max-w-md mx-auto">
+          Have a question regarding custom formulations, allergen safety, or delivery? Reach out below.
         </p>
       </div>
 
       {submitted && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-6 py-4 rounded-2xl text-sm font-medium text-center animate-in fade-in">
+        <div className="bg-primary/15 border border-primary/30 text-primary-darker px-6 py-4 rounded-large text-sm font-medium text-center animate-in fade-in">
           🎉 Thank you for reaching out! Your message has been received and our skincare team will reply within 24 hours.
         </div>
       )}
 
-      <div className="bg-white rounded-3xl p-8 shadow-xl border border-amber-900/10">
+      <div className="bg-white rounded-extra p-8 sm:p-10 shadow-large border border-primary/15">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase text-primary mb-1">Full Name</label>
+              <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+                Full Name
+              </label>
               <input
                 type="text"
                 name="name"
@@ -64,12 +68,14 @@ export default function ContactPage() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase text-primary mb-1">Email Address</label>
+              <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+                Email Address
+              </label>
               <input
                 type="email"
                 name="email"
@@ -77,56 +83,62 @@ export default function ContactPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase text-primary mb-1">Phone Number</label>
+              <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+                Phone Number (Optional)
+              </label>
               <input
                 type="tel"
                 name="phone"
                 placeholder="10-digit mobile number"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase text-primary mb-1">Subject</label>
+              <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+                Subject
+              </label>
               <select
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent bg-white"
+                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               >
-                <option value="general">General Inquiry</option>
-                <option value="order">Order Tracking / Issue</option>
-                <option value="allergy">Allergy & Ingredient Question</option>
-                <option value="feedback">Feedback & Suggestions</option>
+                <option value="general">General Skincare Inquiry</option>
+                <option value="order">Order Tracking / Status</option>
+                <option value="allergy">Allergen &amp; Ingredient Advice</option>
+                <option value="feedback">Feedback &amp; Custom Recipe Request</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase text-primary mb-1">Your Message</label>
+            <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
+              Your Message
+            </label>
             <textarea
               name="message"
-              placeholder="Tell us how we can assist you..."
+              placeholder="Tell us about your skin concern or question..."
               value={formData.message}
               onChange={handleChange}
               required
               rows="5"
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+              className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             ></textarea>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-accent text-white py-3.5 rounded-xl font-poppins font-bold text-base hover:bg-accent-hover transition-all shadow-md mt-2"
+            className="w-full bg-primary text-cream py-3.5 rounded-large font-poppins font-bold text-base hover:bg-primary-dark transition-all shadow-medium hover:shadow-large mt-2"
           >
             Send Message →
           </button>

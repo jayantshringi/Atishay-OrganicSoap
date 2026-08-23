@@ -14,6 +14,7 @@ export default function DashboardPage() {
   const store = useQuestionnaireStore();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all');
   const [reorderingId, setReorderingId] = useState(null);
   const [toast, setToast] = useState({ message: '', type: 'info' });
 
@@ -73,22 +74,27 @@ export default function DashboardPage() {
 
   const getStatusBadge = (status) => {
     const config = {
-      pending: { label: 'Pending Payment', style: 'bg-gray-100 text-gray-800 border-gray-300' },
-      confirmed: { label: 'Order Confirmed', style: 'bg-blue-50 text-blue-800 border-blue-200' },
-      'in-production': { label: '🏭 In Production', style: 'bg-amber-50 text-amber-800 border-amber-200' },
-      shipped: { label: '🚚 Shipped', style: 'bg-purple-50 text-purple-800 border-purple-200' },
-      delivered: { label: '🎉 Delivered', style: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+      pending: { label: 'Pending Payment', style: 'bg-cream-dark text-charcoal border-charcoal/20' },
+      confirmed: { label: '✓ Confirmed', style: 'bg-primary/10 text-primary-darker border-primary/30' },
+      'in-production': { label: '🏭 In Production', style: 'bg-secondary/20 text-charcoal border-secondary/40' },
+      shipped: { label: '🚚 Shipped', style: 'bg-accent/15 text-accent-dark border-accent/30' },
+      delivered: { label: '🎉 Delivered', style: 'bg-status-success/15 text-primary-darker border-status-success/30' },
     };
     const current = config[status] || config.pending;
     return (
-      <span className={`px-3 py-1 rounded-full text-xs font-bold border ${current.style}`}>
+      <span className={`px-3 py-1 rounded-full text-xs font-poppins font-bold border ${current.style}`}>
         {current.label}
       </span>
     );
   };
 
+  const filteredOrders = orders.filter((o) => {
+    if (filter === 'all') return true;
+    return o.orderStatus === filter;
+  });
+
   return (
-    <div className="max-w-6xl mx-auto my-8 sm:my-12 px-4 sm:px-6 space-y-6 sm:space-y-8">
+    <div className="max-w-6xl mx-auto my-8 sm:my-12 px-4 sm:px-6 space-y-8">
       {toast.message && (
         <Toast
           message={toast.message}
@@ -100,19 +106,45 @@ export default function DashboardPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-poppins font-bold text-primary">
-            Customer Dashboard
+          <span className="text-xs font-poppins font-bold uppercase tracking-wider text-secondary">
+            Personal Portal
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-poppins font-bold text-charcoal mt-0.5">
+            Your Orders &amp; Formulations
           </h1>
-          <p className="text-sm text-text-muted mt-1">
-            Manage your custom soap formulations &amp; track active deliveries
+          <p className="text-sm text-charcoal-light font-inter mt-1">
+            Manage your bespoke organic recipes &amp; track active deliveries
           </p>
         </div>
         <Link
           href="/questionnaire"
-          className="w-full sm:w-auto text-center bg-accent text-white px-5 sm:px-6 py-3 rounded-xl font-poppins font-bold text-sm hover:bg-accent-hover transition-all shadow-md"
+          className="w-full sm:w-auto text-center bg-primary text-cream px-6 py-3.5 rounded-large font-poppins font-bold text-sm hover:bg-primary-dark transition-all shadow-medium"
         >
-          + Order New Custom Soap
+          + Create New Custom Formula
         </Link>
+      </div>
+
+      {/* Filter Tabs */}
+      <div className="flex flex-wrap gap-2 border-b border-primary/10 pb-3">
+        {[
+          { key: 'all', label: 'All Orders' },
+          { key: 'confirmed', label: 'Confirmed' },
+          { key: 'in-production', label: 'In Production' },
+          { key: 'shipped', label: 'Shipped' },
+          { key: 'delivered', label: 'Delivered' },
+        ].map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setFilter(tab.key)}
+            className={`px-4 py-2 rounded-large text-xs font-poppins font-bold transition ${
+              filter === tab.key
+                ? 'bg-primary text-cream shadow-subtle'
+                : 'bg-white text-charcoal hover:bg-cream border border-primary/15'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Loading Skeleton */}
@@ -121,51 +153,51 @@ export default function DashboardPage() {
           {[1, 2].map((i) => (
             <div
               key={i}
-              className="bg-white border border-amber-900/10 rounded-2xl p-5 sm:p-6 shadow-sm animate-pulse space-y-4"
+              className="bg-white border border-primary/15 rounded-extra p-6 shadow-subtle animate-pulse space-y-4"
             >
-              <div className="h-5 bg-gray-200 rounded w-1/3" />
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                <div className="h-10 bg-gray-100 rounded" />
-                <div className="h-10 bg-gray-100 rounded" />
-                <div className="h-10 bg-gray-100 rounded" />
-                <div className="h-10 bg-gray-100 rounded" />
+              <div className="h-5 bg-cream-dark rounded w-1/3" />
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="h-10 bg-cream rounded" />
+                <div className="h-10 bg-cream rounded" />
+                <div className="h-10 bg-cream rounded" />
+                <div className="h-10 bg-cream rounded" />
               </div>
-              <div className="h-9 bg-gray-100 rounded" />
+              <div className="h-9 bg-cream rounded" />
             </div>
           ))}
         </div>
-      ) : orders.length === 0 ? (
+      ) : filteredOrders.length === 0 ? (
         /* Empty State */
-        <div className="text-center py-16 sm:py-20 bg-white rounded-3xl border border-amber-900/10 shadow-sm px-6">
-          <span className="text-5xl">🧼</span>
-          <h3 className="text-xl font-poppins font-bold text-primary mt-4">
-            No Custom Soap Orders Yet
+        <div className="text-center py-16 sm:py-20 bg-white rounded-extra border border-primary/15 shadow-subtle px-6 space-y-4">
+          <span className="text-5xl">🌿</span>
+          <h3 className="text-xl font-poppins font-bold text-charcoal">
+            No Custom Formulations Found
           </h3>
-          <p className="text-sm text-text-muted max-w-md mx-auto mt-2 mb-6">
-            Take our 2-minute skin quiz to receive your tailor-made organic recipe.
+          <p className="text-sm text-charcoal-light font-inter max-w-md mx-auto">
+            Take our 2-minute diagnostic questionnaire to receive your tailor-made organic recipe.
           </p>
           <Link
             href="/questionnaire"
-            className="bg-accent text-white px-6 py-3.5 rounded-xl font-poppins font-bold hover:bg-accent-hover transition inline-block shadow-md text-sm"
+            className="bg-primary text-cream px-7 py-3.5 rounded-large font-poppins font-bold hover:bg-primary-dark transition inline-block shadow-medium text-sm"
           >
             Create Your Custom Soap →
           </Link>
         </div>
       ) : (
         /* Orders List */
-        <div className="grid gap-5 sm:gap-6">
-          {orders.map((order) => (
+        <div className="grid gap-6">
+          {filteredOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-white border border-amber-900/10 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all"
+              className="bg-white border border-primary/15 rounded-extra p-6 shadow-subtle hover:shadow-medium transition-all"
             >
               {/* Order Header */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-gray-100 pb-4 mb-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-cream-dark pb-4 mb-4">
                 <div>
-                  <h3 className="text-base sm:text-lg font-poppins font-bold text-primary">
+                  <h3 className="text-base sm:text-lg font-poppins font-bold text-charcoal">
                     Order #{order.id.slice(0, 8)}
                   </h3>
-                  <p className="text-xs text-text-muted">
+                  <p className="text-xs text-charcoal-light font-inter">
                     Placed on {new Date(order.createdAt).toLocaleDateString()}
                   </p>
                 </div>
@@ -173,27 +205,27 @@ export default function DashboardPage() {
               </div>
 
               {/* Order Meta Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-5 sm:mb-6 text-sm">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 text-sm font-inter">
                 <div>
-                  <span className="text-xs text-text-muted font-bold block uppercase mb-0.5">
-                    Skin Type
+                  <span className="text-xs text-charcoal-light font-bold block uppercase mb-0.5">
+                    Skin Profile
                   </span>
-                  <span className="font-bold text-primary capitalize">{order.skinType}</span>
+                  <span className="font-bold text-charcoal capitalize">{order.skinType}</span>
                 </div>
                 <div>
-                  <span className="text-xs text-text-muted font-bold block uppercase mb-0.5">
-                    Main Concern
+                  <span className="text-xs text-charcoal-light font-bold block uppercase mb-0.5">
+                    Target Concern
                   </span>
-                  <span className="font-bold text-primary capitalize">{order.mainConcern}</span>
+                  <span className="font-bold text-charcoal capitalize">{order.mainConcern}</span>
                 </div>
                 <div>
-                  <span className="text-xs text-text-muted font-bold block uppercase mb-0.5">
+                  <span className="text-xs text-charcoal-light font-bold block uppercase mb-0.5">
                     Price
                   </span>
-                  <span className="font-bold text-accent">₹{order.price}</span>
+                  <span className="font-bold text-secondary text-base">₹{order.price}</span>
                 </div>
                 <div>
-                  <span className="text-xs text-text-muted font-bold block uppercase mb-0.5">
+                  <span className="text-xs text-charcoal-light font-bold block uppercase mb-0.5">
                     Est. Delivery
                   </span>
                   <span className="font-bold text-primary">
@@ -203,23 +235,23 @@ export default function DashboardPage() {
               </div>
 
               {/* Order Footer */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-t border-gray-100 pt-4">
-                <span className="text-xs text-text-muted">
-                  {order.recipe?.name ? `Formula: ${order.recipe.name}` : 'Custom Handcrafted Formula'}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-t border-cream-dark pt-4">
+                <span className="text-xs text-charcoal-light font-inter">
+                  {order.recipe?.name ? `Formula: ${order.recipe.name}` : 'Custom Handcrafted Organic Recipe'}
                 </span>
-                <div className="flex gap-2 w-full sm:w-auto">
+                <div className="flex gap-3 w-full sm:w-auto">
                   <button
                     onClick={() => handleReorder(order)}
                     disabled={reorderingId === order.id}
-                    className="flex-1 sm:flex-none bg-neutral hover:bg-neutral-dark text-primary border border-amber-900/10 px-3 sm:px-4 py-2.5 rounded-xl font-poppins font-bold text-xs transition shadow-sm disabled:opacity-50 whitespace-nowrap"
+                    className="flex-1 sm:flex-none bg-cream hover:bg-cream-dark text-charcoal border border-primary/20 px-4 py-2.5 rounded-large font-poppins font-bold text-xs transition shadow-subtle disabled:opacity-50 whitespace-nowrap"
                   >
                     🔄 {reorderingId === order.id ? 'Duplicating...' : 'Re-order Formula'}
                   </button>
                   <Link
                     href={`/dashboard/orders/${order.id}`}
-                    className="flex-1 sm:flex-none bg-primary text-white text-center px-4 sm:px-5 py-2.5 rounded-xl font-poppins font-bold text-xs hover:bg-primary-dark transition shadow-sm whitespace-nowrap"
+                    className="flex-1 sm:flex-none bg-primary text-cream text-center px-5 py-2.5 rounded-large font-poppins font-bold text-xs hover:bg-primary-dark transition shadow-subtle whitespace-nowrap"
                   >
-                    Track Order →
+                    Track Progress →
                   </Link>
                 </div>
               </div>

@@ -71,7 +71,7 @@ function OrderConfirmationContent() {
           }
         },
         theme: {
-          color: '#D4AF37',
+          color: '#5D7B6F',
         },
       };
 
@@ -101,48 +101,50 @@ function OrderConfirmationContent() {
 
   return (
     <div className="max-w-3xl mx-auto my-12 px-4">
-      <div className="bg-white rounded-3xl p-8 shadow-xl border border-amber-900/10 space-y-8">
+      <div className="bg-white rounded-extra p-8 sm:p-10 shadow-large border border-primary/15 space-y-8">
         <div>
-          <span className="text-xs font-poppins font-bold uppercase tracking-wider text-accent">Order Match Ready</span>
-          <h1 className="text-3xl font-poppins font-bold text-primary mt-1">
-            Your Custom Soap Formula
+          <span className="text-xs font-poppins font-bold uppercase tracking-wider text-secondary">
+            Formula Formulated
+          </span>
+          <h1 className="text-3xl font-poppins font-bold text-charcoal mt-1">
+            Your Custom Soap Match
           </h1>
-          <p className="text-sm text-text-muted mt-1">
-            Review your matched organic recipe and complete payment via Razorpay.
+          <p className="text-sm text-charcoal-light font-inter mt-1">
+            Review your tailor-made botanical recipe and complete payment via Razorpay.
           </p>
         </div>
 
         {/* Recipe & Customization Breakdown Card */}
-        <div className="border-2 border-accent/40 bg-neutral/40 p-6 rounded-2xl space-y-4">
-          <div className="flex justify-between items-start border-b border-amber-900/10 pb-4">
+        <div className="border-2 border-primary/20 bg-cream/50 p-6 rounded-large space-y-4">
+          <div className="flex justify-between items-start border-b border-primary/10 pb-4">
             <div>
-              <span className="bg-accent/15 text-primary text-xs font-bold px-3 py-1 rounded-full inline-block mb-1">
+              <span className="bg-primary/10 text-primary-darker text-xs font-poppins font-bold px-3 py-1 rounded-full inline-block mb-1.5">
                 Matched Formulation
               </span>
-              <h3 className="text-xl font-poppins font-bold text-primary">
+              <h3 className="text-xl font-poppins font-bold text-charcoal">
                 {order.recipe?.name || 'Custom Organic Blend Soap'}
               </h3>
             </div>
-            <span className="text-2xl font-poppins font-extrabold text-accent">
+            <span className="text-2xl font-poppins font-extrabold text-secondary">
               ₹{order.price}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-2 gap-4 text-sm font-inter">
             <div>
-              <span className="text-xs text-text-muted uppercase font-bold block">Skin Type</span>
-              <span className="font-bold text-primary capitalize">{order.skinType}</span>
+              <span className="text-xs text-charcoal-light uppercase font-bold block">Skin Profile</span>
+              <span className="font-bold text-charcoal capitalize">{order.skinType}</span>
             </div>
             <div>
-              <span className="text-xs text-text-muted uppercase font-bold block">Main Concern</span>
-              <span className="font-bold text-primary capitalize">{order.mainConcern}</span>
+              <span className="text-xs text-charcoal-light uppercase font-bold block">Main Concern</span>
+              <span className="font-bold text-charcoal capitalize">{order.mainConcern}</span>
             </div>
             <div>
-              <span className="text-xs text-text-muted uppercase font-bold block">Soap Texture</span>
-              <span className="font-bold text-primary capitalize">{order.texturePreference}</span>
+              <span className="text-xs text-charcoal-light uppercase font-bold block">Soap Texture</span>
+              <span className="font-bold text-charcoal capitalize">{order.texturePreference}</span>
             </div>
             <div>
-              <span className="text-xs text-text-muted uppercase font-bold block">Est. Delivery</span>
+              <span className="text-xs text-charcoal-light uppercase font-bold block">Est. Delivery</span>
               <span className="font-bold text-primary">
                 {new Date(order.deliveryDate).toLocaleDateString()}
               </span>
@@ -151,35 +153,35 @@ function OrderConfirmationContent() {
         </div>
 
         {/* Patch Test Warning Callout */}
-        <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl flex items-start gap-3">
+        <div className="bg-secondary-light/40 border border-secondary/40 p-5 rounded-large flex items-start gap-3.5">
           <span className="text-2xl">⚠️</span>
           <div>
-            <h4 className="font-poppins font-bold text-amber-900 text-sm">Important Safety Notice</h4>
-            <p className="text-xs text-amber-800 leading-relaxed mt-0.5">
-              Always perform a <strong>24-hour patch test</strong> on your inner arm before applying new natural skincare products to your face or body.
+            <h4 className="font-poppins font-bold text-charcoal text-sm">Mandatory 24h Patch Test Notice</h4>
+            <p className="text-xs text-charcoal-light leading-relaxed mt-0.5 font-inter">
+              Even with 100% natural botanical ingredients, please perform a <strong>24-hour patch test</strong> on your inner arm prior to regular full facial or body application.
             </p>
           </div>
         </div>
 
         {/* Price Breakdown */}
-        <div className="bg-neutral/60 p-6 rounded-2xl space-y-3 text-sm">
+        <div className="bg-cream/60 p-6 rounded-large space-y-3 text-sm font-inter">
           <div className="flex justify-between">
-            <span className="text-text-muted">Base Custom Soap Bar</span>
-            <span className="font-bold">₹399</span>
+            <span className="text-charcoal-light">Base Custom Soap Bar</span>
+            <span className="font-bold text-charcoal">₹399</span>
           </div>
           {order.texturePreference === 'exfoliating' && (
             <div className="flex justify-between">
-              <span className="text-text-muted">Exfoliating Botanical Addon</span>
-              <span className="font-bold">₹50</span>
+              <span className="text-charcoal-light">Exfoliating Botanical Scrub Addon</span>
+              <span className="font-bold text-charcoal">₹50</span>
             </div>
           )}
           <div className="flex justify-between">
-            <span className="text-text-muted">Delivery Charge (Local Service Area)</span>
-            <span className="font-bold text-emerald-600">FREE</span>
+            <span className="text-charcoal-light">Standard Delivery (Pan-India)</span>
+            <span className="font-bold text-status-success">FREE</span>
           </div>
-          <div className="border-t border-amber-900/10 pt-3 flex justify-between items-center text-base">
-            <span className="font-poppins font-bold text-primary">Total Payable</span>
-            <span className="font-poppins font-extrabold text-2xl text-accent">₹{order.price}</span>
+          <div className="border-t border-primary/10 pt-3 flex justify-between items-center text-base">
+            <span className="font-poppins font-bold text-charcoal">Total Payable</span>
+            <span className="font-poppins font-extrabold text-2xl text-secondary">₹{order.price}</span>
           </div>
         </div>
 
@@ -188,16 +190,16 @@ function OrderConfirmationContent() {
           <button
             onClick={handlePayment}
             disabled={paymentProcessing}
-            className="w-full bg-accent text-white py-4 rounded-xl font-poppins font-bold text-lg hover:bg-accent-hover transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full bg-primary text-cream py-4 rounded-large font-poppins font-bold text-lg hover:bg-primary-dark transition-all shadow-medium hover:shadow-large flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <span>💳 {paymentProcessing ? 'Processing...' : `Pay ₹${order.price} via Razorpay`}</span>
           </button>
 
           <button
             onClick={() => router.push('/questionnaire')}
-            className="w-full py-3 border border-primary/20 text-primary rounded-xl font-poppins font-bold text-sm hover:bg-neutral transition"
+            className="w-full py-3 border-2 border-primary/20 text-primary rounded-large font-poppins font-bold text-sm hover:bg-cream transition"
           >
-            Edit Questionnaire Answers
+            Edit Diagnostic Answers
           </button>
         </div>
       </div>

@@ -8,73 +8,93 @@ export default function HowItWorks() {
   const steps = [
     {
       step: '01',
-      icon: '📝',
+      icon: '📋',
       title: 'Take Skin Questionnaire',
       description:
-        'Tell us about your skin type (oily, dry, sensitive), specific allergies, concerns, and texture preference.',
+        'Tell us about your skin type (oily, dry, combination, sensitive), specific allergies, and preferred bar texture.',
     },
     {
       step: '02',
-      icon: '🧪',
-      title: 'Recipe Matching',
+      icon: '🔬',
+      title: 'Scientific Formula Match',
       description:
-        'Our system selects an optimal melt-and-pour glycerine recipe using organic ingredients (Haldi, Aloe Vera, Chandan, Kesar).',
+        'Our algorithm designs a customized organic recipe infused with tested botanicals like Haldi, Aloe Vera, Chandan, or Kesar.',
     },
     {
       step: '03',
-      icon: '💳',
-      title: 'Secure Payment',
+      icon: '🧼',
+      title: 'Handcrafted With Care',
       description:
-        'Review your personalized recipe details, confirm delivery details, and pay securely via Razorpay UPI/Cards.',
+        'Each soap is fresh-poured using vegetable glycerine, avoiding artificial irritants and harsh parabens.',
     },
     {
       step: '04',
       icon: '📦',
-      title: 'Crafted & Delivered',
+      title: 'Doorstep Delivery',
       description:
-        'Your custom soap is freshly handmade, safely packaged, and delivered to your doorstep within 3-5 business days.',
+        'Receive your personalized skincare soap safely packaged with a 24h patch test guide in 3-5 business days.',
     },
   ];
 
   return (
-    <section className="py-16 sm:py-20 bg-white border-y border-amber-900/5">
+    <section id="how-it-works" className="py-16 sm:py-24 bg-cream border-y border-primary/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3 sm:space-y-4"
+          className="text-center max-w-2xl mx-auto mb-14 sm:mb-18 space-y-3"
         >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-poppins font-bold text-primary">
+          <span className="text-secondary font-poppins font-bold uppercase tracking-wider text-xs">
+            Simple 4-Step Journey
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-poppins font-bold text-charcoal">
             How It Works
           </h2>
-          <p className="text-text-muted text-sm sm:text-base">
-            From quiz to doorstep, get a customized soap formulation in 4 simple steps.
+          <p className="text-charcoal-light text-sm sm:text-base font-inter">
+            From digital consultation to artisanal formulation crafted specifically for your skin.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 relative">
           {steps.map((item, index) => (
             <motion.div
               key={item.step}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="bg-neutral/50 border border-amber-900/10 rounded-2xl p-5 sm:p-6 relative shadow-sm hover:shadow-xl transition-all group"
+              transition={{ duration: 0.5, delay: index * 0.12 }}
+              whileHover={{ y: -6 }}
+              className="bg-white border border-primary/15 rounded-extra p-6 relative shadow-subtle hover:shadow-medium transition-all group flex flex-col justify-between"
             >
-              <span className="text-xs font-poppins font-extrabold text-accent bg-accent/15 px-3 py-1 rounded-full inline-block mb-4">
-                Step {item.step}
-              </span>
-              <div className="text-3xl sm:text-4xl mb-4 group-hover:scale-125 transition-transform duration-300">
-                {item.icon}
+              <div>
+                <div className="flex justify-between items-center mb-5">
+                  <span className="text-xs font-poppins font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
+                    Step {item.step}
+                  </span>
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:bg-primary group-hover:text-cream transition-all duration-300">
+                    {item.icon}
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-poppins font-bold text-charcoal mb-2 group-hover:text-primary transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-charcoal-light font-inter leading-relaxed">
+                  {item.description}
+                </p>
               </div>
-              <h3 className="text-lg sm:text-xl font-poppins font-bold text-primary mb-2">
-                {item.title}
-              </h3>
-              <p className="text-sm text-text-muted leading-relaxed">{item.description}</p>
+
+              {/* Progress visual bar */}
+              <div className="mt-5 pt-4 border-t border-cream-dark">
+                <div className="w-full bg-cream-dark rounded-full h-1.5 overflow-hidden">
+                  <div
+                    className="bg-secondary h-1.5 rounded-full"
+                    style={{ width: `${(index + 1) * 25}%` }}
+                  />
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>

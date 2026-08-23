@@ -7,58 +7,77 @@ import { motion } from 'framer-motion';
 export default function IngredientsShowcase() {
   const ingredients = [
     {
-      name: 'Aloe Vera (Gritkumari)',
-      tag: 'Soothing & Hydrating',
+      name: 'Aloe Vera (Ghritkumari)',
+      tag: 'Hydration & Soothing',
       icon: '🪴',
-      color: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-      description:
-        'Deeply hydrates dry skin, reduces inflammation, and leaves skin feeling supple and smooth.',
+      borderColor: 'border-botanical-aloe hover:border-primary',
+      badgeBg: 'bg-botanical-aloe/40 text-primary-darker',
+      benefits: [
+        'Deep cellular hydration for dry & tight skin',
+        'Cools irritation and calms redness',
+        'Rich in vitamins C & E for barrier repair',
+      ],
+      highlight: 'Best for Dry & Sensitive Profiles',
     },
     {
-      name: 'Haldi (Turmeric)',
-      tag: 'Anti-bacterial & Anti-Acne',
+      name: 'Haldi (Wild Turmeric)',
+      tag: 'Anti-Bacterial & Glow',
       icon: '✨',
-      color: 'bg-amber-50 text-amber-800 border-amber-200',
-      description:
-        'Natural antiseptic that targets acne-causing bacteria and imparts a natural, radiant glow.',
+      borderColor: 'border-botanical-haldi hover:border-secondary-dark',
+      badgeBg: 'bg-botanical-haldi/30 text-charcoal',
+      benefits: [
+        'Naturally clears acne-causing bacteria',
+        'Fades dark spots and promotes even tone',
+        'Potent antioxidant anti-inflammatory shield',
+      ],
+      highlight: 'Best for Oily & Acne-Prone Profiles',
     },
     {
-      name: 'Chandan (Sandalwood)',
-      tag: 'Cooling & Calming',
+      name: 'Chandan (Pure Sandalwood)',
+      tag: 'Calming & Cooling',
       icon: '🪵',
-      color: 'bg-orange-50 text-orange-800 border-orange-200',
-      description:
-        'Soothes redness and irritation, evens skin tone, and provides a pleasant calming aroma.',
+      borderColor: 'border-botanical-chandan hover:border-accent',
+      badgeBg: 'bg-botanical-chandan/50 text-charcoal',
+      benefits: [
+        'Soothes sunburn, allergies, and heat rashes',
+        'Tightens pores and balances sebum levels',
+        'Natural therapeutic soothing aroma',
+      ],
+      highlight: 'Best for Combination & Reactive Profiles',
     },
     {
-      name: 'Kesar (Saffron)',
-      tag: 'Brightening Luxury',
+      name: 'Kesar (Kashmiri Saffron)',
+      tag: 'Radiance & Rejuvenation',
       icon: '🌸',
-      color: 'bg-rose-50 text-rose-800 border-rose-200',
-      description:
-        'Rich in antioxidants, saffron brightens complexion and rejuvenates tired skin.',
+      borderColor: 'border-botanical-kesar hover:border-secondary',
+      badgeBg: 'bg-botanical-kesar/30 text-charcoal',
+      benefits: [
+        'Enhances natural skin luminosity and glow',
+        'Improves circulation for healthy complexion',
+        'Gentle cell renewal without harsh peeling',
+      ],
+      highlight: 'Best for Dull & Aging Skin Profiles',
     },
   ];
 
   return (
-    <section className="py-16 sm:py-20 bg-neutral/60">
+    <section id="ingredients" className="py-16 sm:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3 sm:space-y-4"
+          className="text-center max-w-2xl mx-auto mb-14 sm:mb-18 space-y-3"
         >
-          <span className="text-accent font-bold uppercase tracking-wider text-xs">
-            Pure Organic Extracts
+          <span className="text-secondary font-poppins font-bold uppercase tracking-wider text-xs">
+            Hand-Harvested Botanicals
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-poppins font-bold text-primary">
-            Our Key Organic Ingredients
+          <h2 className="text-3xl sm:text-4xl font-poppins font-bold text-charcoal">
+            Our Premium Ingredients
           </h2>
-          <p className="text-text-muted text-sm sm:text-base">
-            We use high-purity melt-and-pour glycerine base infused with time-tested Indian herbal
-            botanicals.
+          <p className="text-charcoal-light text-sm sm:text-base font-inter">
+            Pure Indian botanical extracts infused in vegetable glycerine base. No fillers, parabens, or synthetic foam boosters.
           </p>
         </motion.div>
 
@@ -66,29 +85,41 @@ export default function IngredientsShowcase() {
           {ingredients.map((item, index) => (
             <motion.div
               key={item.name}
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.12 }}
-              whileHover={{ y: -6, scale: 1.03 }}
-              className="bg-white rounded-2xl p-5 sm:p-6 border border-amber-900/10 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between group"
+              whileHover={{ y: -8 }}
+              className={`bg-cream/40 rounded-extra p-6 border-2 ${item.borderColor} shadow-subtle hover:shadow-medium transition-all flex flex-col justify-between group`}
             >
               <div>
-                <motion.div
-                  whileHover={{ rotate: 15, scale: 1.2 }}
-                  className="text-3xl sm:text-4xl mb-4 inline-block transition-transform"
-                >
-                  {item.icon}
-                </motion.div>
-                <span
-                  className={`inline-block px-3 py-1 rounded-full text-xs font-bold border mb-3 ${item.color}`}
-                >
-                  {item.tag}
-                </span>
-                <h3 className="text-lg sm:text-xl font-poppins font-bold text-primary mb-2">
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-4xl group-hover:scale-110 transition-transform">
+                    {item.icon}
+                  </div>
+                  <span className={`px-2.5 py-1 rounded-full text-[11px] font-poppins font-bold ${item.badgeBg}`}>
+                    {item.tag}
+                  </span>
+                </div>
+
+                <h3 className="text-lg font-poppins font-bold text-charcoal mb-3 group-hover:text-primary transition-colors">
                   {item.name}
                 </h3>
-                <p className="text-sm text-text-muted leading-relaxed">{item.description}</p>
+
+                <ul className="space-y-2 text-xs text-charcoal-light font-inter mb-4">
+                  {item.benefits.map((benefit, bIdx) => (
+                    <li key={bIdx} className="flex items-start gap-1.5">
+                      <span className="text-primary font-bold">✓</span>
+                      <span>{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="pt-3 border-t border-primary/10">
+                <span className="text-[11px] font-poppins font-bold text-secondary-dark block">
+                  ✦ {item.highlight}
+                </span>
               </div>
             </motion.div>
           ))}

@@ -1,34 +1,86 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400;1,600&family=Poppins:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-poppins: 'Poppins', sans-serif;
-  --font-opensans: 'Open Sans', sans-serif;
+  /* Colors */
+  --color-primary: #5D7B6F;      /* Sage Green */
+  --color-secondary: #D4A574;    /* Gold */
+  --color-accent: #8B7355;       /* Earth Brown */
+  --color-background: #F9F7F2;   /* Cream */
+  --color-text: #2B3B3B;         /* Dark Charcoal */
+  --color-text-light: #6B7477;   /* Light Gray */
+  --color-error: #D64545;        /* Red */
+  --color-success: #5FA85F;      /* Green */
+
+  /* Typography */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-accent: 'Lora', serif;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 50%;
+
+  /* Shadows */
+  --shadow-sm: 0px 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0px 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
 }
 
 body {
-  font-family: var(--font-opensans);
-  background-color: #F9F6F0;
-  color: #2C2A29;
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-poppins);
+  font-family: var(--font-heading);
+}
+
+.font-lora {
+  font-family: var(--font-accent);
 }
 
 /* Glassmorphism & custom utility classes */
 .glass-card {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(93, 123, 111, 0.15);
 }
 
 .gradient-hero {
-  background: linear-gradient(135deg, #F9F6F0 0%, #E2F0D9 50%, #F5E8D0 100%);
+  background: linear-gradient(135deg, #F9F7F2 0%, #E8EAE1 50%, #F7EBDD 100%);
+}
+
+.ingredient-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
