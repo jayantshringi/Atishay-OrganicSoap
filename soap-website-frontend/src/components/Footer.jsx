@@ -72,7 +72,7 @@ export default function Footer() {
               <div className="relative w-12 h-12 rounded-full overflow-hidden border border-cream/20 bg-cream/95 group-hover:scale-105 transition-transform duration-300 shadow-medium shrink-0">
                 <Image
                   src="/images/logo.png"
-                  alt="Atishay Bespoke Organic Soaps"
+                  alt="Atishay Organic Soaps"
                   fill
                   className="object-cover"
                 />
@@ -82,7 +82,7 @@ export default function Footer() {
                   ATISHAY
                 </span>
                 <span className="text-[9.5px] font-inter uppercase tracking-widest text-secondary font-semibold mt-1">
-                  Bespoke Organic Soaps • Est. 2026
+                  Organic Soaps • Est. 2026
                 </span>
               </div>
             </Link>

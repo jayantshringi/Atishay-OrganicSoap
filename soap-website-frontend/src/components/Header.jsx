@@ -83,7 +83,7 @@ export default function Header() {
           <div className="relative w-10 h-10 rounded-full overflow-hidden border border-primary/20 bg-cream group-hover:scale-105 transition-all duration-300 shadow-subtle shrink-0">
             <Image
               src="/images/logo.png"
-              alt="Atishay Bespoke Organic Soaps"
+              alt="Atishay Organic Soaps"
               fill
               className="object-cover"
               priority
@@ -94,7 +94,7 @@ export default function Header() {
               ATISHAY
             </span>
             <span className="text-[8.5px] font-inter uppercase tracking-widest text-primary font-semibold leading-tight mt-0.5">
-              Bespoke Organic Soaps
+              Organic Soaps
             </span>
           </div>
         </Link>
@@ -107,11 +107,10 @@ export default function Header() {
               <Link
                 key={link.label}
                 href={link.href}
-                className={`relative px-1 py-1 text-sm font-poppins transition-colors ${
-                  isActive
+                className={`relative px-1 py-1 text-sm font-poppins transition-colors ${isActive
                     ? 'text-primary font-bold'
                     : 'text-charcoal-light hover:text-primary'
-                }`}
+                  }`}
               >
                 {link.label}
                 {isActive && (
@@ -262,11 +261,10 @@ export default function Header() {
                     key={link.label}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`py-2 px-3 rounded-large font-poppins text-sm font-medium transition ${
-                      pathname === link.href
+                    className={`py-2 px-3 rounded-large font-poppins text-sm font-medium transition ${pathname === link.href
                         ? 'bg-primary/15 text-primary font-bold'
                         : 'text-charcoal hover:bg-cream'
-                    }`}
+                      }`}
                   >
                     {link.label}
                   </Link>
