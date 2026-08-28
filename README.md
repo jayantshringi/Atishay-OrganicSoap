@@ -1,4 +1,4 @@
-# 🧼 SoapCo — Personalized Organic Soap E-Commerce Platform
+# 🧼 Atishay — Personalized Organic Soap E-Commerce Platform
 
 > ⚠️ **DISCLAIMER & PROJECT WARNING**  
 > **This repository is strictly an educational demonstration / academic portfolio project.**  
@@ -10,7 +10,7 @@
 
 ## 📖 Overview
 
-**SoapCo** is a full-stack personalized skincare e-commerce web platform designed to provide bespoke, organic melt-and-pour glycerine soaps tailored to individual skin types, sensitivities, and botanical preferences. 
+**Atishay** is a full-stack personalized skincare e-commerce web platform designed to provide bespoke, organic melt-and-pour glycerine soaps tailored to individual skin types, sensitivities, and botanical preferences. 
 
 Through an interactive dynamic questionnaire, customers receive automated skin assessments and recipe matching from traditional botanical extracts (Haldi, Aloe Vera, Chandan, Kesar), while business managers can track real-time fulfillment through a dedicated administrative portal.
 
@@ -43,7 +43,7 @@ Through an interactive dynamic questionnaire, customers receive automated skin a
 ## 🛠️ Architecture & Tech Stack
 
 ```
-SoapCo Architecture
+Atishay Architecture
 ├── soap-website-frontend/ (Next.js 14 / React / Tailwind CSS / Framer Motion / Zustand)
 │   ├── Interactive Quiz Engine & Live Soap Preview
 │   ├── Customer Dashboard & Order History

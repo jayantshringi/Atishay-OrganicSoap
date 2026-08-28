@@ -136,7 +136,7 @@ export default function SoapPreview({ answers = {} }) {
             <div className="flex items-center gap-1">
               <Leaf className="w-4 h-4 text-cream" />
               <span className="text-[10px] font-poppins font-bold tracking-wider text-cream/90 uppercase">
-                SoapCo
+                Atishay
               </span>
             </div>
             <span className="text-[8px] font-poppins font-extrabold tracking-widest uppercase bg-white/20 border border-white/30 px-2 py-0.5 rounded text-white shadow-inner-light">

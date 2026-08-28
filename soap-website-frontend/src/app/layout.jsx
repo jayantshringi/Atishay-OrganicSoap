@@ -28,11 +28,11 @@ const lora = Lora({
 });
 
 export const metadata = {
-  title: 'SoapCo | Luxury Personalized Organic Soap Tailored to Your Skin',
+  title: 'Atishay | Luxury Personalized Organic Soap Tailored to Your Skin',
   description: 'Custom handcrafted organic soap recipes designed for your unique skin type, concerns, and allergies in India.',
   keywords: 'custom soap, personalized skincare, organic soap, haldi soap, aloe vera soap, razorpay, handmade soap India, ayurvedic skincare',
   openGraph: {
-    title: 'SoapCo | Bespoke Organic Skincare Crafted Just For You',
+    title: 'Atishay | Bespoke Organic Skincare Crafted Just For You',
     description: 'Answer 5 questions. Receive clinically tailored organic glycerine soap bars with pure Haldi, Aloe, Chandan, and Kesar.',
     type: 'website',
   },

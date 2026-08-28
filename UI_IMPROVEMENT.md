@@ -1,4 +1,4 @@
-# 🌿 SoapCo UI/UX Improvement Guide
+# 🌿 Atishay UI/UX Improvement Guide
 
 The complete and detailed UI improvement guide for the frontend application has been generated inside the frontend folder:
 

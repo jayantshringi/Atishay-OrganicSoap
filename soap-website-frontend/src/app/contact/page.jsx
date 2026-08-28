@@ -53,7 +53,7 @@ export default function ContactPage() {
           Personal Skincare Consultation
         </span>
         <h1 className="text-3xl sm:text-4xl font-poppins font-bold text-charcoal">
-          Contact the SoapCo Specialists
+          Contact the Atishay Specialists
         </h1>
         <p className="text-xs sm:text-sm text-charcoal-light font-inter max-w-md mx-auto">
           Have a question regarding custom formulations, allergen safety, or delivery? We are here to help.
@@ -68,8 +68,8 @@ export default function ContactPage() {
           </div>
           <div>
             <span className="text-[10px] text-charcoal-muted uppercase font-bold block">Email Support</span>
-            <a href="mailto:support@soapco.com" className="text-xs font-poppins font-bold text-charcoal hover:text-primary">
-              support@soapco.com
+            <a href="mailto:support@atishay.com" className="text-xs font-poppins font-bold text-charcoal hover:text-primary">
+              support@atishay.com
             </a>
           </div>
         </div>

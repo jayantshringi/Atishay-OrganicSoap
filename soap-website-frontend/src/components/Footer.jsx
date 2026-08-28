@@ -72,7 +72,7 @@ export default function Footer() {
                 <Leaf className="w-5 h-5 text-secondary" />
               </div>
               <span className="text-2xl font-poppins font-bold text-cream tracking-tight">
-                Soap<span className="text-secondary">Co</span>
+                Ati<span className="text-secondary">shay</span>
               </span>
             </Link>
 
@@ -91,7 +91,7 @@ export default function Footer() {
               {subscribed ? (
                 <div className="bg-status-success/20 border border-status-success/40 text-cream px-4 py-2.5 rounded-large text-xs font-poppins flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-status-success" />
-                  <span>Welcome to the SoapCo Skincare Club!</span>
+                  <span>Welcome to the Atishay Skincare Club!</span>
                 </div>
               ) : (
                 <form onSubmit={handleSubscribe} className="flex gap-2 max-w-sm">
@@ -187,10 +187,10 @@ export default function Footer() {
             <p className="text-sm text-cream/70 mb-3 font-inter">
               Skincare consultation hotline:
               <a
-                href="mailto:support@soapco.com"
+                href="mailto:support@atishay.com"
                 className="block mt-1 underline hover:text-secondary text-cream font-medium break-all"
               >
-                support@soapco.com
+                support@atishay.com
               </a>
             </p>
             <div className="flex gap-2 pt-2">
@@ -212,7 +212,7 @@ export default function Footer() {
               <strong className="text-secondary">Mandatory Safety Guideline:</strong> Always perform a 24-hour patch test on your inner wrist before regular facial use of any bespoke botanical formulation.
             </p>
           </div>
-          <p>© 2026 SoapCo India. Handcrafted organic personalized skincare. All rights reserved.</p>
+          <p>© 2026 Atishay India. Handcrafted organic personalized skincare. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -78,7 +78,7 @@ export default function RegisterPage() {
                 <Leaf className="w-4 h-4" />
               </div>
               <span className="font-poppins font-bold text-xl tracking-tight text-cream">
-                Soap<span className="text-secondary">Co</span>
+                Ati<span className="text-secondary">shay</span>
               </span>
             </Link>
 
@@ -87,7 +87,7 @@ export default function RegisterPage() {
                 Start Your Routine
               </span>
               <h2 className="text-2xl font-poppins font-bold leading-snug">
-                Join SoapCo for tailored organic skincare.
+                Join Atishay for tailored organic skincare.
               </h2>
               <p className="text-xs text-cream/80 font-inter leading-relaxed">
                 Unlock your personalized formula profile, save custom recipes, and receive fresh artisan batches delivered to your doorstep.
@@ -114,7 +114,7 @@ export default function RegisterPage() {
               Create Your Customer Account
             </h1>
             <p className="text-xs text-charcoal-light font-inter mt-1">
-              Join SoapCo to begin your personalized formulation
+              Join Atishay to begin your personalized formulation
             </p>
           </div>
 

@@ -19,7 +19,7 @@ export default function Testimonials() {
       location: 'Mumbai, Maharashtra',
       skinType: 'Sensitive & Acne-Prone',
       journey: 'Chronic flares → Calm skin in 3 weeks',
-      text: 'Finding a soap that did not trigger my severe contact allergies was impossible until SoapCo. The Haldi and Chandan formula was customized for my exact profile and calmed my breakouts gently without any dryness.',
+      text: 'Finding a soap that did not trigger my severe contact allergies was impossible until Atishay. The Haldi and Chandan formula was customized for my exact profile and calmed my breakouts gently without any dryness.',
       initials: 'PM',
       rating: 5,
     },

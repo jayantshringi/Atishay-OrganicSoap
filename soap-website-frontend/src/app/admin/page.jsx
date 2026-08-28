@@ -185,7 +185,7 @@ export default function AdminPage() {
             Operational Management
           </span>
           <h1 className="text-2xl sm:text-3xl font-poppins font-bold text-charcoal mt-0.5">
-            SoapCo Operations &amp; Fulfillment
+            Atishay Operations &amp; Fulfillment
           </h1>
           <p className="text-xs sm:text-sm text-charcoal-light font-inter">
             Real-time batch fulfillment, dispatch logs, and formulation revenue analytics

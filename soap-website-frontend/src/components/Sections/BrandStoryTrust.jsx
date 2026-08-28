@@ -56,7 +56,7 @@ export default function BrandStoryTrust() {
             Clean Ayurvedic Philosophy
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-poppins font-bold text-cream">
-            Why Discerning Customers Trust SoapCo
+            Why Discerning Customers Trust Atishay
           </h2>
           <p className="text-cream/80 text-sm sm:text-base font-inter leading-relaxed max-w-2xl mx-auto">
             We believe that no two skin profiles are identical. By merging ancient Indian Ayurveda with modern cosmetic science, we formulate bespoke soaps that actually treat your skin with dignity and care.

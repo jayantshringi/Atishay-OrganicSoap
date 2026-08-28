@@ -83,7 +83,7 @@ export default function Header() {
             <Leaf className="w-5 h-5 transition-transform group-hover:rotate-12" />
           </div>
           <span className="font-poppins font-bold text-xl tracking-tight text-charcoal">
-            Soap<span className="text-secondary font-extrabold">Co</span>
+            Ati<span className="text-secondary font-extrabold">shay</span>
           </span>
         </Link>
 
@@ -148,7 +148,7 @@ export default function Header() {
                   >
                     <div className="px-4 py-2.5 border-b border-cream-dark">
                       <p className="font-poppins font-bold text-xs text-charcoal truncate">{userName || 'Customer'}</p>
-                      <p className="text-[11px] text-charcoal-light font-inter truncate">{userEmail || 'user@soapco.com'}</p>
+                      <p className="text-[11px] text-charcoal-light font-inter truncate">{userEmail || 'user@atishay.com'}</p>
                     </div>
 
                     <div className="py-1">

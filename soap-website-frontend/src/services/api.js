@@ -139,7 +139,7 @@ export const authAPI = {
       const role = isAdmin ? 'admin' : 'customer';
       const token = `demo_token_${Date.now()}`;
       localStorage.setItem('token', token);
-      localStorage.setItem('userName', isAdmin ? 'SoapCo Admin' : data.email.split('@')[0]);
+      localStorage.setItem('userName', isAdmin ? 'Atishay Admin' : data.email.split('@')[0]);
       localStorage.setItem('userEmail', data.email);
       localStorage.setItem('userRole', role);
       return {
@@ -149,7 +149,7 @@ export const authAPI = {
           user: {
             id: `usr_${Date.now()}`,
             email: data.email,
-            name: isAdmin ? 'SoapCo Admin' : 'Demo Customer',
+            name: isAdmin ? 'Atishay Admin' : 'Demo Customer',
             role,
           },
         },

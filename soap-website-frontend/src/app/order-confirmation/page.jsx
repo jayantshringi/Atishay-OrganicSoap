@@ -60,7 +60,7 @@ function OrderConfirmationContent() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY || 'rzp_test_samplekey12345',
         amount: Math.round(order.price * 100),
         currency: 'INR',
-        name: 'SoapCo',
+        name: 'Atishay',
         description: `Personalized Soap Order #${order.id.slice(0, 8)}`,
         order_id: razorpayOrderId,
         prefill: {

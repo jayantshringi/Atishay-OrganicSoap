@@ -29,15 +29,15 @@ async function main() {
   // Seed Admin User
   const adminPasswordHash = await bcrypt.hash('AdminPass123!', 10);
   const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@soapco.com' },
+    where: { email: 'admin@atishay.com' },
     update: {},
     create: {
-      email: 'admin@soapco.com',
+      email: 'admin@atishay.com',
       phone: '9998887770',
-      name: 'SoapCo Admin',
+      name: 'Atishay Admin',
       password: adminPasswordHash,
       role: 'admin',
-      address: 'SoapCo HQ, Mumbai'
+      address: 'Atishay HQ, Mumbai'
     },
   });
   console.log(`✅ Admin user seeded: ${adminUser.email} (Password: AdminPass123!)`);

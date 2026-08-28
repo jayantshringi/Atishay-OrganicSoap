@@ -124,7 +124,7 @@ export default function BestSellers() {
                     <span className="text-[8px] font-bold uppercase text-charcoal-light">125g</span>
                   </div>
                   <div className="text-center font-poppins font-extrabold text-[10px] text-charcoal uppercase">
-                    SoapCo Custom
+                    Atishay Custom
                   </div>
                   <div className="text-[8px] font-semibold text-secondary-dark text-right">
                     {item.ph}

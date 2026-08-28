@@ -1,6 +1,6 @@
-# 🌿 SoapCo Frontend — UI/UX Comprehensive Improvement Guide
+# 🌿 Atishay Frontend — UI/UX Comprehensive Improvement Guide
 
-This document presents an in-depth, actionable UI/UX analysis and improvement roadmap for the **SoapCo** personalized organic soap e-commerce application (`soap-website-frontend`). It outlines specific aesthetic enhancements, component bug fixes, accessibility upgrades, and interactive features to elevate the application to a luxury, modern e-commerce standard.
+This document presents an in-depth, actionable UI/UX analysis and improvement roadmap for the **Atishay** personalized organic soap e-commerce application (`soap-website-frontend`). It outlines specific aesthetic enhancements, component bug fixes, accessibility upgrades, and interactive features to elevate the application to a luxury, modern e-commerce standard.
 
 ---
 
@@ -409,7 +409,7 @@ const revenueData = [
 
 ```mermaid
 gantt
-    title SoapCo UI Improvement Phased Roadmap
+    title Atishay UI Improvement Phased Roadmap
     dateFormat  YYYY-MM-DD
     section Phase 1: Critical Fixes
     Fix Tailwind broken classes in Questionnaire :done, 2026-09-01, 1d
@@ -443,4 +443,4 @@ gantt
 
 ---
 
-*Authored for SoapCo Development Team — Prepared on August 27, 2026.*
+*Authored for Atishay Development Team — Prepared on August 27, 2026.*

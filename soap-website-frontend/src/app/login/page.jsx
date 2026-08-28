@@ -63,7 +63,7 @@ export default function LoginPage() {
                 <Leaf className="w-4 h-4" />
               </div>
               <span className="font-poppins font-bold text-xl tracking-tight text-cream">
-                Soap<span className="text-secondary">Co</span>
+                Ati<span className="text-secondary">shay</span>
               </span>
             </Link>
 
