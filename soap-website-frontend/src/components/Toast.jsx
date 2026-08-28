@@ -3,6 +3,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle2, AlertTriangle, XCircle, Info, X } from 'lucide-react';
 
 export default function Toast({ message, type = 'info', onClose }) {
   const [visible, setVisible] = useState(true);
@@ -15,37 +17,64 @@ export default function Toast({ message, type = 'info', onClose }) {
     return () => clearTimeout(timer);
   }, [onClose]);
 
-  if (!visible || !message) return null;
+  if (!message) return null;
 
-  const typeStyles = {
-    success: 'bg-primary text-cream border-secondary/50',
-    error: 'bg-status-error text-cream border-red-300/30',
-    warning: 'bg-accent-dark text-cream border-secondary/40',
-    info: 'bg-charcoal text-cream border-primary/40',
+  const typeConfig = {
+    success: {
+      bg: 'bg-primary-darker/95 text-cream border-secondary/50',
+      icon: CheckCircle2,
+      iconColor: 'text-status-success',
+    },
+    error: {
+      bg: 'bg-charcoal/95 text-cream border-status-error/40',
+      icon: XCircle,
+      iconColor: 'text-status-error',
+    },
+    warning: {
+      bg: 'bg-charcoal/95 text-cream border-secondary/40',
+      icon: AlertTriangle,
+      iconColor: 'text-secondary',
+    },
+    info: {
+      bg: 'bg-charcoal/95 text-cream border-primary/40',
+      icon: Info,
+      iconColor: 'text-primary-light',
+    },
   };
 
-  const icons = {
-    success: '✓',
-    error: '✕',
-    warning: '⚠️',
-    info: 'ℹ️',
-  };
+  const current = typeConfig[type] || typeConfig.info;
+  const IconComponent = current.icon;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-5 fade-in duration-300">
-      <div className={`flex items-center gap-3 px-5 py-3.5 rounded-large border shadow-large backdrop-blur-md ${typeStyles[type] || typeStyles.info}`}>
-        <span className="text-base font-bold">{icons[type]}</span>
-        <p className="text-sm font-poppins font-medium">{message}</p>
-        <button
-          onClick={() => {
-            setVisible(false);
-            if (onClose) onClose();
-          }}
-          className="ml-4 opacity-70 hover:opacity-100 transition-opacity text-xs font-bold"
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 15, scale: 0.95 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+          className="fixed bottom-6 right-6 z-50 max-w-sm"
         >
-          ✕
-        </button>
-      </div>
-    </div>
+          <div
+            className={`flex items-center gap-3 px-5 py-3.5 rounded-extra border shadow-large backdrop-blur-xl ${current.bg}`}
+          >
+            <IconComponent className={`w-5 h-5 shrink-0 ${current.iconColor}`} />
+            <p className="text-xs font-poppins font-medium leading-snug flex-grow">
+              {message}
+            </p>
+            <button
+              onClick={() => {
+                setVisible(false);
+                if (onClose) onClose();
+              }}
+              className="p-1 text-cream/60 hover:text-cream transition-colors rounded-default"
+              aria-label="Close Notification"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

@@ -3,6 +3,16 @@
 'use client';
 
 import { useState } from 'react';
+import {
+  Mail,
+  Phone,
+  MessageSquare,
+  Send,
+  CheckCircle2,
+  Sparkles,
+  Clock,
+  MapPin,
+} from 'lucide-react';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -35,27 +45,71 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto my-12 px-4 space-y-8">
+    <div className="max-w-4xl mx-auto my-10 sm:my-14 px-4 space-y-10">
+      {/* Header */}
       <div className="text-center space-y-3">
-        <span className="text-xs font-poppins font-bold uppercase tracking-wider text-secondary">
-          Personal Support
+        <span className="text-xs font-poppins font-bold uppercase tracking-wider text-secondary bg-secondary/15 px-3 py-1 rounded-full border border-secondary/30 flex items-center gap-1.5 w-fit mx-auto">
+          <Sparkles className="w-3.5 h-3.5" />
+          Personal Skincare Consultation
         </span>
         <h1 className="text-3xl sm:text-4xl font-poppins font-bold text-charcoal">
-          Contact the SoapCo Skincare Team
+          Contact the SoapCo Specialists
         </h1>
-        <p className="text-base text-charcoal-light font-inter max-w-md mx-auto">
-          Have a question regarding custom formulations, allergen safety, or delivery? Reach out below.
+        <p className="text-xs sm:text-sm text-charcoal-light font-inter max-w-md mx-auto">
+          Have a question regarding custom formulations, allergen safety, or delivery? We are here to help.
         </p>
       </div>
 
+      {/* Info Channels Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="bg-white p-5 rounded-extra border border-primary/15 shadow-subtle flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-large bg-primary/10 flex items-center justify-center text-primary shrink-0">
+            <Mail className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[10px] text-charcoal-muted uppercase font-bold block">Email Support</span>
+            <a href="mailto:support@soapco.com" className="text-xs font-poppins font-bold text-charcoal hover:text-primary">
+              support@soapco.com
+            </a>
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-extra border border-primary/15 shadow-subtle flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-large bg-primary/10 flex items-center justify-center text-primary shrink-0">
+            <Clock className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[10px] text-charcoal-muted uppercase font-bold block">Response Time</span>
+            <span className="text-xs font-poppins font-bold text-charcoal">
+              Under 24 Hours
+            </span>
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-extra border border-primary/15 shadow-subtle flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-large bg-secondary/15 flex items-center justify-center text-secondary-dark shrink-0">
+            <MessageSquare className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[10px] text-charcoal-muted uppercase font-bold block">Direct Consultation</span>
+            <span className="text-xs font-poppins font-bold text-secondary-dark">
+              WhatsApp Available
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Success Banner */}
       {submitted && (
-        <div className="bg-primary/15 border border-primary/30 text-primary-darker px-6 py-4 rounded-large text-sm font-medium text-center animate-in fade-in">
-          🎉 Thank you for reaching out! Your message has been received and our skincare team will reply within 24 hours.
+        <div className="bg-status-success/15 border border-status-success/40 text-primary-darker px-6 py-4 rounded-extra text-xs font-poppins font-medium flex items-center gap-2.5">
+          <CheckCircle2 className="w-5 h-5 text-status-success shrink-0" />
+          <span>Thank you for reaching out! Your message has been logged and our skincare team will reply within 24 hours.</span>
         </div>
       )}
 
-      <div className="bg-white rounded-extra p-8 sm:p-10 shadow-large border border-primary/15">
-        <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Form Container */}
+      <div className="bg-white rounded-extra p-6 sm:p-10 shadow-large border border-primary/15">
+        <form onSubmit={handleSubmit} className="space-y-4 font-inter text-xs sm:text-sm">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
@@ -68,7 +122,7 @@ export default function ContactPage() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-xs sm:text-sm text-charcoal placeholder:text-charcoal-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
               />
             </div>
 
@@ -83,7 +137,7 @@ export default function ContactPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-xs sm:text-sm text-charcoal placeholder:text-charcoal-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
               />
             </div>
           </div>
@@ -99,24 +153,24 @@ export default function ContactPage() {
                 placeholder="10-digit mobile number"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-xs sm:text-sm text-charcoal placeholder:text-charcoal-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
               />
             </div>
 
             <div>
               <label className="block text-xs font-poppins font-bold uppercase text-charcoal mb-1.5">
-                Subject
+                Consultation Topic
               </label>
               <select
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-xs sm:text-sm font-poppins text-charcoal focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
               >
-                <option value="general">General Skincare Inquiry</option>
-                <option value="order">Order Tracking / Status</option>
-                <option value="allergy">Allergen &amp; Ingredient Advice</option>
-                <option value="feedback">Feedback &amp; Custom Recipe Request</option>
+                <option value="general">General Skincare Consultation</option>
+                <option value="order">Order Tracking &amp; Delivery</option>
+                <option value="allergy">Allergen &amp; Botanical Advice</option>
+                <option value="feedback">Custom Formulation Feedback</option>
               </select>
             </div>
           </div>
@@ -127,20 +181,21 @@ export default function ContactPage() {
             </label>
             <textarea
               name="message"
-              placeholder="Tell us about your skin concern or question..."
+              placeholder="Describe your skin concern or question in detail..."
               value={formData.message}
               onChange={handleChange}
               required
               rows="5"
-              className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-sm font-inter text-charcoal placeholder:text-charcoal-light/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full px-4 py-3 bg-cream/40 border border-cream-dark rounded-large text-xs sm:text-sm font-inter text-charcoal placeholder:text-charcoal-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
             ></textarea>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-primary text-cream py-3.5 rounded-large font-poppins font-bold text-base hover:bg-primary-dark transition-all shadow-medium hover:shadow-large mt-2"
+            className="w-full bg-primary text-cream py-3.5 rounded-large font-poppins font-bold text-xs sm:text-sm hover:bg-primary-hover transition-all shadow-medium hover:shadow-large flex items-center justify-center gap-2 active:scale-95 mt-2"
           >
-            Send Message →
+            <Send className="w-4 h-4" />
+            <span>Send Message to Skincare Team</span>
           </button>
         </form>
       </div>

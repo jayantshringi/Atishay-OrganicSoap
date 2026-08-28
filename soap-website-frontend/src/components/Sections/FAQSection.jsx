@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { HelpCircle, ChevronDown, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(0);
@@ -33,76 +34,86 @@ export default function FAQSection() {
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-cream border-t border-primary/10">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-24 bg-cream border-t border-primary/10 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16 space-y-3"
+          className="text-center space-y-3"
         >
-          <span className="text-secondary font-poppins font-bold uppercase tracking-wider text-xs">
+          <span className="text-secondary font-poppins font-bold uppercase tracking-wider text-xs bg-secondary/15 px-3 py-1 rounded-full border border-secondary/30 flex items-center gap-1.5 w-fit mx-auto">
+            <Sparkles className="w-3.5 h-3.5" />
             Answers &amp; Guidance
           </span>
           <h2 className="text-3xl sm:text-4xl font-poppins font-bold text-charcoal">
             Frequently Asked Questions
           </h2>
           <p className="text-charcoal-light text-sm sm:text-base font-inter">
-            Everything you need to know about our personalized organic formulations and safety standards.
+            Everything you need to know about our bespoke organic formulations and safety standards.
           </p>
         </motion.div>
 
-        {/* Accordion */}
-        <div className="space-y-4 mb-10">
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.08 }}
-              className="bg-white border border-primary/15 rounded-large overflow-hidden shadow-subtle hover:shadow-medium transition-shadow"
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full p-5 sm:p-6 text-left font-poppins font-bold text-charcoal hover:text-primary transition flex justify-between items-center text-sm sm:text-base"
+        {/* Accordion FAQ List */}
+        <div className="space-y-3.5">
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.06 }}
+                className="bg-white border border-primary/15 rounded-large overflow-hidden shadow-subtle hover:shadow-medium transition-all"
               >
-                <span>{faq.q}</span>
-                <span className="text-primary text-xl font-bold ml-4 shrink-0">
-                  {openIndex === index ? '−' : '+'}
-                </span>
-              </button>
-
-              <AnimatePresence initial={false}>
-                {openIndex === index && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: 'easeInOut' }}
-                    className="overflow-hidden"
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  className="w-full p-5 sm:p-6 text-left font-poppins font-bold text-charcoal hover:text-primary transition flex justify-between items-center text-sm sm:text-base"
+                >
+                  <span className="pr-4">{faq.q}</span>
+                  <div
+                    className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 ${
+                      isOpen ? 'bg-primary text-cream rotate-180' : 'bg-cream text-charcoal'
+                    }`}
                   >
-                    <div className="p-5 sm:p-6 pt-0 text-sm text-charcoal-light font-inter border-t border-cream-dark leading-relaxed bg-cream/30">
-                      {faq.a}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+                    <ChevronDown className="w-4 h-4" />
+                  </div>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="p-5 sm:p-6 pt-0 text-xs sm:text-sm text-charcoal-light font-inter border-t border-cream-dark leading-relaxed bg-cream/20">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Bottom CTA */}
         <div className="text-center space-y-2 pt-2">
           <p className="text-xs sm:text-sm text-charcoal-light font-inter">
-            Didn&apos;t find what you&apos;re looking for?
+            Have a specific skin allergy or custom formulation question?
           </p>
           <Link
             href="/contact"
-            className="text-primary font-poppins font-bold hover:text-primary-dark underline text-sm transition-colors"
+            className="inline-flex items-center gap-1.5 text-primary font-poppins font-bold hover:text-primary-dark underline text-sm transition-colors group"
           >
-            Contact our skincare team directly →
+            <span>Speak directly with our skincare specialists</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>

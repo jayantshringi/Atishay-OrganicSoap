@@ -3,20 +3,55 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Leaf,
+  Sparkles,
+  ShieldCheck,
+  User,
+  Menu,
+  X,
+  ChevronDown,
+  LogOut,
+  LayoutDashboard,
+  ClipboardList,
+} from 'lucide-react';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
+    const name = localStorage.getItem('userName');
+    const email = localStorage.getItem('userEmail');
+
     setIsLoggedIn(!!token);
     setIsAdmin(role === 'admin');
+    setUserName(name || '');
+    setUserEmail(email || '');
+  }, [pathname]);
+
+  // Click outside to close user dropdown
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setUserDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -26,160 +61,264 @@ export default function Header() {
     localStorage.removeItem('userEmail');
     setIsLoggedIn(false);
     setIsAdmin(false);
+    setUserDropdownOpen(false);
     router.push('/');
   };
 
+  const navLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'Best Sellers', href: '/#bestsellers' },
+    { label: 'Ingredients', href: '/#ingredients' },
+    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'FAQ', href: '/faq' },
+    { label: 'Contact', href: '/contact' },
+  ];
+
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-primary/10 sticky top-0 z-50 shadow-subtle">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex justify-between items-center">
+    <header className="bg-cream-light/90 backdrop-blur-xl border-b border-primary/10 sticky top-0 z-50 transition-all shadow-subtle">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex justify-between items-center">
         {/* Brand Logo */}
-        <Link href="/" className="text-2xl font-poppins font-bold text-primary flex items-center gap-2 group">
-          <span className="text-2xl p-1.5 bg-primary/10 rounded-xl group-hover:scale-105 transition-transform">🌿</span>
-          <span className="tracking-tight text-charcoal">Soap<span className="text-secondary">Co</span></span>
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-large bg-primary/15 flex items-center justify-center text-primary group-hover:scale-105 group-hover:bg-primary group-hover:text-cream transition-all duration-300 shadow-inner-light">
+            <Leaf className="w-5 h-5 transition-transform group-hover:rotate-12" />
+          </div>
+          <span className="font-poppins font-bold text-xl tracking-tight text-charcoal">
+            Soap<span className="text-secondary font-extrabold">Co</span>
+          </span>
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex gap-7 items-center text-sm font-medium">
-          <Link href="/" className="text-charcoal hover:text-primary transition-colors">
-            Home
-          </Link>
-          <a href="#bestsellers" className="text-charcoal hover:text-primary transition-colors">
-            Best Sellers
-          </a>
-          <a href="#ingredients" className="text-charcoal hover:text-primary transition-colors">
-            Ingredients
-          </a>
-          <a href="#how-it-works" className="text-charcoal hover:text-primary transition-colors">
-            How It Works
-          </a>
-          <Link href="/faq" className="text-charcoal hover:text-primary transition-colors">
-            FAQ
-          </Link>
-          <Link href="/contact" className="text-charcoal hover:text-primary transition-colors">
-            Contact
+        {/* Desktop Navigation Links */}
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`relative px-1 py-1 text-sm font-poppins transition-colors ${
+                  isActive
+                    ? 'text-primary font-bold'
+                    : 'text-charcoal-light hover:text-primary'
+                }`}
+              >
+                {link.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeNav"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Desktop Actions / Auth */}
+        <div className="hidden md:flex items-center gap-3">
+          <Link
+            href="/questionnaire"
+            className="flex items-center gap-1.5 bg-primary text-cream px-4 py-2 rounded-large font-poppins font-bold text-xs hover:bg-primary-hover transition-all shadow-subtle hover:shadow-medium active:scale-95"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-secondary-light animate-pulse" />
+            <span>Take Skin Quiz</span>
           </Link>
 
           {isLoggedIn ? (
-            <div className="flex items-center gap-3 ml-2">
-              <Link
-                href="/dashboard"
-                className="text-primary font-semibold hover:text-primary-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-primary/5"
-              >
-                Dashboard
-              </Link>
-              {isAdmin && (
-                <Link
-                  href="/admin"
-                  className="text-secondary font-bold hover:underline transition-colors px-2 py-1"
-                >
-                  🛡️ Admin
-                </Link>
-              )}
-              <Link
-                href="/questionnaire"
-                className="bg-primary text-cream px-4 py-2 rounded-lg font-poppins font-semibold text-xs hover:bg-primary-dark transition-all shadow-subtle"
-              >
-                Take Quiz
-              </Link>
+            <div className="relative" ref={dropdownRef}>
               <button
-                onClick={handleLogout}
-                className="bg-status-error/10 text-status-error border border-status-error/20 px-3 py-1.5 rounded-lg hover:bg-status-error hover:text-white transition-all text-xs font-semibold"
+                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                className="flex items-center gap-2 py-1.5 px-3 rounded-large bg-white/80 hover:bg-white border border-primary/15 text-charcoal font-poppins font-semibold text-xs transition shadow-subtle"
               >
-                Logout
+                <div className="w-6 h-6 rounded-full bg-primary/20 text-primary-dark font-bold flex items-center justify-center text-[10px]">
+                  {userName ? userName[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
+                </div>
+                <span className="max-w-[100px] truncate">{userName || 'Account'}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-charcoal-muted transition-transform duration-200 ${userDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
+
+              <AnimatePresence>
+                {userDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                    className="absolute right-0 mt-2 w-56 bg-white rounded-extra shadow-large border border-primary/15 py-2 z-50"
+                  >
+                    <div className="px-4 py-2.5 border-b border-cream-dark">
+                      <p className="font-poppins font-bold text-xs text-charcoal truncate">{userName || 'Customer'}</p>
+                      <p className="text-[11px] text-charcoal-light font-inter truncate">{userEmail || 'user@soapco.com'}</p>
+                    </div>
+
+                    <div className="py-1">
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2 text-xs font-poppins text-charcoal hover:bg-cream/60 transition"
+                      >
+                        <LayoutDashboard className="w-4 h-4 text-primary" />
+                        <span>Order History & Formulations</span>
+                      </Link>
+
+                      {isAdmin && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-xs font-poppins text-secondary-dark font-bold hover:bg-secondary/10 transition"
+                        >
+                          <ShieldCheck className="w-4 h-4 text-secondary" />
+                          <span>Admin Portal</span>
+                        </Link>
+                      )}
+
+                      <Link
+                        href="/questionnaire"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2 text-xs font-poppins text-charcoal hover:bg-cream/60 transition"
+                      >
+                        <ClipboardList className="w-4 h-4 text-primary" />
+                        <span>New Skin Diagnostic</span>
+                      </Link>
+                    </div>
+
+                    <div className="border-t border-cream-dark pt-1 mt-1">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-poppins font-semibold text-status-error hover:bg-status-error/10 transition text-left"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ) : (
-            <div className="flex items-center gap-3 ml-2">
+            <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="text-charcoal hover:text-primary transition-colors px-3 py-1.5 font-medium"
+                className="text-xs font-poppins font-semibold text-charcoal hover:text-primary px-3 py-2 transition"
               >
-                Login
+                Log In
               </Link>
               <Link
                 href="/register"
-                className="bg-primary text-cream px-5 py-2.5 rounded-lg font-poppins font-semibold text-xs hover:bg-primary-dark transition-all shadow-subtle hover:shadow-medium"
+                className="text-xs font-poppins font-bold bg-white text-primary border border-primary/25 hover:bg-cream px-3.5 py-2 rounded-large transition shadow-subtle"
               >
                 Sign Up
-              </Link>
-              <Link
-                href="/questionnaire"
-                className="bg-secondary text-charcoal px-4 py-2.5 rounded-lg font-poppins font-bold text-xs hover:bg-secondary-hover transition-all shadow-subtle"
-              >
-                Take Quiz ✨
               </Link>
             </div>
           )}
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Toggle Button */}
         <button
           aria-label="Toggle Navigation Menu"
-          className="md:hidden text-2xl text-primary p-2 focus:outline-none"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden w-10 h-10 rounded-large bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition"
         >
-          {mobileMenuOpen ? '✕' : '☰'}
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </nav>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-primary/10 p-5 flex flex-col gap-3 shadow-medium animate-in slide-in-from-top duration-200">
-          <Link href="/" onClick={() => setMobileMenuOpen(false)} className="text-charcoal py-2 font-medium">
-            Home
-          </Link>
-          <a href="#bestsellers" onClick={() => setMobileMenuOpen(false)} className="text-charcoal py-2 font-medium">
-            Best Sellers
-          </a>
-          <a href="#ingredients" onClick={() => setMobileMenuOpen(false)} className="text-charcoal py-2 font-medium">
-            Ingredients
-          </a>
-          <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-charcoal py-2 font-medium">
-            How It Works
-          </a>
-          <Link href="/faq" onClick={() => setMobileMenuOpen(false)} className="text-charcoal py-2 font-medium">
-            FAQ
-          </Link>
-          <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="text-charcoal py-2 font-medium">
-            Contact
-          </Link>
-          <Link
-            href="/questionnaire"
-            onClick={() => setMobileMenuOpen(false)}
-            className="bg-primary text-cream py-2.5 text-center rounded-lg font-poppins font-bold text-sm shadow-subtle my-1"
-          >
-            Take the Skin Quiz ✨
-          </Link>
-          {isLoggedIn ? (
-            <div className="flex flex-col gap-2 pt-2 border-t border-primary/10">
-              <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-primary py-2 font-semibold">
-                Customer Dashboard
-              </Link>
-              {isAdmin && (
-                <Link href="/admin" onClick={() => setMobileMenuOpen(false)} className="text-secondary py-2 font-bold">
-                  🛡️ Admin Portal
+      {/* Mobile Drawer Menu with Backdrop Blur */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 bg-charcoal/40 backdrop-blur-sm z-40 md:hidden"
+            />
+
+            {/* Slide Down Sheet */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="absolute top-full left-0 right-0 bg-cream-light border-b border-primary/15 shadow-large p-5 z-50 md:hidden space-y-4"
+            >
+              <div className="flex flex-col gap-2">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`py-2 px-3 rounded-large font-poppins text-sm font-medium transition ${
+                      pathname === link.href
+                        ? 'bg-primary/15 text-primary font-bold'
+                        : 'text-charcoal hover:bg-cream'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="pt-2 border-t border-primary/10 space-y-2">
+                <Link
+                  href="/questionnaire"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 bg-primary text-cream py-3 rounded-large font-poppins font-bold text-sm shadow-medium"
+                >
+                  <Sparkles className="w-4 h-4 text-secondary-light" />
+                  <span>Start Skin Diagnostic Quiz</span>
                 </Link>
-              )}
-              <button onClick={handleLogout} className="text-left text-status-error py-2 font-semibold">
-                Logout
-              </button>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-2 pt-2 border-t border-primary/10">
-              <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-charcoal py-2 font-medium">
-                Login
-              </Link>
-              <Link
-                href="/register"
-                onClick={() => setMobileMenuOpen(false)}
-                className="bg-secondary text-charcoal py-2.5 text-center rounded-lg font-poppins font-bold text-sm"
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
-        </div>
-      )}
+
+                {isLoggedIn ? (
+                  <div className="space-y-2 pt-2">
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block py-2.5 px-3 rounded-large font-poppins text-sm font-semibold bg-white border border-primary/15 text-primary text-center"
+                    >
+                      Customer Dashboard
+                    </Link>
+                    {isAdmin && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-2.5 px-3 rounded-large font-poppins text-sm font-bold bg-secondary/15 border border-secondary/30 text-secondary-dark text-center"
+                      >
+                        🛡️ Admin Portal
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="w-full py-2.5 text-center text-status-error font-poppins font-semibold text-sm hover:bg-status-error/10 rounded-large transition"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2 pt-2">
+                    <Link
+                      href="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="py-2.5 text-center font-poppins font-semibold text-sm bg-white border border-primary/15 rounded-large text-charcoal"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/register"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="py-2.5 text-center font-poppins font-bold text-sm bg-secondary text-charcoal rounded-large shadow-subtle"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

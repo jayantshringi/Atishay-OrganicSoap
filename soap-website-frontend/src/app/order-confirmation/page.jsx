@@ -5,6 +5,18 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ordersAPI, paymentsAPI } from '@/services/api';
+import {
+  CreditCard,
+  ShieldCheck,
+  AlertTriangle,
+  Truck,
+  CheckCircle2,
+  Lock,
+  ArrowLeft,
+  Sparkles,
+  Leaf,
+  Calendar,
+} from 'lucide-react';
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams();
@@ -80,7 +92,7 @@ function OrderConfirmationContent() {
         rzp.open();
       } else {
         // Dev test mode fallback
-        alert('Razorpay Checkout SDK active in test mode. Simulating successful payment verification.');
+        alert('Razorpay Checkout active in test mode. Simulating successful verification.');
         await paymentsAPI.verify({
           razorpay_order_id: razorpayOrderId,
           razorpay_payment_id: `pay_mock_${Date.now()}`,
@@ -96,32 +108,58 @@ function OrderConfirmationContent() {
     }
   };
 
-  if (loading) return <div className="text-center py-20 font-poppins font-bold text-primary">Loading order summary...</div>;
-  if (!order) return <div className="text-center py-20 font-poppins text-primary">Order summary not found. Please try submitting questionnaire again.</div>;
+  if (loading) {
+    return (
+      <div className="max-w-md mx-auto my-24 p-8 text-center bg-white rounded-extra border border-primary/15 shadow-subtle space-y-3">
+        <Sparkles className="w-8 h-8 text-primary mx-auto animate-spin" />
+        <h3 className="font-poppins font-bold text-charcoal text-lg">Loading Formula Summary...</h3>
+        <p className="text-xs text-charcoal-light font-inter">Matching custom recipe and calculating pricing</p>
+      </div>
+    );
+  }
+
+  if (!order) {
+    return (
+      <div className="max-w-md mx-auto my-24 p-8 text-center bg-white rounded-extra border border-primary/15 shadow-subtle space-y-3">
+        <AlertTriangle className="w-8 h-8 text-status-warning mx-auto" />
+        <h3 className="font-poppins font-bold text-charcoal text-lg">Order Not Found</h3>
+        <p className="text-xs text-charcoal-light font-inter">Please try taking the skin diagnostic questionnaire again.</p>
+        <button
+          onClick={() => router.push('/questionnaire')}
+          className="bg-primary text-cream px-6 py-2.5 rounded-large font-poppins font-bold text-xs"
+        >
+          Take Quiz Now
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-3xl mx-auto my-12 px-4">
-      <div className="bg-white rounded-extra p-8 sm:p-10 shadow-large border border-primary/15 space-y-8">
-        <div>
-          <span className="text-xs font-poppins font-bold uppercase tracking-wider text-secondary">
-            Formula Formulated
+    <div className="max-w-3xl mx-auto my-10 sm:my-14 px-4 space-y-6">
+      <div className="bg-white rounded-extra p-6 sm:p-10 shadow-large border border-primary/15 space-y-8">
+        {/* Header */}
+        <div className="space-y-1">
+          <span className="text-xs font-poppins font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5" />
+            Formula Matched &amp; Formulated
           </span>
-          <h1 className="text-3xl font-poppins font-bold text-charcoal mt-1">
-            Your Custom Soap Match
+          <h1 className="text-2xl sm:text-3xl font-poppins font-bold text-charcoal">
+            Your Bespoke Soap Summary
           </h1>
-          <p className="text-sm text-charcoal-light font-inter mt-1">
-            Review your tailor-made botanical recipe and complete payment via Razorpay.
+          <p className="text-xs sm:text-sm text-charcoal-light font-inter">
+            Review your tailored recipe specifications and complete payment safely via Razorpay.
           </p>
         </div>
 
-        {/* Recipe & Customization Breakdown Card */}
-        <div className="border-2 border-primary/20 bg-cream/50 p-6 rounded-large space-y-4">
+        {/* Recipe Breakdown Card */}
+        <div className="border-2 border-primary/20 bg-cream/40 p-6 rounded-large space-y-4">
           <div className="flex justify-between items-start border-b border-primary/10 pb-4">
             <div>
-              <span className="bg-primary/10 text-primary-darker text-xs font-poppins font-bold px-3 py-1 rounded-full inline-block mb-1.5">
-                Matched Formulation
+              <span className="bg-primary/10 text-primary-darker text-xs font-poppins font-bold px-3 py-1 rounded-full inline-flex items-center gap-1 mb-1.5 border border-primary/20">
+                <Leaf className="w-3 h-3 text-primary" />
+                Prescribed Recipe Match
               </span>
-              <h3 className="text-xl font-poppins font-bold text-charcoal">
+              <h3 className="text-lg sm:text-xl font-poppins font-bold text-charcoal">
                 {order.recipe?.name || 'Custom Organic Blend Soap'}
               </h3>
             </div>
@@ -130,59 +168,83 @@ function OrderConfirmationContent() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-sm font-inter">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs sm:text-sm font-inter">
             <div>
-              <span className="text-xs text-charcoal-light uppercase font-bold block">Skin Profile</span>
+              <span className="text-[10px] text-charcoal-muted uppercase font-bold block mb-0.5">Skin Profile</span>
               <span className="font-bold text-charcoal capitalize">{order.skinType}</span>
             </div>
             <div>
-              <span className="text-xs text-charcoal-light uppercase font-bold block">Main Concern</span>
+              <span className="text-[10px] text-charcoal-muted uppercase font-bold block mb-0.5">Main Concern</span>
               <span className="font-bold text-charcoal capitalize">{order.mainConcern}</span>
             </div>
             <div>
-              <span className="text-xs text-charcoal-light uppercase font-bold block">Soap Texture</span>
+              <span className="text-[10px] text-charcoal-muted uppercase font-bold block mb-0.5">Bar Texture</span>
               <span className="font-bold text-charcoal capitalize">{order.texturePreference}</span>
             </div>
             <div>
-              <span className="text-xs text-charcoal-light uppercase font-bold block">Est. Delivery</span>
-              <span className="font-bold text-primary">
+              <span className="text-[10px] text-charcoal-muted uppercase font-bold block mb-0.5">Est. Delivery</span>
+              <span className="font-bold text-primary flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5" />
                 {new Date(order.deliveryDate).toLocaleDateString()}
               </span>
             </div>
           </div>
         </div>
 
-        {/* Patch Test Warning Callout */}
-        <div className="bg-secondary-light/40 border border-secondary/40 p-5 rounded-large flex items-start gap-3.5">
-          <span className="text-2xl">⚠️</span>
-          <div>
-            <h4 className="font-poppins font-bold text-charcoal text-sm">Mandatory 24h Patch Test Notice</h4>
-            <p className="text-xs text-charcoal-light leading-relaxed mt-0.5 font-inter">
-              Even with 100% natural botanical ingredients, please perform a <strong>24-hour patch test</strong> on your inner arm prior to regular full facial or body application.
+        {/* 24h Patch Test Safety Notice */}
+        <div className="bg-secondary-light/30 border border-secondary/40 p-5 rounded-large flex items-start gap-3.5">
+          <AlertTriangle className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h4 className="font-poppins font-bold text-charcoal text-xs sm:text-sm">
+              Mandatory 24-Hour Patch Test Notice
+            </h4>
+            <p className="text-xs text-charcoal-light leading-relaxed font-inter">
+              Even with 100% natural botanical extracts, always apply a small lather to your inner wrist or elbow for 24 hours prior to regular full facial application.
             </p>
           </div>
         </div>
 
-        {/* Price Breakdown */}
-        <div className="bg-cream/60 p-6 rounded-large space-y-3 text-sm font-inter">
+        {/* Itemized Price Breakdown */}
+        <div className="bg-cream/60 p-6 rounded-large space-y-3 text-xs sm:text-sm font-inter border border-cream-dark">
           <div className="flex justify-between">
-            <span className="text-charcoal-light">Base Custom Soap Bar</span>
+            <span className="text-charcoal-light">Base Custom 125g Soap Bar</span>
             <span className="font-bold text-charcoal">₹399</span>
           </div>
           {order.texturePreference === 'exfoliating' && (
             <div className="flex justify-between">
-              <span className="text-charcoal-light">Exfoliating Botanical Scrub Addon</span>
+              <span className="text-charcoal-light">Botanical Exfoliating Oatmeal Scrub Addon</span>
               <span className="font-bold text-charcoal">₹50</span>
             </div>
           )}
-          <div className="flex justify-between">
-            <span className="text-charcoal-light">Standard Delivery (Pan-India)</span>
-            <span className="font-bold text-status-success">FREE</span>
+          <div className="flex justify-between items-center">
+            <span className="text-charcoal-light flex items-center gap-1">
+              <Truck className="w-3.5 h-3.5 text-primary" />
+              Pan-India Express Delivery
+            </span>
+            <span className="font-bold text-status-success uppercase text-xs bg-status-success/15 px-2 py-0.5 rounded">FREE</span>
           </div>
-          <div className="border-t border-primary/10 pt-3 flex justify-between items-center text-base">
-            <span className="font-poppins font-bold text-charcoal">Total Payable</span>
-            <span className="font-poppins font-extrabold text-2xl text-secondary">₹{order.price}</span>
+          <div className="border-t border-primary/10 pt-3 flex justify-between items-center text-sm sm:text-base">
+            <span className="font-poppins font-bold text-charcoal">Total Amount Payable</span>
+            <span className="font-poppins font-extrabold text-xl sm:text-2xl text-secondary">₹{order.price}</span>
           </div>
+        </div>
+
+        {/* Trust Badges */}
+        <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] font-inter text-charcoal-light border-y border-cream-dark py-3">
+          <span className="flex items-center gap-1">
+            <Lock className="w-3.5 h-3.5 text-primary" />
+            256-Bit SSL Encrypted
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-status-success" />
+            Razorpay Verified Merchant
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
+            Ayush Quality Certified
+          </span>
         </div>
 
         {/* Action Buttons */}
@@ -190,16 +252,18 @@ function OrderConfirmationContent() {
           <button
             onClick={handlePayment}
             disabled={paymentProcessing}
-            className="w-full bg-primary text-cream py-4 rounded-large font-poppins font-bold text-lg hover:bg-primary-dark transition-all shadow-medium hover:shadow-large flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full bg-primary text-cream py-4 rounded-large font-poppins font-bold text-base hover:bg-primary-hover transition-all shadow-medium hover:shadow-large flex items-center justify-center gap-2 disabled:opacity-50 active:scale-95"
           >
-            <span>💳 {paymentProcessing ? 'Processing...' : `Pay ₹${order.price} via Razorpay`}</span>
+            <CreditCard className="w-5 h-5 text-cream" />
+            <span>{paymentProcessing ? 'Processing Secure Payment...' : `Pay ₹${order.price} via Razorpay`}</span>
           </button>
 
           <button
             onClick={() => router.push('/questionnaire')}
-            className="w-full py-3 border-2 border-primary/20 text-primary rounded-large font-poppins font-bold text-sm hover:bg-cream transition"
+            className="w-full py-3 border border-primary/20 text-charcoal rounded-large font-poppins font-bold text-xs hover:bg-cream transition flex items-center justify-center gap-1.5"
           >
-            Edit Diagnostic Answers
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Edit Diagnostic Answers</span>
           </button>
         </div>
       </div>
@@ -209,7 +273,14 @@ function OrderConfirmationContent() {
 
 export default function OrderConfirmationPage() {
   return (
-    <Suspense fallback={<div className="text-center py-20 font-poppins font-bold text-primary">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="max-w-md mx-auto my-24 p-8 text-center bg-white rounded-extra border border-primary/15 shadow-subtle space-y-3">
+          <Sparkles className="w-8 h-8 text-primary mx-auto animate-spin" />
+          <h3 className="font-poppins font-bold text-charcoal text-lg">Loading Formula Summary...</h3>
+        </div>
+      }
+    >
       <OrderConfirmationContent />
     </Suspense>
   );
