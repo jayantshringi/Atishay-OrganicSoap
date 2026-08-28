@@ -3,6 +3,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import {
   Leaf,
@@ -67,13 +68,23 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand & Newsletter (Col 1-2) */}
           <div className="lg:col-span-2 space-y-5">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-large bg-primary/20 flex items-center justify-center text-primary-light">
-                <Leaf className="w-5 h-5 text-secondary" />
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden border border-cream/20 bg-cream/95 group-hover:scale-105 transition-transform duration-300 shadow-medium shrink-0">
+                <Image
+                  src="/images/logo.png"
+                  alt="Atishay Bespoke Organic Soaps"
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <span className="text-2xl font-poppins font-bold text-cream tracking-tight">
-                Ati<span className="text-secondary">shay</span>
-              </span>
+              <div className="flex flex-col">
+                <span className="text-2xl font-poppins font-bold text-cream tracking-tight leading-none group-hover:text-secondary transition-colors">
+                  ATISHAY
+                </span>
+                <span className="text-[9.5px] font-inter uppercase tracking-widest text-secondary font-semibold mt-1">
+                  Bespoke Organic Soaps • Est. 2026
+                </span>
+              </div>
             </Link>
 
             <p className="text-cream/70 text-sm leading-relaxed max-w-sm font-inter">

@@ -3,6 +3,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   HeartHandshake,
@@ -51,6 +52,16 @@ export default function BrandStoryTrust() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto space-y-4"
         >
+          <div className="flex justify-center mb-2">
+            <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-secondary/40 bg-cream shadow-large">
+              <Image
+                src="/images/logo.png"
+                alt="Atishay Botanical Seal"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
           <span className="text-secondary-light font-poppins font-bold uppercase tracking-wider text-xs bg-white/10 px-3 py-1 rounded-full border border-white/20 inline-flex items-center gap-1.5">
             <Leaf className="w-3.5 h-3.5 text-secondary-light" />
             Clean Ayurvedic Philosophy

@@ -36,5 +36,8 @@ lerna-debug.log*
 prisma/dev.db
 prisma/dev.db-journal
 
+UI_IMPROVEMENT.md
 
+.agents/
+.claude/
 

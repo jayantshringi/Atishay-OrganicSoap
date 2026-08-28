@@ -36,6 +36,10 @@ export const metadata = {
     description: 'Answer 5 questions. Receive clinically tailored organic glycerine soap bars with pure Haldi, Aloe, Chandan, and Kesar.',
     type: 'website',
   },
+  icons: {
+    icon: '/images/logo.png',
+    apple: '/images/logo.png',
+  },
 };
 
 export default function RootLayout({ children }) {

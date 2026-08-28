@@ -3,6 +3,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -79,12 +80,23 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex justify-between items-center">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-large bg-primary/15 flex items-center justify-center text-primary group-hover:scale-105 group-hover:bg-primary group-hover:text-cream transition-all duration-300 shadow-inner-light">
-            <Leaf className="w-5 h-5 transition-transform group-hover:rotate-12" />
+          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-primary/20 bg-cream group-hover:scale-105 transition-all duration-300 shadow-subtle shrink-0">
+            <Image
+              src="/images/logo.png"
+              alt="Atishay Bespoke Organic Soaps"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
-          <span className="font-poppins font-bold text-xl tracking-tight text-charcoal">
-            Ati<span className="text-secondary font-extrabold">shay</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="font-poppins font-extrabold text-lg tracking-tight text-charcoal leading-none group-hover:text-primary transition-colors">
+              ATISHAY
+            </span>
+            <span className="text-[8.5px] font-inter uppercase tracking-widest text-primary font-semibold leading-tight mt-0.5">
+              Bespoke Organic Soaps
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation Links */}

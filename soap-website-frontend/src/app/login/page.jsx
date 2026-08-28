@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { authAPI } from '@/services/api';
 import { Leaf, Eye, EyeOff, Sparkles, ShieldCheck, ArrowRight, Lock } from 'lucide-react';
 
@@ -58,13 +59,24 @@ export default function LoginPage() {
         {/* Left Side: Brand Storytelling (5 cols) */}
         <div className="md:col-span-5 bg-gradient-to-br from-primary to-primary-dark p-8 text-cream flex flex-col justify-between relative overflow-hidden">
           <div className="space-y-6 relative z-10">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-large bg-white/20 flex items-center justify-center text-cream">
-                <Leaf className="w-4 h-4" />
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-11 h-11 rounded-full overflow-hidden border border-white/30 bg-cream/95 group-hover:scale-105 transition-transform duration-300 shadow-md shrink-0">
+                <Image
+                  src="/images/logo.png"
+                  alt="Atishay"
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
-              <span className="font-poppins font-bold text-xl tracking-tight text-cream">
-                Ati<span className="text-secondary">shay</span>
-              </span>
+              <div className="flex flex-col">
+                <span className="font-poppins font-bold text-xl tracking-tight text-cream leading-none">
+                  ATISHAY
+                </span>
+                <span className="text-[8.5px] font-inter uppercase tracking-widest text-secondary-light font-semibold mt-1">
+                  Bespoke Organic Soaps
+                </span>
+              </div>
             </Link>
 
             <div className="space-y-2 pt-4">

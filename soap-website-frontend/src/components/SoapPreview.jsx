@@ -2,6 +2,7 @@
 
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   Sparkles,
@@ -133,8 +134,15 @@ export default function SoapPreview({ answers = {} }) {
 
           {/* Top Emblem Row */}
           <div className="relative z-10 flex justify-between items-center opacity-90">
-            <div className="flex items-center gap-1">
-              <Leaf className="w-4 h-4 text-cream" />
+            <div className="flex items-center gap-1.5">
+              <div className="relative w-4 h-4 rounded-full overflow-hidden border border-white/40 bg-cream/90 shrink-0">
+                <Image
+                  src="/images/logo.png"
+                  alt="Atishay Emblem"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <span className="text-[10px] font-poppins font-bold tracking-wider text-cream/90 uppercase">
                 Atishay
               </span>
