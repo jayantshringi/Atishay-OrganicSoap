@@ -105,6 +105,7 @@ export default function QuestionnairePage() {
         { value: 'nuts', label: 'Tree Nuts & Peanut Extract Oils' },
         { value: 'haldi', label: 'Haldi (Turmeric Root Extracts)' },
         { value: 'chandan', label: 'Chandan (Sandalwood Essential Oils)' },
+        { value: 'None', label: 'None Of these' },
       ],
     },
     {
@@ -195,13 +196,12 @@ export default function QuestionnairePage() {
                     }}
                     disabled={stepNum > store.currentQuestion}
                     aria-label={`Jump to Step ${stepNum}`}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      isCurrent
+                    className={`h-2 rounded-full transition-all duration-300 ${isCurrent
                         ? 'bg-primary'
                         : isCompleted
-                        ? 'bg-secondary hover:bg-secondary-dark cursor-pointer'
-                        : 'bg-cream-dark'
-                    }`}
+                          ? 'bg-secondary hover:bg-secondary-dark cursor-pointer'
+                          : 'bg-cream-dark'
+                      }`}
                   />
                 );
               })}
@@ -235,11 +235,10 @@ export default function QuestionnairePage() {
                     return (
                       <label
                         key={option.value}
-                        className={`flex items-start p-4 border-2 rounded-large cursor-pointer transition-all ${
-                          isSelected
+                        className={`flex items-start p-4 border-2 rounded-large cursor-pointer transition-all ${isSelected
                             ? 'border-primary bg-primary/10 shadow-subtle'
                             : 'border-cream-dark hover:border-primary/40 bg-cream/40'
-                        }`}
+                          }`}
                       >
                         <input
                           type="radio"
@@ -273,11 +272,10 @@ export default function QuestionnairePage() {
                     return (
                       <label
                         key={option.value}
-                        className={`flex items-center p-4 border-2 rounded-large cursor-pointer transition-all ${
-                          isChecked
+                        className={`flex items-center p-4 border-2 rounded-large cursor-pointer transition-all ${isChecked
                             ? 'border-primary bg-primary/10 shadow-subtle'
                             : 'border-cream-dark hover:border-primary/40 bg-cream/40'
-                        }`}
+                          }`}
                       >
                         <input
                           type="checkbox"

@@ -198,19 +198,19 @@ export default function Footer() {
             <p className="text-sm text-cream/70 mb-3 font-inter">
               Skincare consultation hotline:
               <a
-                href="mailto:support@atishay.com"
+                href="mailto:jayants3125@gmail.com"
                 className="block mt-1 underline hover:text-secondary text-cream font-medium break-all"
               >
-                support@atishay.com
+                jayants3125@gmail.com
               </a>
             </p>
             <div className="flex gap-2 pt-2">
               <span className="px-3 py-1.5 bg-cream/10 rounded-default text-xs font-inter text-cream/80">
                 Pan-India Express
               </span>
-              <span className="px-3 py-1.5 bg-cream/10 rounded-default text-xs font-inter text-cream/80">
+              {/* <span className="px-3 py-1.5 bg-cream/10 rounded-default text-xs font-inter text-cream/80">
                 Ayush Certified
-              </span>
+              </span> */}
             </div>
           </div>
         </div>
