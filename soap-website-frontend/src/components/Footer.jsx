@@ -143,9 +143,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/#ingredients" className="hover:text-secondary transition-colors">
+                <Link href="/ingredients" className="hover:text-secondary transition-colors">
                   Ingredients
-                </a>
+                </Link>
               </li>
               <li>
                 <Link href="/questionnaire" className="hover:text-secondary transition-colors font-semibold text-secondary flex items-center gap-1">

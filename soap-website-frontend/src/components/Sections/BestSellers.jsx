@@ -45,35 +45,7 @@ export default function BestSellers() {
       badge: 'Most Loved',
       gradient: 'from-emerald-200/60 via-teal-100/40 to-cream',
       ph: '5.5 Balanced',
-    },
-    {
-      id: 'chandan-calm',
-      name: 'Chandan Soothing Therapy Bar',
-      skinType: 'sensitive',
-      skinLabel: 'Sensitive & Reactive',
-      skinTagColor: 'bg-botanical-chandan/40 text-charcoal border-botanical-chandan',
-      description: 'Formulated without synthetic fragrances or irritants. Pure sandalwood gently calms reactive redness and heat rashes.',
-      price: 399,
-      rating: 4.8,
-      reviewCount: 198,
-      badge: 'Derm Choice',
-      gradient: 'from-orange-200/60 via-amber-100/40 to-cream',
-      ph: '5.5 Balanced',
-    },
-    {
-      id: 'kesar-glow',
-      name: 'Kesar & Almond Glow Bar',
-      skinType: 'combination',
-      skinLabel: 'All Skin Types',
-      skinTagColor: 'bg-botanical-kesar/30 text-charcoal border-botanical-kesar',
-      description: 'Infused with Kashmiri saffron threads and gentle ground oatmeal scrub for radiant, luminous and silky smooth skin.',
-      price: 449,
-      rating: 5.0,
-      reviewCount: 412,
-      badge: 'Luxury Edition',
-      gradient: 'from-rose-200/60 via-amber-100/40 to-cream',
-      ph: '5.5 Balanced',
-    },
+    }
   ];
 
   return (
