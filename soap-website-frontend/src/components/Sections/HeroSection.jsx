@@ -3,15 +3,12 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   Sparkles,
   ArrowRight,
-  ShieldCheck,
   Star,
-  Leaf,
-  Droplets,
-  Award,
 } from 'lucide-react';
 
 export default function HeroSection() {
@@ -133,76 +130,31 @@ export default function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right Showcase 3D Floating Presentation */}
+          {/* Right Showcase Product Banner Presentation */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.35, duration: 0.8 }}
-            className="lg:col-span-5 relative flex justify-center perspective-1000"
+            className="lg:col-span-5 relative flex justify-center"
           >
             <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-              className="w-full max-w-md bg-white/90 backdrop-blur-xl rounded-extra p-6 sm:p-7 shadow-large border border-primary/15 space-y-5 relative"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              className="relative w-full max-w-lg group"
             >
-              {/* Card Header */}
-              <div className="flex justify-between items-center border-b border-cream-dark pb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-status-success animate-ping" />
-                  <span className="font-poppins font-bold text-charcoal text-sm">
-                    Live Formula Match #408
-                  </span>
-                </div>
-                <span className="bg-secondary/20 text-secondary-dark font-poppins font-bold px-3 py-1 rounded-full text-xs flex items-center gap-1">
-                  <Award className="w-3 h-3" />
-                  Prescribed
-                </span>
-              </div>
+              {/* Soft Ambient Glow */}
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/30 via-secondary/30 to-primary/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
 
-              {/* 3D Rendered Soap Graphic */}
-              <div className="bg-gradient-to-tr from-[#E8B84F] via-[#D4A574] to-[#5D7B6F] text-cream p-6 rounded-extra shadow-soap-glow relative overflow-hidden border-2 border-white/30">
-                <div className="flex justify-between items-start">
-                  <Leaf className="w-6 h-6 text-white drop-shadow" />
-                  <span className="text-[10px] font-poppins font-extrabold uppercase bg-white/25 backdrop-blur-md px-2.5 py-0.5 rounded text-white tracking-wider">
-                    100% Organic Base
-                  </span>
-                </div>
-
-                <div className="my-5 text-center">
-                  <span className="font-poppins font-extrabold text-xl block tracking-wide text-white drop-shadow">
-                    Haldi &amp; Chandan Blend
-                  </span>
-                  <span className="text-xs text-white/90 font-inter mt-0.5 block">
-                    Acne Clarity &amp; Deep Radiance
-                  </span>
-                </div>
-
-                <div className="flex justify-between text-[11px] font-medium text-white/85 pt-3 border-t border-white/20">
-                  <span>Custom Texture: Soft &amp; Creamy</span>
-                  <span className="font-bold text-white">125g Artisan Bar</span>
-                </div>
-              </div>
-
-              {/* Formula Highlights Breakdown */}
-              <div className="space-y-2.5 font-inter">
-                <div className="flex items-center justify-between text-xs bg-cream/70 p-3 rounded-large border border-primary/10">
-                  <span className="font-semibold text-charcoal flex items-center gap-1.5">
-                    <Leaf className="w-3.5 h-3.5 text-primary" /> Key Actives:
-                  </span>
-                  <span className="font-bold text-primary">Turmeric + Sandalwood</span>
-                </div>
-                <div className="flex items-center justify-between text-xs bg-cream/70 p-3 rounded-large border border-primary/10">
-                  <span className="font-semibold text-charcoal flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-status-success" /> Allergen Safety:
-                  </span>
-                  <span className="font-bold text-status-success">0 Excluded Triggers</span>
-                </div>
-                <div className="flex items-center justify-between text-xs bg-cream/70 p-3 rounded-large border border-primary/10">
-                  <span className="font-semibold text-charcoal flex items-center gap-1.5">
-                    <Droplets className="w-3.5 h-3.5 text-secondary" /> Starting Price:
-                  </span>
-                  <span className="font-poppins font-extrabold text-secondary text-sm">₹399</span>
-                </div>
+              {/* Banner Container */}
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 border-white/90 bg-white/95">
+                <Image
+                  src="/images/hero-soap-banner.jpg"
+                  alt="Atishay Organic Soaps - Haldi & Neem Clarifying Bar"
+                  width={1024}
+                  height={682}
+                  priority
+                  className="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-[1.02]"
+                />
               </div>
             </motion.div>
           </motion.div>

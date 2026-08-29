@@ -9,9 +9,7 @@ import {
   Sparkles,
   PackageCheck,
   Clock,
-  ArrowRight,
 } from 'lucide-react';
-import Link from 'next/link';
 
 export default function HowItWorks() {
   const steps = [
@@ -120,17 +118,6 @@ export default function HowItWorks() {
               </motion.div>
             );
           })}
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="text-center pt-2">
-          <Link
-            href="/questionnaire"
-            className="inline-flex items-center gap-2 bg-primary text-cream px-8 py-3.5 rounded-large font-poppins font-bold text-sm hover:bg-primary-hover transition-all shadow-medium hover:shadow-large"
-          >
-            <span>Start Your 2-Minute Diagnostic</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
       </div>
     </section>
