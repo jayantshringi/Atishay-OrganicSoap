@@ -39,7 +39,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-charcoal text-cream pt-16 pb-12 mt-20 border-t-4 border-secondary relative overflow-hidden">
+    <footer className="bg-charcoal text-cream pt-16 pb-12 mt-20 border-t-4 border-secondary relative overflow-hidden content-auto">
       {/* Background Soft Glows */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />

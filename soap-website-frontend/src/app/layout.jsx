@@ -1,6 +1,7 @@
 // src/app/layout.jsx
 
 import { Poppins, Inter, Lora } from 'next/font/google';
+import Script from 'next/script';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import '../styles/globals.css';
@@ -45,10 +46,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable} ${lora.variable} scroll-smooth`}>
-      <head>
-        <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
-      </head>
       <body className="font-inter bg-cream text-charcoal min-h-screen flex flex-col justify-between antialiased selection:bg-primary/20 selection:text-primary">
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
         <Header />
         <main className="flex-grow">
           {children}

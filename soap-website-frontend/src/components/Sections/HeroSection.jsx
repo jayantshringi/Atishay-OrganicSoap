@@ -14,23 +14,9 @@ import {
 export default function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-cream via-primary-light/25 to-cream py-16 sm:py-20 lg:py-28">
-      {/* Background Soft Floating Ambient Glows */}
-      <motion.div
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-20 -right-20 w-80 h-80 sm:w-[450px] sm:h-[450px] bg-primary/20 rounded-full blur-3xl pointer-events-none"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.2, 0.4, 0.2],
-        }}
-        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        className="absolute -bottom-20 -left-20 w-80 h-80 sm:w-[450px] sm:h-[450px] bg-secondary/25 rounded-full blur-3xl pointer-events-none"
-      />
+      {/* Background Soft Floating Ambient Glows (GPU-Accelerated) */}
+      <div className="absolute -top-20 -right-20 w-80 h-80 sm:w-[450px] sm:h-[450px] bg-primary/20 rounded-full blur-3xl pointer-events-none animate-glow-1" />
+      <div className="absolute -bottom-20 -left-20 w-80 h-80 sm:w-[450px] sm:h-[450px] bg-secondary/25 rounded-full blur-3xl pointer-events-none animate-glow-2" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -137,11 +123,7 @@ export default function HeroSection() {
             transition={{ delay: 0.35, duration: 0.8 }}
             className="lg:col-span-5 relative flex justify-center"
           >
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              className="relative w-full max-w-lg group"
-            >
+            <div className="relative w-full max-w-lg group animate-float-banner">
               {/* Soft Ambient Glow */}
               <div className="absolute -inset-2 bg-gradient-to-r from-primary/30 via-secondary/30 to-primary/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
 
@@ -156,7 +138,7 @@ export default function HeroSection() {
                   className="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>

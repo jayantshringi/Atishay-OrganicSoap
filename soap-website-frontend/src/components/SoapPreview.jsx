@@ -83,17 +83,9 @@ export default function SoapPreview({ answers = {} }) {
       transition={{ duration: 0.5 }}
       className="bg-charcoal text-cream p-6 sm:p-7 rounded-extra shadow-large border border-primary/25 relative overflow-hidden flex flex-col justify-between min-h-[460px]"
     >
-      {/* Background Ambient Glows */}
-      <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.4, 0.25] }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-24 -right-24 w-64 h-64 bg-secondary/25 rounded-full blur-3xl pointer-events-none"
-      />
-      <motion.div
-        animate={{ scale: [1, 1.25, 1], opacity: [0.2, 0.35, 0.2] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/30 rounded-full blur-3xl pointer-events-none"
-      />
+      {/* Background Ambient Glows (GPU-Accelerated) */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-secondary/25 rounded-full blur-3xl pointer-events-none animate-glow-1" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/30 rounded-full blur-3xl pointer-events-none animate-glow-2" />
 
       {/* Card Top Diagnostic Header */}
       <div className="relative z-10 space-y-1">
