@@ -104,12 +104,12 @@ export default function HeroSection() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
 
-              <a
+              {/* <a
                 href="#bestsellers"
                 className="bg-white/90 text-charcoal border border-primary/20 px-7 py-4 rounded-large font-poppins font-semibold text-base hover:bg-cream-dark transition-all text-center block w-full sm:w-auto shadow-subtle backdrop-blur-md"
               >
                 Explore Best Sellers
-              </a>
+              </a> */}
             </motion.div>
 
             {/* Rating & Trust Metrics */}

@@ -68,8 +68,8 @@ export default function Header() {
 
   const navLinks = [
     { label: 'Home', href: '/' },
-    { label: 'Best Sellers', href: '/#bestsellers' },
-    { label: 'Ingredients', href: '/ingredients' },
+    { label: 'Our Soaps', href: '/soap' },
+    { label: 'Ingredients Catalog', href: '/ingredients' },
     { label: 'How It Works', href: '/#how-it-works' },
     { label: 'FAQ', href: '/faq' },
     { label: 'Contact', href: '/contact' },
@@ -108,8 +108,8 @@ export default function Header() {
                 key={link.label}
                 href={link.href}
                 className={`relative px-1 py-1 text-sm font-poppins transition-colors ${isActive
-                    ? 'text-primary font-bold'
-                    : 'text-charcoal-light hover:text-primary'
+                  ? 'text-primary font-bold'
+                  : 'text-charcoal-light hover:text-primary'
                   }`}
               >
                 {link.label}
@@ -262,8 +262,8 @@ export default function Header() {
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`py-2 px-3 rounded-large font-poppins text-sm font-medium transition ${pathname === link.href
-                        ? 'bg-primary/15 text-primary font-bold'
-                        : 'text-charcoal hover:bg-cream'
+                      ? 'bg-primary/15 text-primary font-bold'
+                      : 'text-charcoal hover:bg-cream'
                       }`}
                   >
                     {link.label}

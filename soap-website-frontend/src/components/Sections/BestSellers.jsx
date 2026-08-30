@@ -3,6 +3,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useQuestionnaireStore } from '@/store/questionnaireStore';
 import {
@@ -12,6 +13,7 @@ import {
   Leaf,
   ShieldCheck,
   Award,
+  ShoppingBag,
 } from 'lucide-react';
 
 export default function BestSellers() {
@@ -29,6 +31,7 @@ export default function BestSellers() {
       rating: 4.9,
       reviewCount: 342,
       badge: 'Best Seller',
+      image: '/images/products/turmeric-haldi.jpg',
       gradient: 'from-amber-200/60 via-amber-100/40 to-cream',
       ph: '5.5 Balanced',
     },
@@ -43,9 +46,10 @@ export default function BestSellers() {
       rating: 4.9,
       reviewCount: 285,
       badge: 'Most Loved',
+      image: '/images/products/aloe-vera.jpg',
       gradient: 'from-emerald-200/60 via-teal-100/40 to-cream',
       ph: '5.5 Balanced',
-    }
+    },
   ];
 
   return (
@@ -71,7 +75,11 @@ export default function BestSellers() {
         </motion.div>
 
         {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 ${
+            products.length > 2 ? 'lg:grid-cols-4' : 'lg:grid-cols-2 max-w-4xl mx-auto'
+          } gap-6 sm:gap-8`}
+        >
           {products.map((item, index) => (
             <motion.div
               key={item.id}
@@ -82,39 +90,50 @@ export default function BestSellers() {
               whileHover={{ y: -8 }}
               className="bg-white rounded-extra border border-primary/15 shadow-subtle hover:shadow-large transition-all flex flex-col justify-between overflow-hidden group"
             >
-              {/* Product Visual Area */}
-              <div className={`p-8 bg-gradient-to-b ${item.gradient} flex flex-col items-center justify-center relative border-b border-primary/10`}>
-                <span className="absolute top-3 left-3 bg-secondary text-charcoal font-poppins font-bold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-subtle flex items-center gap-1">
-                  <Award className="w-3 h-3" />
-                  {item.badge}
-                </span>
-
-                {/* 3D Bar Graphic */}
-                <div className="w-28 h-20 bg-white/90 backdrop-blur-md rounded-large shadow-medium border border-primary/20 flex flex-col justify-between p-3 my-4 group-hover:scale-110 group-hover:rotate-2 transition-transform duration-300">
-                  <div className="flex justify-between items-center">
-                    <Leaf className="w-3.5 h-3.5 text-primary" />
-                    <span className="text-[8px] font-bold uppercase text-charcoal-light">125g</span>
+              {/* Product Visual Area with Real Image */}
+              <div className="relative w-full aspect-square bg-cream overflow-hidden border-b border-primary/10">
+                {item.image ? (
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-contain p-1.5 group-hover:scale-105 transition-transform duration-500"
+                    priority={index === 0}
+                  />
+                ) : (
+                  <div
+                    className={`w-full h-full bg-gradient-to-b ${item.gradient} flex items-center justify-center`}
+                  >
+                    <Leaf className="w-10 h-10 text-primary" />
                   </div>
-                  <div className="text-center font-poppins font-extrabold text-[10px] text-charcoal uppercase">
-                    Atishay Custom
-                  </div>
-                  <div className="text-[8px] font-semibold text-secondary-dark text-right">
-                    {item.ph}
-                  </div>
-                </div>
-
-                <span className={`px-3 py-1 rounded-full text-xs font-poppins font-semibold border ${item.skinTagColor}`}>
-                  {item.skinLabel}
-                </span>
+                )}
               </div>
 
               {/* Product Details Area */}
               <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
-                <div>
-                  <div className="flex items-center gap-1 text-secondary text-xs mb-1.5 font-poppins font-bold">
-                    <Star className="w-3.5 h-3.5 fill-secondary text-secondary" />
-                    <span>{item.rating}</span>
-                    <span className="text-charcoal-muted font-normal">({item.reviewCount} reviews)</span>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1 text-secondary text-xs font-poppins font-bold">
+                      <Star className="w-3.5 h-3.5 fill-secondary text-secondary" />
+                      <span>{item.rating}</span>
+                      <span className="text-charcoal-muted font-normal text-[11px]">
+                        ({item.reviewCount} reviews)
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-poppins font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                      {item.ph}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="bg-secondary/20 text-charcoal font-poppins font-bold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                      <Award className="w-3 h-3 text-secondary-dark" />
+                      {item.badge}
+                    </span>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-poppins font-semibold border ${item.skinTagColor}`}>
+                      {item.skinLabel}
+                    </span>
                   </div>
 
                   <h3 className="text-base sm:text-lg font-poppins font-bold text-charcoal group-hover:text-primary transition-colors">
@@ -127,23 +146,44 @@ export default function BestSellers() {
 
                 <div className="pt-3 border-t border-cream-dark flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] text-charcoal-muted uppercase font-bold block">Formula Price</span>
+                    <span className="text-[10px] text-charcoal-muted uppercase font-bold block">
+                      Formula Price
+                    </span>
                     <span className="text-xl font-poppins font-extrabold text-secondary">
                       ₹{item.price}
                     </span>
                   </div>
-                  <Link
-                    href="/questionnaire"
-                    onClick={() => store.updateAnswer('skinType', item.skinType)}
-                    className="bg-primary text-cream px-4 py-2 rounded-large font-poppins font-bold text-xs hover:bg-primary-hover transition-all shadow-subtle flex items-center gap-1 group/btn"
-                  >
-                    <span>Customize</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href="/soap"
+                      className="text-xs font-poppins font-semibold text-charcoal hover:text-primary border border-primary/20 bg-cream/70 hover:bg-cream px-3 py-2 rounded-large transition"
+                    >
+                      View
+                    </Link>
+                    <Link
+                      href="/questionnaire"
+                      onClick={() => store.updateAnswer('skinType', item.skinType)}
+                      className="bg-primary text-cream px-4 py-2 rounded-large font-poppins font-bold text-xs hover:bg-primary-hover transition-all shadow-subtle flex items-center gap-1 group/btn"
+                    >
+                      <span>Customize</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* View All Soaps Link */}
+        <div className="text-center pt-4">
+          <Link
+            href="/soap"
+            className="inline-flex items-center gap-2 text-sm font-poppins font-bold text-primary hover:text-primary-hover transition group"
+          >
+            <span>Explore All 4 Handcrafted Botanical Soaps</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
     </section>
