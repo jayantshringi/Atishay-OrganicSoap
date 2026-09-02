@@ -1,118 +1,223 @@
-# 🧼 Atishay — Personalized Ayurvedic & Organic Soap E-Commerce Platform
+<div align="center">
+  <img src="soap-website-frontend/public/images/logo.png" alt="Atishay Botanical Seal" width="110" height="110" style="border-radius: 50%;" />
+  
+  # 🌿 ATISHAY — Bespoke Ayurvedic & Organic Skincare
 
-> 🌿 **PORTFOLIO & DEMONSTRATION NOTICE**  
-> **This repository is a full-stack academic & professional portfolio piece.**  
-> - **Cash on Delivery (COD) Only**: The checkout pipeline exclusively supports Cash on Delivery so the complete customer order flow, admin fulfillment updates, and courier tracking can be demoed without requiring external payment gateway credentials (Razorpay/Stripe keys).  
-> - Formulations, quiz outcomes, ingredient diagnostics, and prices are built for high-aesthetic showcase and demonstration purposes.
+  <p align="center">
+    <strong>Science-Backed Personalized Formulations • 100% Vegetable Glycerine Base • Preservative & Sulfate Free</strong>
+  </p>
 
----
-
-## 📖 Project Overview
-
-**Atishay** is a full-stack personalized Ayurvedic soap e-commerce storefront designed to provide bespoke, organic melt-and-pour glycerine soaps tailored to individual skin profiles (Dry, Oily, Sensitive, Combination), sensitivities, and botanical preferences.
-
-Through an interactive 5-step clinical diagnostic questionnaire, customers receive automated skin assessments and personalized recipe prescriptions from pure botanical extracts (Haldi, Aloe Vera, Chandan, Kashmiri Kesar), while operations managers track live fulfillment and batch dispatch through an integrated administrative operations portal.
-
----
-
-## ✨ Key Features & Capabilities
-
-### 🧪 1. 5-Step Skin Diagnostic & Recipe Matcher (`/quiz`)
-- **Clinical Questionnaire Engine**: Evaluates skin type (Oily, Dry, Combination, Sensitive), concerns (Acne, Hydration, Sensitivity, Radiance), known botanical allergies, and bar texture preferences (Cream lather, Exfoliating scrub).
-- **Live 3D Soap Visualizer**: Dynamic visual representation updating soap hue, translucency, and botanical tags in real-time.
-- **Strict Allergen Exclusion**: Filters out user-specified sensitivities from the prescription.
-
-### 🛍️ 2. Comprehensive Storefront & Cart (`/products`, `/products/[slug]`, `/cart`)
-- **Product Catalog**: Filter by category (`Hydration`, `Acne`, `Sensitive`, `Radiance`), sort by price/rating, and debounced search with bookmarkable URL search params.
-- **Product Details & Customer Reviews**: In-depth ingredients breakdown, skin benefits, verified customer star ratings, and review submission.
-- **Dynamic Shopping Cart**: Instant quantity adjustment, subtotal computation, automated free delivery threshold (over ₹499), and coupon code validation (`WELCOME10` for 10% discount).
-
-### 🚚 3. Frictionless COD Checkout & Order Tracking (`/checkout`, `/orders`, `/orders/[id]`)
-- **Cash on Delivery (COD) Checkout**: Address form with saved address auto-fill and instant order placement.
-- **Live Fulfillment Progression Stepper**: Status progression (`Confirmed` → `In Production` → `Shipped` → `Delivered`) with courier AWB tracking numbers.
-- **Soap Longevity Guide**: Storage tips for preservative-free artisan bars.
-
-### 🛡️ 4. Administrator Fulfillment Operations (`/admin`, `/admin/orders`, `/admin/products`)
-- **Real-Time KPI Metrics**: Orders count, daily revenue tally, studio in-production batches, and dispatched shipments.
-- **Fulfillment Progression Control**: Multi-status workflow transitions (`in-production` → `shipped` → `delivered`) with tracking ID assignment.
-- **Catalog Management**: View and manage all flagship soap formulations.
+  <p align="center">
+    <img src="https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js" alt="Next.js" />
+    <img src="https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react" alt="React" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/Supabase-Database%20%26%20Auth-3ECF8E?style=for-the-badge&logo=supabase" alt="Supabase" />
+    <img src="https://img.shields.io/badge/Node.js-Express-green?style=for-the-badge&logo=node.js" alt="Node.js" />
+    <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License" />
+  </p>
+</div>
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+> ### ⚠️ PORTFOLIO & DEMONSTRATION NOTICE
+> **This project was engineered and developed as an end-to-end full-stack portfolio showcase.**
+> - **Cash on Delivery (COD) Only**: The checkout pipeline exclusively uses Cash on Delivery so that the complete customer order lifecycle, administrative dispatch workflows, and courier tracking progression can be demoed without requiring external merchant payment gateway accounts (Stripe / Razorpay).
+> - All formulations, clinical quiz outcomes, and botanical profiles are designed for high-aesthetic showcase and engineering demonstration.
+
+---
+
+## 📖 About Atishay
+
+**Atishay** is a personalized Ayurvedic e-commerce platform designed to address the reality of modern skin health: *no two skin profiles are identical*. Conventional mass-market soaps frequently rely on synthetic sulfates, parabens, and harsh detergents that strip the skin's natural lipid barrier.
+
+Atishay combines **ancient Indian Ayurveda** with **modern cosmetic dermatology** to deliver small-batch, melt-and-pour vegetable glycerine bars customized to individual skin types, specific sensitivities, and allergen triggers.
+
+### 🌿 Brand & Formulation Philosophy
+- **pH 5.5 Balanced**: Formulated to match the acid mantle of human skin, protecting against microbial irritation.
+- **Cold-Crafted Vegetable Glycerine**: Superior humectant properties lock in trans-epidermal moisture for 24 hours.
+- **Strict Allergen Exclusion**: Proprietary diagnostic matcher filters out user-specified sensitivities (such as essential oil triggers or botanical extracts).
+- **Cruelty-Free & Sustainable**: 100% plant-based formulation, zero animal testing, and biodegradable packaging.
+
+---
+
+## 🧪 Flagship Botanical Formulations
+
+| Formulation | Category | Target Skin | Key Actives | Benefits |
+|---|---|---|---|---|
+| **Aloe Vera & Shea Intense Hydration Bar** | `Hydration` | Dry & Dehydrated | Cold-Pressed Aloe Gel, Raw African Shea, Sweet Almond Oil, Vitamin E | Restores compromised lipid barrier, soothes flakiness, deep cellular moisture. |
+| **Haldi & Neem Clarifying Anti-Acne Bar** | `Acne & Clarity` | Oily & Acne-Prone | Wild Kasturi Turmeric (*Kasturi Manjal*), Steam-Distilled Neem, Tea Tree, Jojoba Oil | Clarifies clogged pores, balances excess sebum, natural antimicrobial protection. |
+
+---
+
+## ✨ Key System Features & Highlights
+
+### 1. 🧬 5-Step Clinical Skin Diagnostic Engine (`/quiz`)
+- Comprehensive diagnostic evaluating skin profile (Dry, Oily, Combination, Sensitive), primary concerns, allergen triggers, and lather preference.
+- **Live 3D Soap Visualizer**: Dynamic visual representation reflecting soap hue, translucency, and botanical infusion in real time.
+- Automated algorithmic recipe matching with allergen exclusion guarantees.
+
+### 2. 🛍️ High-Performance Storefront & Catalog (`/products`, `/products/[slug]`)
+- Multi-category filtering (`All Soaps`, `Aloe Vera Hydration`, `Haldi Neem Anti-Acne`).
+- Debounced real-time search synced with URL search parameters for shareable bookmarking.
+- In-depth product detail pages featuring full ingredient transparency, skin benefits, verified customer star ratings, and review submissions.
+
+### 3. 🛒 Dynamic Cart & Promo Engine (`/cart`)
+- Instant item quantity adjustment and automatic subtotal computation.
+- Free Express Delivery threshold calculator (automated free shipping on orders over ₹499).
+- Dynamic coupon code validator (e.g., `WELCOME10` for a 10% discount).
+
+### 4. 🚚 Frictionless COD Checkout & Order Tracking (`/checkout`, `/orders`, `/orders/[id]`)
+- Streamlined Cash on Delivery address form with saved address pre-fill.
+- Instant order confirmation receipts with tracking ID generation.
+- **4-Step Live Fulfillment Timeline**: Real-time status progression (`Confirmed` → `In Production` → `Shipped` → `Delivered`) with postal AWB tracking numbers.
+
+### 5. 🛡️ Administrative Operations Portal (`/admin`, `/admin/orders`, `/admin/products`)
+- Real-time KPI analytics (Total Orders, Today's Studio Revenue, In-Production Batches, Dispatched Shipments).
+- Order fulfillment progression selector and courier tracking assignment.
+- Product catalog overview and inventory monitoring.
+
+---
+
+## 🛠️ Technology Stack
 
 ```
-Atishay E-Commerce Platform
-├── soap-website-frontend/ (Next.js 14/15 App Router / Tailwind CSS / Framer Motion / Context API)
-│   ├── src/app/
-│   │   ├── page.jsx                   ← Home landing page with Best Sellers & Trust props
-│   │   ├── products/                  ← Catalog listing with category filters & sort
-│   │   │   └── [slug]/                ← Product detail page with reviews & ingredients
-│   │   ├── cart/                      ← Shopping cart with coupon discount calculator
-│   │   ├── checkout/                  ← Cash on Delivery address & order placement
-│   │   ├── quiz/                      ← 5-step diagnostic quiz & live 3D visual preview
-│   │   ├── orders/                    ← Customer order history & [id] tracking stepper
-│   │   ├── account/                   ← Customer profile & saved address management
-│   │   ├── admin/                     ← Admin KPI dashboard, orders & products tables
-│   │   ├── login/ & register/         ← JWT authentication & redirect handling
-│   │   └── order-confirmation/        ← Post-checkout success receipt
-│   ├── src/context/                   ← AuthContext (useAuth) & CartContext (useCart)
-│   └── src/services/api.js            ← Axios client with resilient offline/demo fallback
+Atishay Full-Stack Architecture
 │
-└── soap-website-backend/ (Node.js / Express.js / Prisma ORM / JWT Auth)
-    ├── src/controllers/               ← Product, Order (COD), Quiz, Auth & Admin controllers
-    ├── src/routes/                    ← /api/products, /api/coupons, /api/quiz, /api/orders, /api/admin
-    └── src/middleware/                ← JWT authentication & role-based admin guards
+├── Frontend Layer (soap-website-frontend)
+│   ├── Framework: Next.js 14 (App Router) & React 18
+│   ├── Styling: Tailwind CSS & Lucide Icons
+│   ├── Motion & Animation: Framer Motion
+│   ├── State Management: React Context API (AuthContext, CartContext)
+│   └── Client Services: Supabase JS Client & Axios
+│
+├── Backend API Layer (soap-website-backend)
+│   ├── Runtime: Node.js & Express.js
+│   ├── Database ORM: Prisma Client
+│   └── Security & Middleware: JWT Auth, CORS, Helmet
+│
+└── Cloud & Database Infrastructure
+    ├── Authentication: Supabase Auth (User sessions, JWT tokens)
+    ├── Primary Database: Supabase PostgreSQL (Profiles, Products, Orders, Reviews)
+    └── Deployment Hosting: Vercel (Frontend)
 ```
-
-### Core Technologies
-- **Frontend**: Next.js (App Router), React, Tailwind CSS, Framer Motion, Axios, Lucide React
-- **Backend**: Node.js, Express.js, JWT, bcrypt, Prisma ORM
-- **State Management**: React Context API (`AuthContext`, `CartContext`)
 
 ---
 
-## 🚀 Local Setup & Running Instructions
+## 📂 Repository Folder Structure
+
+```
+Atishay-OrganicSoap/
+├── soap-website-frontend/             # Next.js 14 Client Storefront
+│   ├── public/                        # Static assets & product imagery
+│   │   └── images/
+│   │       ├── logo.png               # Brand emblem
+│   │       └── products/              # High-res botanical soap photography
+│   ├── src/
+│   │   ├── app/                       # Next.js App Router pages
+│   │   │   ├── page.jsx               # Home Landing Page (Hero, Best Sellers, Trust)
+│   │   │   ├── products/              # Catalog list & [slug] product details
+│   │   │   ├── cart/                  # Shopping cart & coupon checkout
+│   │   │   ├── checkout/              # Cash on Delivery checkout
+│   │   │   ├── quiz/                  # 5-Step Diagnostic & 3D Soap Visualizer
+│   │   │   ├── orders/                # Customer order history & live [id] tracking
+│   │   │   ├── account/               # Customer profile & address management
+│   │   │   ├── admin/                 # Operations dashboard, orders & catalog
+│   │   │   ├── login/ & register/     # Authentication pages
+│   │   │   └── order-confirmation/    # Post-order success summary
+│   │   ├── components/                # Reusable UI components
+│   │   │   ├── Header.jsx             # Navigation bar with dynamic cart badge
+│   │   │   ├── Footer.jsx             # Brand footer & links
+│   │   │   ├── ProductCard.jsx        # Product display card with Add-to-Cart
+│   │   │   ├── Rating.jsx             # Interactive & display star ratings
+│   │   │   ├── PriceTag.jsx           # Currency & discount badge formatter
+│   │   │   ├── Spinner.jsx            # Minimalist loading state
+│   │   │   └── EmptyState.jsx         # Fallback empty view container
+│   │   ├── context/                   # Global React State Contexts
+│   │   │   ├── AuthContext.jsx        # Supabase Auth session & profile hook
+│   │   │   └── CartContext.jsx        # Cart state, shipping threshold & coupons
+│   │   ├── lib/
+│   │   │   └── supabase.js            # Supabase frontend client instance
+│   │   └── services/
+│   │       └── api.js                 # API service layer with offline demo fallbacks
+│   ├── next.config.js                 # Next.js configuration & image remote patterns
+│   └── tailwind.config.js             # Brand palette, typography & animations
+│
+└── soap-website-backend/              # Express.js REST API Server
+    ├── src/
+    │   ├── config/
+    │   │   └── supabase.js            # Supabase service role client instance
+    │   ├── controllers/               # Business logic controllers
+    │   │   ├── productController.js   # Product catalog & reviews
+    │   │   ├── orderController.js     # Cash on Delivery order processing
+    │   │   ├── authController.js      # Auth & user session handler
+    │   │   └── adminController.js     # Admin KPI analytics & status updates
+    │   ├── middleware/
+    │   │   └── auth.js                # Supabase & JWT token verification guards
+    │   ├── routes/                    # API Route definitions
+    │   │   ├── products.js            # /api/products
+    │   │   ├── orders.js              # /api/orders
+    │   │   ├── coupons.js             # /api/coupons
+    │   │   ├── quiz.js                # /api/quiz
+    │   │   └── admin.js               # /api/admin
+    │   └── server.js                  # Server entrypoint & middleware mounting
+    └── package.json
+```
+
+---
+
+## 🚀 Local Development Setup
 
 ### 1. Prerequisites
-- **Node.js**: v18 or higher
+- **Node.js**: v18.0.0 or higher
 - **npm** or **yarn**
 
-### 2. Backend Setup
+### 2. Clone the Repository
+```bash
+git clone https://github.com/jayantshringi/Atishay-OrganicSoap.git
+cd Atishay-OrganicSoap
+```
+
+### 3. Backend Setup
 ```bash
 cd soap-website-backend
 npm install
 npm run dev
-# Backend API runs on http://localhost:5000
+# Backend server runs on http://localhost:5000
 ```
-> *Note: The backend includes built-in in-memory fallback mechanisms, allowing the entire application to run and process orders without requiring a live PostgreSQL/MongoDB database server.*
+> *The backend includes built-in in-memory fallback stores, allowing the full application to run locally even if an external database server is disconnected.*
 
-### 3. Frontend Setup
+### 4. Frontend Setup
 ```bash
-cd soap-website-frontend
+cd ../soap-website-frontend
 npm install
 npm run dev
-# Frontend runs on http://localhost:3000
+# Storefront runs on http://localhost:3000
 ```
-
-### 4. Admin Credentials for Testing
-- **Email**: `admin@atishay.com`
-- **Password**: `admin123` (or any password in dev mode)
-- **Role**: Unlocks full access to `/admin`, `/admin/orders`, and `/admin/products`.
 
 ---
 
-## 📋 Definition of Done / Verification Checklist
+## 📋 Definition of Done / Quality Assurance Checklist
 
-- [x] Backend and Frontend build and start cleanly with 0 console errors.
-- [x] Register new accounts, log in, log out, and persist JWT sessions.
-- [x] Browse products catalog, filter by category (`Hydration`, `Acne`, `Sensitive`, `Radiance`), sort by price/rating, and search with debounce.
-- [x] Product detail pages with ingredients spotlight, customer reviews, and review submission.
-- [x] Dynamic cart with item quantity stepper, removal, and free delivery calculation over ₹499.
-- [x] Coupon `WELCOME10` applies 10% discount dynamically.
-- [x] Complete Cash on Delivery checkout and receive order confirmation receipt.
-- [x] Order history (`/orders`) and live tracking stepper (`/orders/[id]`).
-- [x] 5-step interactive skin diagnostic quiz with live 3D visual preview.
-- [x] Admin dashboard (`/admin`) with KPI metrics, status dropdown updates, and AWB tracking numbers.
-- [x] 100% responsive design across mobile (375px+), tablet, and desktop viewports.
-- [x] Zero external payment gateway dependencies.
+- [x] **Zero Errors**: Clean compilation on Next.js production builds (`npm run build`).
+- [x] **Authentication**: User registration, login, and session persistence powered by Supabase Auth.
+- [x] **Storefront Catalog**: Category filtering, sorting by price/rating, and debounced keyword search.
+- [x] **Product Details**: Ingredients spotlight, customer star ratings, and review submission forms.
+- [x] **Cart & Promotions**: Item quantity stepper, free delivery progress bar (over ₹499), and coupon discount validation (`WELCOME10`).
+- [x] **Doorstep Checkout**: Frictionless Cash on Delivery (COD) address entry with saved address book auto-fill.
+- [x] **Fulfillment Tracking**: 4-step status timeline with live tracking ID display.
+- [x] **Diagnostic Quiz**: 5-step diagnostic with live 3D visual preview and automatic prescription matcher.
+- [x] **Admin Operations**: Operations dashboard with KPI metrics, status updates, and tracking number assignment.
+- [x] **Responsive Design**: 100% mobile-friendly and optimized across mobile, tablet, and desktop viewports.
+
+---
+
+## 📄 License & Attribution
+
+This project is developed and maintained by **Jayant Shringi**.
+
+```
+Copyright (c) 2026 Jayant Shringi. All rights reserved.
+Licensed under the MIT License.
+```
+
+Distributed for educational, portfolio, and demonstration purposes.
