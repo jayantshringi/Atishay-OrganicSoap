@@ -2,14 +2,15 @@
 
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { authAPI } from '@/services/api';
-import { Leaf, Eye, EyeOff, Sparkles, ShieldCheck, ArrowRight, UserPlus, Check } from 'lucide-react';
+import { Eye, EyeOff, Sparkles, ShieldCheck, UserPlus } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import Spinner from '@/components/Spinner';
 
-export default function RegisterPage() {
+function RegisterFormContent() {
   const [formData, setFormData] = useState({
     email: '',
     phone: '',
@@ -20,7 +21,12 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTarget = searchParams.get('redirect') || '';
+
+  const { register } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,43 +36,34 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
-      setLoading(false);
       return;
     }
 
-    if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters long');
-      setLoading(false);
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
       return;
     }
+
+    setLoading(true);
 
     try {
-      const response = await authAPI.register({
+      await register({
         email: formData.email,
         phone: formData.phone,
         name: formData.name,
         password: formData.password,
       });
 
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('userEmail', formData.email);
-        localStorage.setItem('userName', formData.name);
-      }
-
-      router.push('/questionnaire');
+      router.push(redirectTarget || '/quiz');
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed. Please try again.');
+      setError(err.response?.data?.error || err.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
-
-  const isPasswordStrong = formData.password.length >= 8;
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
@@ -178,7 +175,6 @@ export default function RegisterPage() {
                   placeholder="10-digit number"
                   value={formData.phone}
                   onChange={handleChange}
-                  required
                   className="w-full px-4 py-2.5 bg-cream/40 border border-cream-dark rounded-large text-xs sm:text-sm text-charcoal placeholder:text-charcoal-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
                 />
               </div>
@@ -192,7 +188,7 @@ export default function RegisterPage() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
-                  placeholder="At least 8 characters"
+                  placeholder="At least 6 characters"
                   value={formData.password}
                   onChange={handleChange}
                   required
@@ -229,18 +225,35 @@ export default function RegisterPage() {
               className="w-full bg-primary text-cream py-3.5 rounded-large font-poppins font-bold text-xs sm:text-sm hover:bg-primary-hover transition-all shadow-medium hover:shadow-large disabled:opacity-50 flex items-center justify-center gap-1.5 active:scale-95 mt-3"
             >
               <UserPlus className="w-4 h-4" />
-              <span>{loading ? 'Creating Account...' : 'Create Account & Start Quiz'}</span>
+              <span>{loading ? 'Creating Account...' : 'Create Account & Start'}</span>
             </button>
           </form>
 
           <p className="text-center text-xs text-charcoal-light font-inter pt-2 border-t border-cream-dark">
             Already have an account?{' '}
-            <Link href="/login" className="text-primary font-bold hover:underline">
+            <Link
+              href={`/login${redirectTarget ? `?redirect=${encodeURIComponent(redirectTarget)}` : ''}`}
+              className="text-primary font-bold hover:underline"
+            >
               Log in
             </Link>
           </p>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[85vh] flex items-center justify-center">
+          <Spinner size="lg" text="Loading register..." />
+        </div>
+      }
+    >
+      <RegisterFormContent />
+    </Suspense>
   );
 }

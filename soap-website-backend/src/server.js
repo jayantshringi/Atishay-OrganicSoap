@@ -16,11 +16,19 @@ app.use(express.urlencoded({ extended: true }));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running', timestamp: new Date() });
+  res.json({
+    status: 'ok',
+    message: '🧼 Atishay Organic Soap Backend is running',
+    mode: 'COD-E-Commerce-Portfolio',
+    timestamp: new Date()
+  });
 });
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/products', require('./routes/products'));
+app.use('/api/coupons', require('./routes/coupons'));
+app.use('/api/quiz', require('./routes/quiz'));
 app.use('/api/questionnaire', require('./routes/questionnaire'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/payments', require('./routes/payments'));
@@ -28,7 +36,7 @@ app.use('/api/admin', require('./routes/admin'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Server error handler caught:', err.stack || err.message);
   res.status(err.status || 500).json({
     error: err.message || 'Internal Server Error'
   });

@@ -1,9 +1,10 @@
 // src/app/layout.jsx
 
 import { Poppins, Inter, Lora } from 'next/font/google';
-import Script from 'next/script';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { AuthProvider } from '@/context/AuthContext';
+import { CartProvider } from '@/context/CartContext';
 import '../styles/globals.css';
 
 const poppins = Poppins({
@@ -29,9 +30,9 @@ const lora = Lora({
 });
 
 export const metadata = {
-  title: 'Atishay | Luxury Personalized Organic Soap Tailored to Your Skin',
-  description: 'Custom handcrafted organic soap recipes designed for your unique skin type, concerns, and allergies in India.',
-  keywords: 'custom soap, personalized skincare, organic soap, haldi soap, aloe vera soap, razorpay, handmade soap India, ayurvedic skincare',
+  title: 'Atishay | Personalized Ayurvedic & Organic Soap Storefront',
+  description: 'Handcrafted organic melt-and-pour glycerine soaps tailored to individual skin types, sensitivities, and botanical preferences. Cash on Delivery across India.',
+  keywords: 'ayurvedic soap, organic skincare, personalized soap, handmade soap India, haldi soap, aloe vera, chandan, kesar',
   openGraph: {
     title: 'Atishay | Bespoke Organic Skincare Crafted Just For You',
     description: 'Answer 5 questions. Receive clinically tailored organic glycerine soap bars with pure Haldi, Aloe, Chandan, and Kesar.',
@@ -47,12 +48,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable} ${lora.variable} scroll-smooth`}>
       <body className="font-inter bg-cream text-charcoal min-h-screen flex flex-col justify-between antialiased selection:bg-primary/20 selection:text-primary">
-        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        <AuthProvider>
+          <CartProvider>
+            <Header />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

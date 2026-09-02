@@ -8,9 +8,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Leaf,
   Sparkles,
-  ShieldCheck,
   User,
   Menu,
   X,
@@ -18,31 +16,22 @@ import {
   LogOut,
   LayoutDashboard,
   ClipboardList,
+  ShoppingBag,
+  ShieldCheck,
+  Package
 } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 
 export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const { user, isLoggedIn, isAdmin, logout } = useAuth();
+  const { itemCount } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const router = useRouter();
   const pathname = usePathname();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('userRole');
-    const name = localStorage.getItem('userName');
-    const email = localStorage.getItem('userEmail');
-
-    setIsLoggedIn(!!token);
-    setIsAdmin(role === 'admin');
-    setUserName(name || '');
-    setUserEmail(email || '');
-  }, [pathname]);
 
   // Click outside to close user dropdown
   useEffect(() => {
@@ -56,27 +45,23 @@ export default function Header() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
-    setIsLoggedIn(false);
-    setIsAdmin(false);
+    logout();
     setUserDropdownOpen(false);
     router.push('/');
   };
 
   const navLinks = [
     { label: 'Home', href: '/' },
-    { label: 'Our Soaps', href: '/soap' },
-    { label: 'Ingredients Catalog', href: '/ingredients' },
+    { label: 'Shop Soaps', href: '/products' },
+    { label: 'Skin Diagnostic', href: '/quiz' },
+    { label: 'Formulate Custom Bar', href: '/soap' },
+    { label: 'Ingredients', href: '/ingredients' },
     { label: 'How It Works', href: '/#how-it-works' },
-    { label: 'FAQ', href: '/faq' },
-    { label: 'Contact', href: '/contact' },
+    { label: 'FAQ', href: '/faq' }
   ];
 
   return (
-    <header className="bg-cream-light/90 backdrop-blur-xl border-b border-primary/10 sticky top-0 z-50 transition-all shadow-subtle">
+    <header className="bg-cream-light/95 backdrop-blur-xl border-b border-primary/10 sticky top-0 z-50 transition-all shadow-subtle">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex justify-between items-center">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
@@ -94,13 +79,13 @@ export default function Header() {
               ATISHAY
             </span>
             <span className="text-[8.5px] font-inter uppercase tracking-widest text-primary font-semibold leading-tight mt-0.5">
-              Organic Soaps
+              Organic Skincare
             </span>
           </div>
         </Link>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+        <div className="hidden lg:flex items-center gap-6 text-sm font-medium">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -125,27 +110,46 @@ export default function Header() {
           })}
         </div>
 
-        {/* Desktop Actions / Auth */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Desktop Actions / Cart / Auth */}
+        <div className="hidden md:flex items-center gap-3.5">
+          {/* Cart Badge Button */}
           <Link
-            href="/questionnaire"
-            className="flex items-center gap-1.5 bg-primary text-cream px-4 py-2 rounded-large font-poppins font-bold text-xs hover:bg-primary-hover transition-all shadow-subtle hover:shadow-medium active:scale-95"
+            href="/cart"
+            className="relative p-2 rounded-large text-charcoal hover:text-primary hover:bg-cream border border-transparent hover:border-primary/15 transition flex items-center justify-center"
+            aria-label="Shopping Cart"
           >
-            <Sparkles className="w-3.5 h-3.5 text-secondary-light animate-pulse" />
-            <span>Take Skin Quiz</span>
+            <ShoppingBag className="w-5 h-5" />
+            {itemCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-secondary text-charcoal font-poppins font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-subtle animate-scale-in">
+                {itemCount}
+              </span>
+            )}
           </Link>
 
+          {/* Quick Quiz CTA */}
+          <Link
+            href="/quiz"
+            className="flex items-center gap-1.5 bg-primary text-cream px-3.5 py-2 rounded-large font-poppins font-bold text-xs hover:bg-primary-hover transition-all shadow-subtle hover:shadow-medium active:scale-95"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-secondary-light" />
+            <span>Take Quiz</span>
+          </Link>
+
+          {/* User Profile / Auth State */}
           {isLoggedIn ? (
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-2 py-1.5 px-3 rounded-large bg-white/80 hover:bg-white border border-primary/15 text-charcoal font-poppins font-semibold text-xs transition shadow-subtle"
+                className="flex items-center gap-2 py-1.5 px-3 rounded-large bg-white/90 hover:bg-white border border-primary/15 text-charcoal font-poppins font-semibold text-xs transition shadow-subtle"
               >
                 <div className="w-6 h-6 rounded-full bg-primary/20 text-primary-dark font-bold flex items-center justify-center text-[10px]">
-                  {userName ? userName[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
+                  {user?.name ? user.name[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
                 </div>
-                <span className="max-w-[100px] truncate">{userName || 'Account'}</span>
-                <ChevronDown className={`w-3.5 h-3.5 text-charcoal-muted transition-transform duration-200 ${userDropdownOpen ? 'rotate-180' : ''}`} />
+                <span className="max-w-[90px] truncate">{user?.name || 'Account'}</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-charcoal-muted transition-transform duration-200 ${userDropdownOpen ? 'rotate-180' : ''
+                    }`}
+                />
               </button>
 
               <AnimatePresence>
@@ -158,18 +162,31 @@ export default function Header() {
                     className="absolute right-0 mt-2 w-56 bg-white rounded-extra shadow-large border border-primary/15 py-2 z-50"
                   >
                     <div className="px-4 py-2.5 border-b border-cream-dark">
-                      <p className="font-poppins font-bold text-xs text-charcoal truncate">{userName || 'Customer'}</p>
-                      <p className="text-[11px] text-charcoal-light font-inter truncate">{userEmail || 'user@atishay.com'}</p>
+                      <p className="font-poppins font-bold text-xs text-charcoal truncate">
+                        {user?.name || 'Customer'}
+                      </p>
+                      <p className="text-[11px] text-charcoal-light font-inter truncate">
+                        {user?.email || 'user@atishay.com'}
+                      </p>
                     </div>
 
                     <div className="py-1">
                       <Link
-                        href="/dashboard"
+                        href="/orders"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2 text-xs font-poppins text-charcoal hover:bg-cream/60 transition"
+                      >
+                        <Package className="w-4 h-4 text-primary" />
+                        <span>My Orders</span>
+                      </Link>
+
+                      <Link
+                        href="/account"
                         onClick={() => setUserDropdownOpen(false)}
                         className="flex items-center gap-2.5 px-4 py-2 text-xs font-poppins text-charcoal hover:bg-cream/60 transition"
                       >
                         <LayoutDashboard className="w-4 h-4 text-primary" />
-                        <span>Order History & Formulations</span>
+                        <span>Account &amp; Addresses</span>
                       </Link>
 
                       {isAdmin && (
@@ -184,12 +201,12 @@ export default function Header() {
                       )}
 
                       <Link
-                        href="/questionnaire"
+                        href="/quiz"
                         onClick={() => setUserDropdownOpen(false)}
                         className="flex items-center gap-2.5 px-4 py-2 text-xs font-poppins text-charcoal hover:bg-cream/60 transition"
                       >
                         <ClipboardList className="w-4 h-4 text-primary" />
-                        <span>New Skin Diagnostic</span>
+                        <span>Skin Diagnostic</span>
                       </Link>
                     </div>
 
@@ -224,21 +241,35 @@ export default function Header() {
           )}
         </div>
 
-        {/* Mobile Menu Toggle Button */}
-        <button
-          aria-label="Toggle Navigation Menu"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden w-10 h-10 rounded-large bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition"
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile Actions: Cart & Menu Toggle */}
+        <div className="md:hidden flex items-center gap-2">
+          <Link
+            href="/cart"
+            className="relative p-2 rounded-large text-charcoal hover:text-primary bg-white border border-primary/15 flex items-center justify-center"
+            aria-label="Shopping Cart"
+          >
+            <ShoppingBag className="w-5 h-5" />
+            {itemCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-secondary text-charcoal font-poppins font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center shadow-subtle">
+                {itemCount}
+              </span>
+            )}
+          </Link>
+
+          <button
+            aria-label="Toggle Navigation Menu"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="w-10 h-10 rounded-large bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </nav>
 
-      {/* Mobile Drawer Menu with Backdrop Blur */}
+      {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -247,13 +278,12 @@ export default function Header() {
               className="fixed inset-0 bg-charcoal/40 backdrop-blur-sm z-40 md:hidden"
             />
 
-            {/* Slide Down Sheet */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="absolute top-full left-0 right-0 bg-cream-light border-b border-primary/15 shadow-large p-5 z-50 md:hidden space-y-4"
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              className="absolute top-full left-0 right-0 bg-cream-light border-b border-primary/15 shadow-large p-5 z-50 md:hidden space-y-4 max-h-[85vh] overflow-y-auto"
             >
               <div className="flex flex-col gap-2">
                 {navLinks.map((link) => (
@@ -273,22 +303,29 @@ export default function Header() {
 
               <div className="pt-2 border-t border-primary/10 space-y-2">
                 <Link
-                  href="/questionnaire"
+                  href="/quiz"
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full flex items-center justify-center gap-2 bg-primary text-cream py-3 rounded-large font-poppins font-bold text-sm shadow-medium"
                 >
                   <Sparkles className="w-4 h-4 text-secondary-light" />
-                  <span>Start Skin Diagnostic Quiz</span>
+                  <span>Take Skin Diagnostic</span>
                 </Link>
 
                 {isLoggedIn ? (
                   <div className="space-y-2 pt-2">
                     <Link
-                      href="/dashboard"
+                      href="/orders"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block py-2.5 px-3 rounded-large font-poppins text-sm font-semibold bg-white border border-primary/15 text-primary text-center"
                     >
-                      Customer Dashboard
+                      My Orders &amp; Tracking
+                    </Link>
+                    <Link
+                      href="/account"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block py-2.5 px-3 rounded-large font-poppins text-sm font-medium bg-white border border-primary/15 text-charcoal text-center"
+                    >
+                      Account Settings
                     </Link>
                     {isAdmin && (
                       <Link

@@ -2,186 +2,79 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useQuestionnaireStore } from '@/store/questionnaireStore';
-import {
-  Star,
-  Sparkles,
-  ArrowRight,
-  Leaf,
-  ShieldCheck,
-  Award,
-  ShoppingBag,
-} from 'lucide-react';
+import { Award, ArrowRight } from 'lucide-react';
+import ProductCard from '@/components/ProductCard';
+import Spinner from '@/components/Spinner';
+import { productsAPI, DEMO_PRODUCTS } from '@/services/api';
 
 export default function BestSellers() {
-  const store = useQuestionnaireStore();
+  const [products, setProducts] = useState(DEMO_PRODUCTS.slice(0, 2));
+  const [loading, setLoading] = useState(false);
 
-  const products = [
-    {
-      id: 'haldi-acne',
-      name: 'Haldi & Neem Clarifying Bar',
-      skinType: 'oily',
-      skinLabel: 'Oily & Acne-Prone',
-      skinTagColor: 'bg-botanical-haldi/20 text-charcoal border-botanical-haldi/40',
-      description: 'Clinically balanced with pure turmeric extract to purge clogged pores without drying your natural moisture barrier.',
-      price: 399,
-      rating: 4.9,
-      reviewCount: 342,
-      badge: 'Best Seller',
-      image: '/images/products/turmeric-haldi.jpg',
-      gradient: 'from-amber-200/60 via-amber-100/40 to-cream',
-      ph: '5.5 Balanced',
-    },
-    {
-      id: 'aloe-hydrate',
-      name: 'Aloe Vera & Shea Butter Bar',
-      skinType: 'dry',
-      skinLabel: 'Dry & Dehydrated',
-      skinTagColor: 'bg-botanical-aloe/30 text-primary-darker border-botanical-aloe',
-      description: 'Rich vegetable glycerine base infused with fresh aloe gel to relieve tightness and replenish essential skin lipids.',
-      price: 399,
-      rating: 4.9,
-      reviewCount: 285,
-      badge: 'Most Loved',
-      image: '/images/products/aloe-vera.jpg',
-      gradient: 'from-emerald-200/60 via-teal-100/40 to-cream',
-      ph: '5.5 Balanced',
-    },
-  ];
+  useEffect(() => {
+    async function loadBestSellers() {
+      try {
+        const res = await productsAPI.getAll();
+        if (res?.data?.products && res.data.products.length > 0) {
+          const allowedSlugs = ['aloe-vera-shea-hydration-bar', 'haldi-neem-anti-acne-bar'];
+          const filtered = res.data.products.filter(
+            (p) => allowedSlugs.includes(p.slug) || ['hydration', 'acne'].includes(p.category)
+          );
+          if (filtered.length > 0) {
+            setProducts(filtered.slice(0, 2));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load best sellers:', err);
+      }
+    }
+    loadBestSellers();
+  }, []);
 
   return (
     <section id="bestsellers" className="py-16 sm:py-24 bg-cream relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto space-y-3"
         >
-          <span className="text-secondary font-poppins font-bold uppercase tracking-wider text-xs bg-secondary/15 px-3 py-1 rounded-full border border-secondary/30">
-            Handcrafted Masterpieces
+          <span className="text-secondary font-poppins font-bold uppercase tracking-wider text-xs bg-secondary/15 px-3 py-1 rounded-full border border-secondary/30 inline-flex items-center gap-1.5">
+            <Award className="w-3.5 h-3.5" />
+            Most Loved Formulations
           </span>
           <h2 className="text-3xl sm:text-4xl font-poppins font-bold text-charcoal">
-            Best Sellers &amp; Most Prescribed
+            Flagship Best Sellers
           </h2>
           <p className="text-charcoal-light text-sm sm:text-base font-inter">
-            Our most frequently prescribed customer recipes. Each formula can be fully customized for your unique allergy profile.
+            Pure vegetable glycerine bars infused with cold-pressed botanical extracts. Each recipe is balanced to pH 5.5 for optimal skin barrier health.
           </p>
         </motion.div>
 
-        {/* Product Cards Grid */}
-        <div
-          className={`grid grid-cols-1 sm:grid-cols-2 ${
-            products.length > 2 ? 'lg:grid-cols-4' : 'lg:grid-cols-2 max-w-4xl mx-auto'
-          } gap-6 sm:gap-8`}
-        >
-          {products.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.12 }}
-              whileHover={{ y: -8 }}
-              className="bg-white rounded-extra border border-primary/15 shadow-subtle hover:shadow-large transition-all flex flex-col justify-between overflow-hidden group"
-            >
-              {/* Product Visual Area with Real Image */}
-              <div className="relative w-full aspect-square bg-cream overflow-hidden border-b border-primary/10">
-                {item.image ? (
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-contain p-1.5 group-hover:scale-105 transition-transform duration-500"
-                    priority={index === 0}
-                  />
-                ) : (
-                  <div
-                    className={`w-full h-full bg-gradient-to-b ${item.gradient} flex items-center justify-center`}
-                  >
-                    <Leaf className="w-10 h-10 text-primary" />
-                  </div>
-                )}
-              </div>
+        {/* Product Cards Responsive 2-Col Grid */}
+        {loading ? (
+          <Spinner size="lg" text="Loading Best Sellers..." />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto gap-6 sm:gap-8">
+            {products.map((product) => (
+              <ProductCard key={product.id || product.slug} product={product} />
+            ))}
+          </div>
+        )}
 
-              {/* Product Details Area */}
-              <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1 text-secondary text-xs font-poppins font-bold">
-                      <Star className="w-3.5 h-3.5 fill-secondary text-secondary" />
-                      <span>{item.rating}</span>
-                      <span className="text-charcoal-muted font-normal text-[11px]">
-                        ({item.reviewCount} reviews)
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-poppins font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                      {item.ph}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="bg-secondary/20 text-charcoal font-poppins font-bold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                      <Award className="w-3 h-3 text-secondary-dark" />
-                      {item.badge}
-                    </span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-poppins font-semibold border ${item.skinTagColor}`}>
-                      {item.skinLabel}
-                    </span>
-                  </div>
-
-                  <h3 className="text-base sm:text-lg font-poppins font-bold text-charcoal group-hover:text-primary transition-colors">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs text-charcoal-light font-inter mt-1.5 leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-cream-dark flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] text-charcoal-muted uppercase font-bold block">
-                      Formula Price
-                    </span>
-                    <span className="text-xl font-poppins font-extrabold text-secondary">
-                      ₹{item.price}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href="/soap"
-                      className="text-xs font-poppins font-semibold text-charcoal hover:text-primary border border-primary/20 bg-cream/70 hover:bg-cream px-3 py-2 rounded-large transition"
-                    >
-                      View
-                    </Link>
-                    <Link
-                      href="/questionnaire"
-                      onClick={() => store.updateAnswer('skinType', item.skinType)}
-                      className="bg-primary text-cream px-4 py-2 rounded-large font-poppins font-bold text-xs hover:bg-primary-hover transition-all shadow-subtle flex items-center gap-1 group/btn"
-                    >
-                      <span>Customize</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* View All Soaps Link */}
+        {/* Bottom CTA Link */}
         <div className="text-center pt-4">
           <Link
-            href="/soap"
-            className="inline-flex items-center gap-2 text-sm font-poppins font-bold text-primary hover:text-primary-hover transition group"
+            href="/products"
+            className="inline-flex items-center gap-2 text-sm font-poppins font-bold text-primary hover:text-primary-hover transition group bg-white px-6 py-3 rounded-full border border-primary/20 shadow-subtle hover:shadow-medium"
           >
-            <span>Explore All 4 Handcrafted Botanical Soaps</span>
+            <span>Explore Complete Ayurvedic Catalog</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

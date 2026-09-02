@@ -2,14 +2,15 @@
 
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { authAPI } from '@/services/api';
-import { Leaf, Eye, EyeOff, Sparkles, ShieldCheck, ArrowRight, Lock } from 'lucide-react';
+import { Eye, EyeOff, ShieldCheck, Lock } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import Spinner from '@/components/Spinner';
 
-export default function LoginPage() {
+function LoginFormContent() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -17,7 +18,12 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTarget = searchParams.get('redirect') || '';
+
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,24 +36,14 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await authAPI.login(formData);
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('userEmail', formData.email);
-        if (response.data.name) {
-          localStorage.setItem('userName', response.data.name);
-        }
-        if (response.data.role) {
-          localStorage.setItem('userRole', response.data.role);
-        }
-      }
-      if (response.data.role === 'admin') {
-        router.push('/admin');
+      const res = await login(formData.email, formData.password);
+      if (res?.user?.role === 'admin') {
+        router.push(redirectTarget || '/admin');
       } else {
-        router.push('/dashboard');
+        router.push(redirectTarget || '/products');
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed. Please verify credentials.');
+      setError(err.response?.data?.error || err.message || 'Login failed. Please verify your credentials.');
     } finally {
       setLoading(false);
     }
@@ -170,13 +166,16 @@ export default function LoginPage() {
           <div className="border-t border-cream-dark pt-4 text-center space-y-2">
             <p className="text-xs text-charcoal-light font-inter">
               Do not have an account?{' '}
-              <Link href="/register" className="text-primary font-bold hover:underline">
+              <Link
+                href={`/register${redirectTarget ? `?redirect=${encodeURIComponent(redirectTarget)}` : ''}`}
+                className="text-primary font-bold hover:underline"
+              >
                 Create an account
               </Link>
             </p>
             <p className="text-xs text-charcoal-light font-inter">
-              Want to try the quiz first?{' '}
-              <Link href="/questionnaire" className="text-secondary font-bold hover:underline">
+              Want to try the diagnostic first?{' '}
+              <Link href="/quiz" className="text-secondary font-bold hover:underline">
                 Take Skin Quiz →
               </Link>
             </p>
@@ -184,5 +183,19 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[85vh] flex items-center justify-center">
+          <Spinner size="lg" text="Loading login..." />
+        </div>
+      }
+    >
+      <LoginFormContent />
+    </Suspense>
   );
 }
