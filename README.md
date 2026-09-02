@@ -1,7 +1,7 @@
 <div align="center">
   <img src="soap-website-frontend/public/images/logo.png" alt="Atishay Botanical Seal" width="110" height="110" style="border-radius: 50%;" />
   
-  # 🌿 ATISHAY — Bespoke Ayurvedic & Organic Skincare
+# 🌿 ATISHAY — Bespoke Ayurvedic & Organic Skincare
 
   <p align="center">
     <strong>Science-Backed Personalized Formulations • 100% Vegetable Glycerine Base • Preservative & Sulfate Free</strong>
@@ -20,7 +20,9 @@
 ---
 
 > ### ⚠️ PORTFOLIO & DEMONSTRATION NOTICE
+>
 > **This project was engineered and developed as an end-to-end full-stack portfolio showcase.**
+>
 > - **Cash on Delivery (COD) Only**: The checkout pipeline exclusively uses Cash on Delivery so that the complete customer order lifecycle, administrative dispatch workflows, and courier tracking progression can be demoed without requiring external merchant payment gateway accounts (Stripe / Razorpay).
 > - All formulations, clinical quiz outcomes, and botanical profiles are designed for high-aesthetic showcase and engineering demonstration.
 
@@ -33,6 +35,7 @@
 Atishay combines **ancient Indian Ayurveda** with **modern cosmetic dermatology** to deliver small-batch, melt-and-pour vegetable glycerine bars customized to individual skin types, specific sensitivities, and allergen triggers.
 
 ### 🌿 Brand & Formulation Philosophy
+
 - **pH 5.5 Balanced**: Formulated to match the acid mantle of human skin, protecting against microbial irritation.
 - **Cold-Crafted Vegetable Glycerine**: Superior humectant properties lock in trans-epidermal moisture for 24 hours.
 - **Strict Allergen Exclusion**: Proprietary diagnostic matcher filters out user-specified sensitivities (such as essential oil triggers or botanical extracts).
@@ -43,7 +46,7 @@ Atishay combines **ancient Indian Ayurveda** with **modern cosmetic dermatology*
 ## 🧪 Flagship Botanical Formulations
 
 | Formulation | Category | Target Skin | Key Actives | Benefits |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | **Aloe Vera & Shea Intense Hydration Bar** | `Hydration` | Dry & Dehydrated | Cold-Pressed Aloe Gel, Raw African Shea, Sweet Almond Oil, Vitamin E | Restores compromised lipid barrier, soothes flakiness, deep cellular moisture. |
 | **Haldi & Neem Clarifying Anti-Acne Bar** | `Acne & Clarity` | Oily & Acne-Prone | Wild Kasturi Turmeric (*Kasturi Manjal*), Steam-Distilled Neem, Tea Tree, Jojoba Oil | Clarifies clogged pores, balances excess sebum, natural antimicrobial protection. |
 
@@ -52,26 +55,31 @@ Atishay combines **ancient Indian Ayurveda** with **modern cosmetic dermatology*
 ## ✨ Key System Features & Highlights
 
 ### 1. 🧬 5-Step Clinical Skin Diagnostic Engine (`/quiz`)
+
 - Comprehensive diagnostic evaluating skin profile (Dry, Oily, Combination, Sensitive), primary concerns, allergen triggers, and lather preference.
 - **Live 3D Soap Visualizer**: Dynamic visual representation reflecting soap hue, translucency, and botanical infusion in real time.
 - Automated algorithmic recipe matching with allergen exclusion guarantees.
 
 ### 2. 🛍️ High-Performance Storefront & Catalog (`/products`, `/products/[slug]`)
+
 - Multi-category filtering (`All Soaps`, `Aloe Vera Hydration`, `Haldi Neem Anti-Acne`).
 - Debounced real-time search synced with URL search parameters for shareable bookmarking.
 - In-depth product detail pages featuring full ingredient transparency, skin benefits, verified customer star ratings, and review submissions.
 
 ### 3. 🛒 Dynamic Cart & Promo Engine (`/cart`)
+
 - Instant item quantity adjustment and automatic subtotal computation.
 - Free Express Delivery threshold calculator (automated free shipping on orders over ₹499).
 - Dynamic coupon code validator (e.g., `WELCOME10` for a 10% discount).
 
 ### 4. 🚚 Frictionless COD Checkout & Order Tracking (`/checkout`, `/orders`, `/orders/[id]`)
+
 - Streamlined Cash on Delivery address form with saved address pre-fill.
 - Instant order confirmation receipts with tracking ID generation.
 - **4-Step Live Fulfillment Timeline**: Real-time status progression (`Confirmed` → `In Production` → `Shipped` → `Delivered`) with postal AWB tracking numbers.
 
 ### 5. 🛡️ Administrative Operations Portal (`/admin`, `/admin/orders`, `/admin/products`)
+
 - Real-time KPI analytics (Total Orders, Today's Studio Revenue, In-Production Batches, Dispatched Shipments).
 - Order fulfillment progression selector and courier tracking assignment.
 - Product catalog overview and inventory monitoring.
@@ -168,25 +176,30 @@ Atishay-OrganicSoap/
 ## 🚀 Local Development Setup
 
 ### 1. Prerequisites
+
 - **Node.js**: v18.0.0 or higher
 - **npm** or **yarn**
 
 ### 2. Clone the Repository
+
 ```bash
 git clone https://github.com/jayantshringi/Atishay-OrganicSoap.git
 cd Atishay-OrganicSoap
 ```
 
 ### 3. Backend Setup
+
 ```bash
 cd soap-website-backend
 npm install
 npm run dev
 # Backend server runs on http://localhost:5000
 ```
+
 > *The backend includes built-in in-memory fallback stores, allowing the full application to run locally even if an external database server is disconnected.*
 
 ### 4. Frontend Setup
+
 ```bash
 cd ../soap-website-frontend
 npm install
