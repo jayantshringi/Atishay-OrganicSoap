@@ -36,14 +36,7 @@ lerna-debug.log*
 prisma/dev.db
 prisma/dev.db-journal
 
-# Local docs & AI agent configs
-UI_IMPROVEMENT.md
-**/UI_IMPROVEMENT.md
-.agents/
-**/.agents/
-.claude/
-**/.claude/
-Atishay-Build Instructions for Antigravity IDE.md
-*Build Instructions*.md
+
+
 
 

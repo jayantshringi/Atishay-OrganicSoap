@@ -35,6 +35,7 @@ export default function Rating({
               key={star}
               type={interactive ? 'button' : undefined}
               disabled={!interactive}
+              aria-label={`Rate ${star} out of 5 stars`}
               onClick={() => interactive && onChange(star)}
               className={`${interactive ? 'cursor-pointer hover:scale-110 transition-transform' : 'cursor-default'} focus:outline-none`}
             >

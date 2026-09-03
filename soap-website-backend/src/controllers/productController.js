@@ -74,6 +74,68 @@ const SEED_PRODUCTS = [
       'Dermatologically tested gentle formula'
     ],
     createdAt: '2026-01-10T00:00:00.000Z'
+  },
+  {
+    id: 'prod_sensitive_03',
+    slug: 'sandalwood-chandan-soap',
+    name: 'Sandalwood-Chandan Soap',
+    tagline: 'Soothing Mysore Sandalwood for sensitive and irritated skin',
+    category: 'sensitive',
+    skinType: 'sensitive',
+    price: 449,
+    compareAtPrice: 549,
+    rating: 4.8,
+    numReviews: 60,
+    stock: 35,
+    image: '/images/products/sandalwood-chandan.png',
+    images: ['/images/products/sandalwood-chandan.png'],
+    shortDescription: 'Calming Mysore Chandan formulation designed to soothe irritation and provide a delicate, lingering woody aroma.',
+    description: 'Experience the cooling and calming effects of authentic Mysore Sandalwood. This gentle formulation is perfect for sensitive skin types, helping to reduce redness and inflammation while delivering a classic, soothing woody fragrance.',
+    ingredients: [
+      'Mysore Sandalwood Extract',
+      'Sandalwood Essential Oil',
+      'Pure Vegetable Glycerine',
+      'Aloe Vera Extract',
+      'Vitamin E (Tocopherol)'
+    ],
+    benefits: [
+      'Soothes irritated and sensitive skin',
+      'Provides a natural cooling effect',
+      'Leaves a lingering woody aroma',
+      'Dermatologically tested gentle formula'
+    ],
+    createdAt: '2026-01-18T00:00:00.000Z'
+  },
+  {
+    id: 'prod_radiance_04',
+    slug: 'saffron-kesar-soap',
+    name: 'Saffron Kesar Soap',
+    tagline: 'Authentic Kashmiri Saffron for radiant and glowing skin',
+    category: 'radiance',
+    skinType: 'all',
+    price: 499,
+    compareAtPrice: 599,
+    rating: 4.9,
+    numReviews: 45,
+    stock: 20,
+    image: '/images/products/saffron-kesar.jpg',
+    images: ['/images/products/saffron-kesar.jpg'],
+    shortDescription: 'Infused with pure Kashmiri Kesar to gently lighten blemishes and promote a luminous complexion.',
+    description: 'Our luxurious Saffron Kesar Soap is handcrafted with premium Kashmiri Saffron strands. Known for its skin-brightening properties, kesar naturally improves skin texture and evens out tone, while our pure vegetable glycerine base ensures your skin remains deeply moisturized.',
+    ingredients: [
+      'Kashmiri Saffron (Kesar)',
+      'Pure Vegetable Glycerine',
+      'Sweet Almond Oil',
+      'Rose Water',
+      'Vitamin E (Tocopherol)'
+    ],
+    benefits: [
+      'Promotes natural skin radiance',
+      'Helps even out skin tone',
+      'Deeply moisturizes without clogging pores',
+      '100% Sulfate & Paraben Free'
+    ],
+    createdAt: '2026-01-20T00:00:00.000Z'
   }
 ];
 

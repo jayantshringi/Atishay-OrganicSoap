@@ -297,7 +297,7 @@ export default function CartPage() {
 
           {/* Proceed to Checkout Button */}
           <Link
-            href="/checkout"
+            href={isLoggedIn ? "/checkout" : "/login?redirect=/checkout"}
             className="w-full flex items-center justify-center gap-2 bg-primary text-cream py-3.5 rounded-large font-poppins font-bold text-sm hover:bg-primary-hover transition-all shadow-medium active:scale-98"
           >
             <span>Proceed to Checkout</span>

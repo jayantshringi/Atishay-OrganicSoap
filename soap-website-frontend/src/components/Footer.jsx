@@ -56,7 +56,7 @@ export default function Footer() {
                 <span className="font-poppins font-bold text-xs sm:text-sm text-cream block">
                   {item.label}
                 </span>
-                <span className="text-[11px] text-cream/60 font-inter block">
+                <span className="text-[11px] text-cream/80 font-inter block">
                   {item.sub}
                 </span>
               </div>
@@ -216,7 +216,7 @@ export default function Footer() {
         </div>
 
         {/* Patch Test Warning and Copyright */}
-        <div className="border-t border-cream/10 pt-8 text-center text-xs text-cream/60 space-y-3 font-inter">
+        <div className="border-t border-cream/10 pt-8 text-center text-xs text-cream/80 space-y-3 font-inter">
           <div className="bg-white/5 border border-secondary/30 rounded-large p-4 max-w-2xl mx-auto text-cream/90 flex items-center justify-center gap-3">
             <AlertTriangle className="w-5 h-5 text-secondary shrink-0" />
             <p className="text-left text-xs leading-relaxed">

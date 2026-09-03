@@ -120,12 +120,7 @@ export default function HeroSection() {
           </motion.div>
 
           {/* Right Showcase Product Banner Presentation */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.35, duration: 0.8 }}
-            className="lg:col-span-5 relative flex justify-center"
-          >
+          <div className="lg:col-span-5 relative flex justify-center">
             <div className="relative w-full max-w-lg group animate-float-banner">
               {/* Soft Ambient Glow */}
               <div className="absolute -inset-2 bg-gradient-to-r from-primary/30 via-secondary/30 to-primary/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
@@ -138,11 +133,12 @@ export default function HeroSection() {
                   width={1024}
                   height={682}
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
                   className="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -118,7 +118,7 @@ export default function Testimonials() {
                     {rev.initials}
                   </div>
                   <div>
-                    <h4 className="font-poppins font-bold text-charcoal text-sm">{rev.name}</h4>
+                    <h3 className="font-poppins font-bold text-charcoal text-sm">{rev.name}</h3>
                     <span className="text-[11px] text-charcoal-light font-inter block">{rev.location}</span>
                   </div>
                 </div>

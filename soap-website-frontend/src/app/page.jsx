@@ -1,13 +1,14 @@
 // src/app/page.jsx
 
-'use client';
-
+import dynamic from 'next/dynamic';
 import HeroSection from '@/components/Sections/HeroSection';
-import HowItWorks from '@/components/Sections/HowItWorks';
-import QuizPreviewSection from '@/components/Sections/QuizPreviewSection';
-import Testimonials from '@/components/Sections/Testimonials';
-import BestSellers from '@/components/Sections/BestSellers';
-import BrandStoryTrust from '@/components/Sections/BrandStoryTrust';
+
+// Dynamically import below-the-fold components to reduce initial JS payload
+const HowItWorks = dynamic(() => import('@/components/Sections/HowItWorks'));
+const QuizPreviewSection = dynamic(() => import('@/components/Sections/QuizPreviewSection'));
+const Testimonials = dynamic(() => import('@/components/Sections/Testimonials'));
+const BestSellers = dynamic(() => import('@/components/Sections/BestSellers'));
+const BrandStoryTrust = dynamic(() => import('@/components/Sections/BrandStoryTrust'));
 
 export default function Home() {
   return (
