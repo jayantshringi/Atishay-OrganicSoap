@@ -20,8 +20,8 @@ const authMiddleware = async (req, res, next) => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser(token);
         if (user && !error) {
-          // Attempt to fetch profile for role metadata
-          let role = user.user_metadata?.role || 'customer';
+          // SECURITY FIX: Never trust client-supplied user_metadata.role for privilege assignment
+          let role = 'customer';
           try {
             const { data: profile } = await supabase
               .from('profiles')
@@ -30,7 +30,7 @@ const authMiddleware = async (req, res, next) => {
               .single();
             if (profile?.role) role = profile.role;
           } catch (pErr) {
-            // Non-critical profile query error
+            // Non-critical profile query error - defaults safely to customer
           }
 
           req.user = {
@@ -48,7 +48,11 @@ const authMiddleware = async (req, res, next) => {
     }
 
     // 2. Fallback to standard JWT verification
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_personalized_soap_jwt_key_2026');
+    const secret = process.env.JWT_SECRET || (process.env.NODE_ENV !== 'production' ? 'super_secret_personalized_soap_jwt_key_2026' : null);
+    if (!secret) {
+      return res.status(500).json({ error: 'Server authentication configuration error' });
+    }
+    const decoded = jwt.verify(token, secret);
     req.user = decoded;
     next();
   } catch (err) {
@@ -66,19 +70,32 @@ const optionalAuth = async (req, res, next) => {
           try {
             const { data: { user } } = await supabase.auth.getUser(token);
             if (user) {
+              let role = 'customer';
+              try {
+                const { data: profile } = await supabase
+                  .from('profiles')
+                  .select('role')
+                  .eq('id', user.id)
+                  .single();
+                if (profile?.role) role = profile.role;
+              } catch {}
+
               req.user = {
                 id: user.id,
                 userId: user.id,
                 email: user.email,
                 name: user.user_metadata?.name || 'Customer',
-                role: user.user_metadata?.role || 'customer',
+                role,
               };
               return next();
             }
           } catch {}
         }
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_personalized_soap_jwt_key_2026');
-        req.user = decoded;
+        const secret = process.env.JWT_SECRET || (process.env.NODE_ENV !== 'production' ? 'super_secret_personalized_soap_jwt_key_2026' : null);
+        if (secret) {
+          const decoded = jwt.verify(token, secret);
+          req.user = decoded;
+        }
       }
     }
   } catch (err) {

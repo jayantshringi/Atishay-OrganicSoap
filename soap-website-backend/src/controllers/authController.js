@@ -7,10 +7,14 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 // Generate JWT token
-const generateToken = (userId, role) => {
+const generateToken = (userId, role = 'customer') => {
+  const secret = process.env.JWT_SECRET || (process.env.NODE_ENV !== 'production' ? 'super_secret_personalized_soap_jwt_key_2026' : null);
+  if (!secret) {
+    throw new Error('JWT_SECRET must be configured in environment variables');
+  }
   return jwt.sign(
     { userId, role },
-    process.env.JWT_SECRET || 'super_secret_personalized_soap_jwt_key_2026',
+    secret,
     { expiresIn: process.env.JWT_EXPIRY || '30d' }
   );
 };
@@ -113,19 +117,8 @@ const login = async (req, res) => {
         role: user.role
       });
     } catch (dbErr) {
-      console.warn('DB Error during login, returning dev fallback:', dbErr.message);
-      const isDevAdmin = email.toLowerCase().includes('admin');
-      const role = isDevAdmin ? 'admin' : 'customer';
-      const mockUserId = `user_${Date.now()}`;
-      const token = generateToken(mockUserId, role);
-
-      return res.json({
-        message: 'Login successful (dev mode)',
-        token,
-        userId: mockUserId,
-        name: email.split('@')[0],
-        role
-      });
+      console.error('Database error during login:', dbErr.message);
+      return res.status(503).json({ error: 'Database service unavailable. Please check your database connection or try again later.' });
     }
   } catch (err) {
     console.error(err);

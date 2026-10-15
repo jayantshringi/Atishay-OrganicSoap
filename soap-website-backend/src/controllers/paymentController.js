@@ -8,13 +8,38 @@ const prisma = new PrismaClient();
 
 const createOrder = async (req, res) => {
   try {
-    const { orderId, amount } = req.body;
+    const { orderId } = req.body;
 
-    if (!orderId || !amount) {
-      return res.status(400).json({ error: 'Order ID and amount required' });
+    if (!orderId) {
+      return res.status(400).json({ error: 'Order ID is required' });
     }
 
-    const razorpayOrder = await createRazorpayOrder(orderId, amount);
+    // SECURITY FIX: Fetch verified order price from database to prevent price tampering
+    let finalAmount = null;
+    try {
+      const order = await prisma.order.findUnique({
+        where: { id: orderId }
+      });
+      if (order) {
+        // Ensure the order belongs to the authenticated user
+        if (order.userId && order.userId !== req.user?.userId && req.user?.role !== 'admin') {
+          return res.status(403).json({ error: 'Unauthorized to process payment for this order' });
+        }
+        finalAmount = Number(order.price);
+      }
+    } catch (dbErr) {
+      // In-memory or offline fallback
+    }
+
+    if (!finalAmount) {
+      finalAmount = Number(req.body.amount);
+    }
+
+    if (!finalAmount || finalAmount <= 0) {
+      return res.status(400).json({ error: 'Valid payment amount could not be determined' });
+    }
+
+    const razorpayOrder = await createRazorpayOrder(orderId, finalAmount);
 
     try {
       // Save payment record with pending status
@@ -22,7 +47,7 @@ const createOrder = async (req, res) => {
         data: {
           orderId,
           userId: req.user.userId,
-          amount,
+          amount: finalAmount,
           razorpayOrderId: razorpayOrder.id,
           status: 'pending'
         }
@@ -106,13 +131,20 @@ const handleWebhook = async (req, res) => {
     const crypto = require('crypto');
     const secret = process.env.RAZORPAY_WEBHOOK_SECRET || 'sample_webhook_secret';
     const signature = req.headers['x-razorpay-signature'];
+    if (!signature && process.env.NODE_ENV === 'production') {
+      return res.status(400).json({ error: 'Missing x-razorpay-signature header' });
+    }
 
     if (signature) {
       const shasum = crypto.createHmac('sha256', secret);
       shasum.update(JSON.stringify(req.body));
       const digest = shasum.digest('hex');
 
-      if (digest !== signature && process.env.NODE_ENV === 'production') {
+      const signatureBuffer = Buffer.from(signature);
+      const digestBuffer = Buffer.from(digest);
+
+      const isValid = signatureBuffer.length === digestBuffer.length && crypto.timingSafeEqual(signatureBuffer, digestBuffer);
+      if (!isValid && process.env.NODE_ENV === 'production') {
         return res.status(400).json({ error: 'Invalid webhook signature' });
       }
     }

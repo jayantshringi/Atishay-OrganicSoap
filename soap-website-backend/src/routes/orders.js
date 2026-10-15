@@ -21,6 +21,6 @@ router.get('/my', authMiddleware, getMyOrders);
 
 // Single order details & update
 router.get('/:orderId', optionalAuth, getOrderById);
-router.put('/:orderId', authMiddleware, updateOrder);
+router.put('/:orderId', adminMiddleware, updateOrder);
 
 module.exports = router;

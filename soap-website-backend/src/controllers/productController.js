@@ -312,19 +312,25 @@ const getProductReviews = async (req, res) => {
 const addProductReview = async (req, res) => {
   try {
     const { productId } = req.params;
-    const { rating, title, comment, orderId } = req.body;
-
-    if (!rating || !comment) {
-      return res.status(400).json({ error: 'Rating and comment are required' });
+    const numRating = Math.round(Number(rating));
+    if (isNaN(numRating) || numRating < 1 || numRating > 5) {
+      return res.status(400).json({ error: 'Rating must be between 1 and 5' });
     }
+
+    if (!comment || typeof comment !== 'string' || comment.trim().length < 3 || comment.length > 2000) {
+      return res.status(400).json({ error: 'Review comment must be between 3 and 2000 characters' });
+    }
+
+    const sanitizedTitle = typeof title === 'string' && title.trim() ? title.trim().substring(0, 100) : 'Verified Purchase Review';
+    const sanitizedComment = comment.trim();
 
     const newReview = {
       id: `rev_${Date.now()}`,
       productId,
       userName: req.user?.name || 'Verified Customer',
-      rating: Number(rating),
-      title: title || 'Verified Purchase Review',
-      comment,
+      rating: numRating,
+      title: sanitizedTitle,
+      comment: sanitizedComment,
       orderId: orderId || null,
       createdAt: new Date().toISOString()
     };

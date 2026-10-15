@@ -219,55 +219,37 @@ const getOrders = async (req, res) => {
 const getOrderById = async (req, res) => {
   try {
     const { orderId } = req.params;
+    const currentUserId = req.user?.userId;
+    const isAdmin = req.user?.role === 'admin';
+
+    let order = null;
 
     try {
-      const dbOrder = await prisma.order.findUnique({
+      order = await prisma.order.findUnique({
         where: { id: orderId },
         include: { recipe: true, payments: true }
       });
-
-      if (dbOrder) {
-        return res.json(dbOrder);
-      }
     } catch (dbErr) {
       // Fall through to in-memory
     }
 
-    const found = IN_MEMORY_ORDERS.find(o => o.id === orderId);
-    if (found) {
-      return res.json(found);
+    if (!order) {
+      order = IN_MEMORY_ORDERS.find(o => o.id === orderId);
     }
 
-    // Default sample fallback for demo routing
-    return res.json({
-      id: orderId,
-      userId: req.user?.userId || 'usr_demo_1',
-      items: [
-        {
-          id: 'prod_hydration_01',
-          name: 'Aloe Vera & Shea Intense Hydration Bar',
-          price: 399,
-          quantity: 1,
-          image: '/images/products/aloe-vera.jpg'
-        }
-      ],
-      price: 399,
-      subtotal: 399,
-      shippingFee: 0,
-      paymentMethod: 'COD',
-      orderStatus: 'confirmed',
-      deliveryAddress: 'Flat 402, Lotus Residency, MG Road',
-      deliveryCity: 'Mumbai',
-      deliveryPostalCode: '400001',
-      deliveryPhone: '9876543210',
-      deliveryDate: new Date(Date.now() + 3 * 86400000).toISOString(),
-      createdAt: new Date().toISOString(),
-      user: { name: 'Customer', email: 'customer@example.com' },
-      recipe: {
-        name: 'Aloe Vera & Shea Intense Hydration Bar',
-        ingredients: JSON.stringify(['Cold-Pressed Aloe Vera', 'Raw Shea Butter', 'Pure Vegetable Glycerine'])
-      }
-    });
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Security check: Customer can only view their own order; Admins can view all orders
+    const isOwner = currentUserId && (order.userId === currentUserId || order.userId === req.user?.id);
+    const isGuestOrder = order.userId?.startsWith('guest_') || !order.userId;
+
+    if (!isAdmin && !isOwner && !isGuestOrder) {
+      return res.status(403).json({ error: 'Unauthorized to view this order' });
+    }
+
+    return res.json(order);
   } catch (err) {
     console.error('Failed to fetch order details:', err);
     res.status(500).json({ error: 'Failed to fetch order' });
