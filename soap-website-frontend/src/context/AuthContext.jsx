@@ -30,13 +30,14 @@ export function AuthProvider({ children }) {
         if (session?.user) {
           const u = session.user;
           const userMeta = u.user_metadata || {};
-          const isAdmin = u.email === 'admin@soapco.com' || userMeta.role === 'admin';
+          // SECURITY FIX: Never grant admin role based on substring matching. Must be explicitly assigned role.
+          const role = userMeta.role === 'admin' ? 'admin' : 'customer';
           const profile = {
             id: u.id,
             email: u.email,
             name: userMeta.name || u.email.split('@')[0],
             phone: userMeta.phone || '',
-            role: isAdmin ? 'admin' : (userMeta.role || 'customer'),
+            role,
           };
           setUser(profile);
           if (typeof window !== 'undefined') {
@@ -53,11 +54,11 @@ export function AuthProvider({ children }) {
       console.warn('Supabase session load notice:', sbErr);
     }
 
-    // Fallback to local storage
+    // Fallback to local storage (strictly defaulting role to customer unless verified)
     if (typeof window !== 'undefined') {
       const storedEmail = localStorage.getItem('userEmail');
       const storedName = localStorage.getItem('userName');
-      const storedRole = localStorage.getItem('userRole') || 'customer';
+      const storedRole = localStorage.getItem('userRole') === 'admin' ? 'admin' : 'customer';
 
       if (storedEmail) {
         setUser({
@@ -83,13 +84,13 @@ export function AuthProvider({ children }) {
           if (session?.user) {
             const u = session.user;
             const userMeta = u.user_metadata || {};
-            const isAdmin = u.email === 'admin@soapco.com' || userMeta.role === 'admin';
+            const role = userMeta.role === 'admin' ? 'admin' : 'customer';
             const profile = {
               id: u.id,
               email: u.email,
               name: userMeta.name || u.email.split('@')[0],
               phone: userMeta.phone || '',
-              role: isAdmin ? 'admin' : (userMeta.role || 'customer'),
+              role,
             };
             setUser(profile);
             if (typeof window !== 'undefined') {
@@ -129,13 +130,13 @@ export function AuthProvider({ children }) {
         if (!error && data?.session?.user) {
           const u = data.session.user;
           const userMeta = u.user_metadata || {};
-          const isAdmin = email.toLowerCase().includes('admin') || userMeta.role === 'admin';
+          const role = userMeta.role === 'admin' ? 'admin' : 'customer';
           const profile = {
             id: u.id,
             email: u.email,
             name: userMeta.name || email.split('@')[0],
             phone: userMeta.phone || '',
-            role: isAdmin ? 'admin' : (userMeta.role || 'customer'),
+            role,
           };
 
           if (typeof window !== 'undefined') {
@@ -154,11 +155,12 @@ export function AuthProvider({ children }) {
       const response = await authAPI.login({ email, password });
       const { token, role, user: userData } = response.data || {};
 
+      const verifiedRole = role === 'admin' ? 'admin' : 'customer';
       const finalUser = userData || {
         id: `usr_${Date.now()}`,
         email,
-        name: email.toLowerCase().includes('admin') ? 'Atishay Admin' : email.split('@')[0],
-        role: role || (email.toLowerCase().includes('admin') ? 'admin' : 'customer')
+        name: email.split('@')[0],
+        role: verifiedRole
       };
 
       if (typeof window !== 'undefined') {

@@ -58,7 +58,8 @@ export default function AdminPage() {
     authAPI
       .getMe()
       .then((res) => {
-        const role = res.data.role || localStorage.getItem('userRole');
+        // SECURITY FIX: Never accept unverified role from localStorage to guard admin dashboard
+        const role = res?.data?.role;
         setUserRole(role);
         if (role !== 'admin') {
           setToast({ message: 'Access Denied: Admin role required', type: 'error' });

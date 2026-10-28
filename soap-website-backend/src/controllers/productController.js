@@ -233,7 +233,9 @@ const getProducts = async (req, res) => {
       filtered = filtered.filter(
         p => p.category.toLowerCase() === category.toLowerCase()
       );
-    }// Skin type filter
+    }
+    
+    // Skin type filter
     if (skinType) {
       filtered = filtered.filter(p => p.skinType.toLowerCase() === skinType.toLowerCase());
     }
@@ -312,6 +314,8 @@ const getProductReviews = async (req, res) => {
 const addProductReview = async (req, res) => {
   try {
     const { productId } = req.params;
+    const { rating, comment, title, orderId } = req.body || {};
+
     const numRating = Math.round(Number(rating));
     if (isNaN(numRating) || numRating < 1 || numRating > 5) {
       return res.status(400).json({ error: 'Rating must be between 1 and 5' });

@@ -6,6 +6,7 @@
 --   2. Function Search Path Mutable on public.handle_new_user (1 Warning)
 --   3. Public / Anon Can Execute SECURITY DEFINER Function on public.handle_new_user (1 Warning)
 --   4. Signed-In Users Can Execute SECURITY DEFINER Function on public.handle_new_user (1 Warning)
+--   5. Self-Privilege Escalation Prevention on public.profiles.role (Critical Defense)
 -- ==============================================================================
 
 -- ------------------------------------------------------------------------------
@@ -33,7 +34,7 @@ ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 
 
 -- ------------------------------------------------------------------------------
--- 3. CONFIGURE RLS POLICIES
+-- 3. CONFIGURE RLS POLICIES & PREVENT PRIVILEGE ESCALATION
 -- ------------------------------------------------------------------------------
 
 -- === TABLE: public.profiles ===
@@ -48,18 +49,51 @@ CREATE POLICY "Users can view their own profile"
   TO authenticated
   USING (auth.uid() = id);
 
+-- Users can only update their own profile; role cannot be updated to 'admin' unless already admin
 CREATE POLICY "Users can update their own profile"
   ON public.profiles
   FOR UPDATE
   TO authenticated
   USING (auth.uid() = id)
-  WITH CHECK (auth.uid() = id);
+  WITH CHECK (
+    auth.uid() = id AND (
+      role IS NULL OR 
+      role = (SELECT p.role FROM public.profiles p WHERE p.id = auth.uid()) OR
+      EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.role = 'admin')
+    )
+  );
 
 CREATE POLICY "Users can insert their own profile"
   ON public.profiles
   FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = id);
+  WITH CHECK (auth.uid() = id AND (role IS NULL OR role = 'customer'));
+
+-- Trigger: Hard barrier to guarantee no authenticated client can elevate role
+CREATE OR REPLACE FUNCTION public.prevent_self_role_escalation()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  IF NEW.role IS DISTINCT FROM OLD.role THEN
+    IF NOT EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid() AND role = 'admin'
+    ) THEN
+      RAISE EXCEPTION 'Privilege escalation blocked: Only administrators can modify account role';
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS tr_prevent_self_role_escalation ON public.profiles;
+CREATE TRIGGER tr_prevent_self_role_escalation
+  BEFORE UPDATE ON public.profiles
+  FOR EACH ROW
+  EXECUTE FUNCTION public.prevent_self_role_escalation();
 
 
 -- === TABLE: public.products ===
@@ -141,7 +175,7 @@ CREATE POLICY "Admins can view all orders"
     )
   );
 
--- Both logged-in users and guest checkouts can insert orders
+-- Both logged-in users and guest checkouts can insert orders (user_id must match auth.uid() if provided)
 CREATE POLICY "Allow placing orders"
   ON public.orders
   FOR INSERT

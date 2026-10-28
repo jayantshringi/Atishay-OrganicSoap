@@ -66,8 +66,14 @@ const register = async (req, res) => {
         name: user.name
       });
     } catch (dbErr) {
+      // SECURITY FIX: In production, never return mock unpersisted accounts if database write fails
+      if (process.env.NODE_ENV === 'production') {
+        console.error('Database error during user registration:', dbErr);
+        return res.status(503).json({ error: 'Database service unavailable. Please try again later.' });
+      }
+
       console.warn('DB Error during register, creating fallback response in dev mode:', dbErr.message);
-      // Fallback for testing without active DB server
+      // Fallback for local testing without active DB server
       const hashedPassword = await bcrypt.hash(password, 10);
       const mockUserId = `user_${Date.now()}`;
       const token = generateToken(mockUserId, 'customer');
@@ -129,9 +135,14 @@ const login = async (req, res) => {
 // Get current user
 const getCurrentUser = async (req, res) => {
   try {
+    const userId = req.user?.userId || req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: 'User identifier missing from session' });
+    }
+
     try {
       const user = await prisma.user.findUnique({
-        where: { id: req.user.userId }
+        where: { id: userId }
       });
 
       if (user) {
@@ -147,11 +158,12 @@ const getCurrentUser = async (req, res) => {
       console.warn('DB Error in getCurrentUser:', dbErr.message);
     }
 
+    // Return decoded token identity safely without leaking hardcoded third-party emails
     return res.json({
-      id: req.user.userId,
-      name: 'Valued Customer',
-      email: 'customer@example.com',
-      phone: '9876543210',
+      id: userId,
+      name: req.user.name || 'Valued Customer',
+      email: req.user.email || 'customer@example.com',
+      phone: req.user.phone || '',
       role: req.user.role || 'customer'
     });
   } catch (err) {

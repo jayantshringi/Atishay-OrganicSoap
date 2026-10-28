@@ -106,7 +106,7 @@ const optionalAuth = async (req, res, next) => {
 
 const adminMiddleware = (req, res, next) => {
   authMiddleware(req, res, () => {
-    if (req.user && req.user.role !== 'admin') {
+    if (!req.user || req.user.role !== 'admin') {
       return res.status(403).json({ error: 'Admin access required' });
     }
     next();

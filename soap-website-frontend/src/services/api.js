@@ -377,8 +377,8 @@ export const authAPI = {
     try {
       return await api.post('/auth/login', data);
     } catch {
-      const isAdmin = data.email?.toLowerCase().includes('admin');
-      const role = isAdmin ? 'admin' : 'customer';
+      // SECURITY FIX: Never escalate privileges in mock fallback based on email substring
+      const role = 'customer';
       const token = `demo_token_${Date.now()}`;
       return {
         data: {
@@ -387,7 +387,7 @@ export const authAPI = {
           user: {
             id: `usr_${Date.now()}`,
             email: data.email,
-            name: isAdmin ? 'Atishay Admin' : data.email.split('@')[0],
+            name: data.email.split('@')[0],
             role,
           },
         },

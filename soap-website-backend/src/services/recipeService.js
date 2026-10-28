@@ -99,8 +99,11 @@ const matchRecipe = async (answers) => {
       });
     }
 
+    // SECURITY FIX: If no recipes safely exclude the customer's allergens, return null.
+    // NEVER fall back to recipes containing known allergens!
     if (candidates.length === 0) {
-      candidates = recipes; // Fallback
+      console.warn('No allergen-safe recipe candidates found for:', answers.allergies);
+      return null;
     }
 
     // Score recipes based on concern and premium status

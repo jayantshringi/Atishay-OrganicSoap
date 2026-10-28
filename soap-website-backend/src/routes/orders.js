@@ -8,7 +8,7 @@ const {
   getOrderById,
   updateOrder
 } = require('../controllers/orderController');
-const { authMiddleware, optionalAuth } = require('../middleware/auth');
+const { authMiddleware, optionalAuth, adminMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 

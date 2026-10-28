@@ -79,7 +79,11 @@ const verifyPayment = async (req, res) => {
       orderId
     } = req.body;
 
-    // Verify signature
+    if (!orderId || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({ error: 'All payment verification parameters are required' });
+    }
+
+    // 1. Verify cryptographic signature
     const isValid = verifyPaymentSignature(
       razorpay_order_id,
       razorpay_payment_id,
@@ -91,6 +95,24 @@ const verifyPayment = async (req, res) => {
     }
 
     try {
+      // 2. Fetch order and verify ownership & order-payment association
+      const order = await prisma.order.findUnique({
+        where: { id: orderId },
+        include: { user: true, recipe: true, payments: true }
+      });
+
+      if (order) {
+        if (order.userId && order.userId !== req.user?.userId && req.user?.role !== 'admin') {
+          return res.status(403).json({ error: 'Unauthorized to verify payment for this order' });
+        }
+
+        // Check if there is an existing payment record for this order
+        const associatedPayment = order.payments?.find(p => p.razorpayOrderId === razorpay_order_id);
+        if (order.payments && order.payments.length > 0 && !associatedPayment) {
+          return res.status(400).json({ error: 'Razorpay order ID does not match this order' });
+        }
+      }
+
       // Update payment record
       await prisma.payment.updateMany({
         where: { razorpayOrderId: razorpay_order_id },
@@ -101,14 +123,14 @@ const verifyPayment = async (req, res) => {
       });
 
       // Update order status
-      const order = await prisma.order.update({
+      const updatedOrder = await prisma.order.update({
         where: { id: orderId },
         data: { orderStatus: 'confirmed' },
         include: { user: true, recipe: true }
       });
 
       // Send confirmation email (async)
-      sendOrderConfirmationEmail(order).catch(err =>
+      sendOrderConfirmationEmail(updatedOrder).catch(err =>
         console.error('Email send error:', err)
       );
     } catch (dbErr) {
@@ -129,28 +151,32 @@ const verifyPayment = async (req, res) => {
 const handleWebhook = async (req, res) => {
   try {
     const crypto = require('crypto');
-    const secret = process.env.RAZORPAY_WEBHOOK_SECRET || 'sample_webhook_secret';
+    const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
     const signature = req.headers['x-razorpay-signature'];
-    if (!signature && process.env.NODE_ENV === 'production') {
+
+    if (!secret) {
+      console.warn('RAZORPAY_WEBHOOK_SECRET not configured. Webhook rejected.');
+      return res.status(500).json({ error: 'Webhook secret not configured on server' });
+    }
+
+    if (!signature) {
       return res.status(400).json({ error: 'Missing x-razorpay-signature header' });
     }
 
-    if (signature) {
-      const shasum = crypto.createHmac('sha256', secret);
-      shasum.update(JSON.stringify(req.body));
-      const digest = shasum.digest('hex');
+    const shasum = crypto.createHmac('sha256', secret);
+    shasum.update(JSON.stringify(req.body));
+    const digest = shasum.digest('hex');
 
-      const signatureBuffer = Buffer.from(signature);
-      const digestBuffer = Buffer.from(digest);
+    const signatureBuffer = Buffer.from(signature, 'utf8');
+    const digestBuffer = Buffer.from(digest, 'utf8');
 
-      const isValid = signatureBuffer.length === digestBuffer.length && crypto.timingSafeEqual(signatureBuffer, digestBuffer);
-      if (!isValid && process.env.NODE_ENV === 'production') {
-        return res.status(400).json({ error: 'Invalid webhook signature' });
-      }
+    const isValid = signatureBuffer.length === digestBuffer.length && crypto.timingSafeEqual(signatureBuffer, digestBuffer);
+    if (!isValid) {
+      return res.status(400).json({ error: 'Invalid webhook signature' });
     }
 
     const { event, payload } = req.body;
-    console.log(`Received Razorpay webhook event: ${event}`);
+    console.log(`Received verified Razorpay webhook event: ${event}`);
 
     if (event === 'payment.captured' || event === 'order.paid') {
       const paymentEntity = payload?.payment?.entity || {};

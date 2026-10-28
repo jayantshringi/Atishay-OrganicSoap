@@ -2,6 +2,7 @@
 
 const supabase = require('../config/supabase');
 const { PrismaClient } = require('@prisma/client');
+const { SEED_PRODUCTS } = require('./productController');
 const prisma = new PrismaClient();
 
 // In-memory fallback store for orders to guarantee zero-crash execution in demo/test environments
@@ -65,10 +66,23 @@ const createOrder = async (req, res) => {
     const phone = shippingAddress.phone || '9876543210';
     const recipientName = shippingAddress.fullName || shippingAddress.name || 'Valued Customer';
 
-    // Calculate totals
-    const calcSubtotal = items.length > 0
-      ? items.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity || 1)), 0)
-      : Number(subtotal) || 399;
+    // SECURITY FIX: Re-verify item prices server-side against catalog to prevent price tampering
+    const verifiedItems = items.map(item => {
+      const catalogProduct = SEED_PRODUCTS.find(p => p.id === item.id || p.slug === item.slug);
+      const verifiedUnitPrice = catalogProduct ? catalogProduct.price : 399;
+      const quantity = Math.max(1, parseInt(item.quantity, 10) || 1);
+      return {
+        ...item,
+        name: catalogProduct?.name || item.name || 'Artisanal Organic Soap',
+        price: verifiedUnitPrice,
+        quantity
+      };
+    });
+
+    // Calculate totals from verified prices
+    const calcSubtotal = verifiedItems.length > 0
+      ? verifiedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+      : (customFormula ? 399 : 399);
 
     const shippingFee = calcSubtotal >= 499 ? 0 : 49;
     let discount = 0;
@@ -88,7 +102,7 @@ const createOrder = async (req, res) => {
     const newOrder = {
       id: orderId,
       userId,
-      items: items.length > 0 ? items : [
+      items: verifiedItems.length > 0 ? verifiedItems : [
         {
           id: 'prod_custom_soap',
           name: customFormula?.name || 'Custom Artisanal Organic Soap',
@@ -193,6 +207,10 @@ const getOrders = async (req, res) => {
   try {
     const userId = req.user?.userId;
 
+    if (!userId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
     try {
       const dbOrders = await prisma.order.findMany({
         where: { userId },
@@ -207,8 +225,9 @@ const getOrders = async (req, res) => {
       // Fall through to in-memory orders
     }
 
-    const userOrders = IN_MEMORY_ORDERS.filter(o => !userId || o.userId === userId || o.userId === 'usr_demo_1');
-    return res.json(userOrders.length > 0 ? userOrders : IN_MEMORY_ORDERS);
+    // SECURITY FIX: Never leak other users' in-memory orders if user has no orders
+    const userOrders = IN_MEMORY_ORDERS.filter(o => o.userId === userId);
+    return res.json(userOrders);
   } catch (err) {
     console.error('Failed to fetch orders:', err);
     res.status(500).json({ error: 'Failed to fetch orders' });
@@ -241,11 +260,10 @@ const getOrderById = async (req, res) => {
       return res.status(404).json({ error: 'Order not found' });
     }
 
-    // Security check: Customer can only view their own order; Admins can view all orders
+    // SECURITY FIX: BOLA Protection. Only allow order owner or admins to view order details.
     const isOwner = currentUserId && (order.userId === currentUserId || order.userId === req.user?.id);
-    const isGuestOrder = order.userId?.startsWith('guest_') || !order.userId;
 
-    if (!isAdmin && !isOwner && !isGuestOrder) {
+    if (!isAdmin && !isOwner) {
       return res.status(403).json({ error: 'Unauthorized to view this order' });
     }
 

@@ -26,8 +26,12 @@ async function main() {
   }
   console.log('✅ Ingredients seeded.');
 
-  // Seed Admin User
-  const adminPasswordHash = await bcrypt.hash('AdminPass123!', 10);
+  // Seed Admin User (Configurable via environment with secure fallback)
+  const initialAdminPass = process.env.ADMIN_INITIAL_PASSWORD || 'AdminPass123!';
+  if (!process.env.ADMIN_INITIAL_PASSWORD) {
+    console.warn('⚠️ WARNING: Using default initial admin password. Set ADMIN_INITIAL_PASSWORD in production environment.');
+  }
+  const adminPasswordHash = await bcrypt.hash(initialAdminPass, 10);
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@atishay.com' },
     update: {},
@@ -40,7 +44,7 @@ async function main() {
       address: 'Atishay HQ, Mumbai'
     },
   });
-  console.log(`✅ Admin user seeded: ${adminUser.email} (Password: AdminPass123!)`);
+  console.log(`✅ Admin user seeded: ${adminUser.email}`);
 
   // Seed Recipes
   const recipes = [

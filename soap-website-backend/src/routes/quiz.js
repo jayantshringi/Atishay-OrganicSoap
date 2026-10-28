@@ -10,38 +10,56 @@ router.post('/', optionalAuth, (req, res) => {
   try {
     const { skinType = 'combination', allergens = [], concerns = [] } = req.body;
 
-    let matchedProduct = null;
-    let rationale = '';
-
     const lowerSkin = skinType.toLowerCase();
     const primaryConcern = (concerns[0] || '').toLowerCase();
 
-    if (primaryConcern.includes('acne') || primaryConcern.includes('clarity') || lowerSkin === 'oily') {
-      matchedProduct = SEED_PRODUCTS.find(p => p.category === 'acne') || SEED_PRODUCTS[1];
-      rationale = 'Wild Kasturi Turmeric & Neem formula to clarify active breakouts and balance excess oil production.';
-    } else {
-      matchedProduct = SEED_PRODUCTS.find(p => p.category === 'hydration') || SEED_PRODUCTS[0];
-      rationale = 'Aloe Vera & Shea formulation to replenish skin barrier moisture, soothe irritation, and promote lasting hydration.';
+    // SECURITY FIX: Never recommend a pre-manufactured product that contains a customer's known allergen.
+    // Search for catalog items that are 100% free of the specified allergens.
+    const hasAllergen = (product, allergenList) => {
+      if (!allergenList || !Array.isArray(allergenList) || allergenList.length === 0) return false;
+      return product.ingredients.some(ing =>
+        allergenList.some(a => typeof a === 'string' && a.trim() && ing.toLowerCase().includes(a.trim().toLowerCase()))
+      );
+    };
+
+    const safeProducts = SEED_PRODUCTS.filter(p => !hasAllergen(p, allergens));
+
+    if (safeProducts.length === 0) {
+      return res.json({
+        success: true,
+        matchedProduct: null,
+        needsCustomFormulation: true,
+        skinProfile: {
+          skinType,
+          concerns,
+          allergens,
+          rationale: 'All standard pre-made soaps contain one or more of your indicated allergens.'
+        },
+        recommendationNote: 'Because your profile includes specific allergies present in our standard catalog, we recommend our personalized questionnaire to formulate a 100% bespoke allergen-free soap bar.'
+      });
     }
 
-    // Filter allergens from recommended ingredients if any specified
-    const filteredIngredients = matchedProduct.ingredients.filter(ing => {
-      return !allergens.some(allergen => ing.toLowerCase().includes(allergen.toLowerCase()));
-    });
+    let matchedProduct = null;
+    let rationale = '';
+
+    if (primaryConcern.includes('acne') || primaryConcern.includes('clarity') || lowerSkin === 'oily') {
+      matchedProduct = safeProducts.find(p => p.category === 'acne') || safeProducts[0];
+      rationale = 'Purifying antibacterial formula to clarify breakouts while strictly adhering to your allergen constraints.';
+    } else {
+      matchedProduct = safeProducts.find(p => p.category === 'hydration') || safeProducts[0];
+      rationale = 'Hydrating botanical formula to nourish and replenish skin while strictly adhering to your allergen constraints.';
+    }
 
     return res.json({
       success: true,
-      matchedProduct: {
-        ...matchedProduct,
-        ingredients: filteredIngredients
-      },
+      matchedProduct,
       skinProfile: {
         skinType,
         concerns,
         allergens,
         rationale
       },
-      recommendationNote: `Based on your ${skinType} skin profile and concerns, our Ayurvedic formulation algorithm recommends the ${matchedProduct.name}.`
+      recommendationNote: `Based on your ${skinType} skin profile and allergen preferences, our Ayurvedic algorithm recommends the ${matchedProduct.name}.`
     });
   } catch (err) {
     console.error('Quiz recommendation error:', err);

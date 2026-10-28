@@ -42,14 +42,28 @@ const createRazorpayOrder = async (orderId, amount) => {
 };
 
 const verifyPaymentSignature = (razorpayOrderId, razorpayPaymentId, razorpaySignature) => {
-  if (!razorpaySignature) return true; // Dev mode bypass if signature empty in dev test
-  
-  const expectedSignature = crypto
-    .createHmac('sha256', razorpayKeySecret)
-    .update(razorpayOrderId + '|' + razorpayPaymentId)
-    .digest('hex');
+  if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+    return false;
+  }
 
-  return expectedSignature === razorpaySignature || process.env.NODE_ENV === 'development';
+  try {
+    const expectedSignature = crypto
+      .createHmac('sha256', razorpayKeySecret)
+      .update(`${razorpayOrderId}|${razorpayPaymentId}`)
+      .digest('hex');
+
+    const expectedBuffer = Buffer.from(expectedSignature, 'utf8');
+    const providedBuffer = Buffer.from(razorpaySignature, 'utf8');
+
+    if (expectedBuffer.length !== providedBuffer.length) {
+      return false;
+    }
+
+    return crypto.timingSafeEqual(expectedBuffer, providedBuffer);
+  } catch (err) {
+    console.error('Cryptographic signature verification error:', err.message);
+    return false;
+  }
 };
 
 module.exports = {
